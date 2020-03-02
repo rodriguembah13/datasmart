@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('role_permission_delete', {'id': role_permission.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ role_permission.id) }}">
+    <button class="btn">Delete</button>
+</form>

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit PlanningStrategy{% endblock %}
+{% block page_title %} PlanningStrategy {% endblock %}
+{% block page_subtitle %} new {% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% block box_before %}{% endblock %}
+        {% block box_body %}
+
+    {{ include('planning_strategy/_form.html.twig', {'button_label': 'Update'}) }}
+        {% endblock %}
+        {% block box_footer %}
+
+        {% endblock %}
+
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+    <a href="{{ path('planning_strategy_index') }}">back to list</a>
+{% endblock %}

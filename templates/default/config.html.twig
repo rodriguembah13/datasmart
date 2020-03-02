@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+{% block page_title %} Configuration {% endblock %}
+{% block page_subtitle %} Basic {% endblock %}
+{% block page_content %}
+    <br>
+{#<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a class="btn btn-success" href="{{ path('entreprise_index') }}">
+                    <span >Entreprise</span>
+                </a> </li><li>
+                <a class="btn btn-primary" href="{{ path('work_day_index') }}">
+                    <span >Jour de travail</span>
+                </a> </li><li>
+                <a class="btn btn-warning" href="{{ path('currency_index') }}">
+                    <span >Monaie</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>#}
+    <div class="row">
+        <div class="col-md-4"><a href="#">
+            {# ... infobox widget, solid background ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                'solid' : 'yellow',
+                'icon'  : 'far fa-star',
+                'progress' : 40
+            } %}
+
+                {% block box_text %}Parametre Entreprise{% endblock %}
+                {% block progress_description %}Configurer les infomations de votre entreprise{% endblock %}
+            {% endembed %}
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('module_index') }}">
+            {# ... infobox widget, solid background ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                'solid' : 'red',
+                'icon'  : 'far fa-star',
+                'progress' : 40
+            } %}
+
+                {% block box_text %}Module installes{% endblock %}
+                {% block progress_description %}The progress description{% endblock %}
+            {% endembed %}
+
+            </a>
+        </div>
+
+        <div class="col-md-4"><a href="{{ path('user_index') }}">
+                {# ... infobox widget, solid background ... #}
+                {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                    'solid' : 'green',
+                    'icon'  : 'far fa-star',
+                    'progress' :  users.getTotalItemCount ,
+                } %}
+
+                    {% block box_text %}Utilisateurs{% endblock %}
+                    {% block progress_description %}{{ users.getTotalItemCount }}{% endblock %}
+                {% endembed %}
+            </a>
+        </div>
+        <div class="col-md-4"><a href="{{ path('holiday_index') }}">
+            {# ... infobox widget, solid background ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                'solid' : 'indigo',
+                'icon'  : 'far fa-star',
+                'progress' : nbholydays
+            } %}
+
+                {% block box_text %}Jour Ferie{% endblock %}
+                {% block progress_description %}{{ nbholydays }}{% endblock %}
+            {% endembed %}
+            </a>
+        </div>
+        <div class="col-md-4"><a href="{{ path('holiday_index') }}">
+                {# ... infobox widget, solid background ... #}
+                {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                    'solid' : 'indigo',
+                    'icon'  : 'far fa-star',
+                    'progress' : entreprises
+                } %}
+
+                    {% block box_text %}Entreprise{% endblock %}
+                    {% block progress_description %}{{ entreprises }}{% endblock %}
+                {% endembed %}
+            </a>
+        </div>
+        <div class="col-md-4"><a href="{{ path('currency_index') }}">
+                {# ... infobox widget, solid background ... #}
+                {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                    'solid' : 'yellow',
+                    'icon'  : 'far fa-star',
+                    'progress' : currencies
+                } %}
+
+                    {% block box_text %}Monaie{% endblock %}
+                    {% block progress_description %}{{ currencies }}{% endblock %}
+                {% endembed %}
+            </a>
+        </div>
+        <div class="col-md-4"><a href="{{ path('work_day_index') }}">
+                {# ... infobox widget, solid background ... #}
+                {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                    'solid' : 'blue',
+                    'icon'  : 'far fa-star',
+                    'progress' : workdays
+                } %}
+
+                    {% block box_text %}Jours Ouvrable{% endblock %}
+                    {% block progress_description %}{{ workdays }}{% endblock %}
+                {% endembed %}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+

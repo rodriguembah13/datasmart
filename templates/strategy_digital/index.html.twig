@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Customer index{% endblock %}
+{% block page_title %} Strategy {% endblock %}
+{% block page_subtitle %} list {% endblock %}
+{% block page_content %}
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-3">
+        <div class="btn-group pull-right">
+            <a class="btn btn-success btn-sm" href="{{ path('strategy_digital_new') }}" data-toggle="tooltip" data-placement="top" title="create strategy"><i class="fa fa-plus"></i></a>
+            <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i></a>
+        </div>
+    </div>
+</div>
+<br>
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for strategy_digital in strategy_digitals %}
+            <tr>
+                <td>{{ strategy_digital.id }}</td>
+                <td>{{ strategy_digital.name }}</td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-info btn-sm" href="{{ path('strategy_digital_show', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-warning btn-sm" href="{{ path('step_strategy_index2', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="planning"><i class="fa fa-cogs"></i></a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+{% endblock %}

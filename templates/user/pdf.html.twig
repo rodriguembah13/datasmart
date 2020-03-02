@@ -1,0 +1,144 @@
+<style type="text/css">
+    /*** Table Styles **/
+
+    .table-fill {
+        background: white;
+        border-radius:3px;
+       /* border-collapse: collapse;
+        height: 320px;
+        margin: auto;*/
+        max-width: 600px;width: 100%;
+   /*     padding:5px;
+
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        animation: float 5s infinite;*/
+    }
+
+    th {
+        color:#D5DDE5;;
+        background:#1b1e24;
+             border-bottom:1px solid #9ea7af;
+            border-right: 1px solid #343a45 ;
+            font-size:12px;
+            font-weight: 100;
+            padding:5px;
+            text-align:left;
+           /* text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);*/
+        vertical-align:middle;
+    }
+
+    th:first-child {
+        border-top-left-radius:3px;
+    }
+
+    th:last-child {
+        border-top-right-radius:3px;
+        border-right:none;
+    }/**/
+
+    tr {
+       border-top: 1px solid #666B85;
+        border-bottom: 1px solid #666B85; /**/
+        color:#666B85;
+      /*  font-size:10px;
+        font-weight:normal;*/
+       /* text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);*/
+    }
+
+    /*tr:hover td {
+        background:#4E5066;
+        color:#FFFFFF;
+        border-top: 1px solid #22262e;
+    }
+
+    tr:first-child {
+        border-top:none;
+    }
+
+    tr:last-child {
+        border-bottom:none;
+    }
+
+    tr:nth-child(odd) td {
+        background:#EBEBEB;
+    }
+
+    tr:nth-child(odd):hover td {
+        background:#4E5066;
+    }
+
+    tr:last-child td:first-child {
+        border-bottom-left-radius:3px;
+    }
+
+    tr:last-child td:last-child {
+        border-bottom-right-radius:3px;
+    }*/
+
+    td {
+        background:#FFFFFF;
+        padding:10px;
+        text-align:left;
+        vertical-align:middle;
+        font-weight:100;
+        font-size:10px;
+        text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #C1C3D1;/**/
+    }
+
+    td:last-child {
+        border-right: 0px;
+    }
+
+    th.text-left {
+        text-align: left;
+    }
+
+    th.text-center {
+        text-align: center;
+    }
+
+    th.text-right {
+        text-align: right;
+    }
+
+    td.text-left {
+        text-align: left;
+    }
+
+    td.text-center {
+        text-align: center;
+    }
+
+    td.text-right {
+        text-align: right;
+    }
+
+</style>
+<hr>
+<h2>Listes holidays</h2>
+<table class="table-fill">
+    <thead>
+    <tr style="">
+        <th>Id</th>
+        <th>Libelle</th>
+        <th>Day</th>
+        <th>Etat</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for holiday in holidays %}
+        <tr class="contentimg">
+            <td>{{ holiday.id }}</td>
+            <td>{{ holiday.libelle }}</td>
+            <td>{{ holiday.day ? holiday.day|date('Y-m-d') : '' }}</td>
+            <td>{{ holiday.etat }}{{ holiday.etat ? '<span class="label label-success">actif</span>' : '<span class="label label-danger">non actif</span>' }}</td>
+
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,59 @@
+#
+# Configuration file for the AdminLTE bundle
+#
+# For more information about the settings visit:
+# https://github.com/kevinpapst/AdminLTEBundle/blob/master/Resources/docs/configurations.md
+#
+admin_lte:
+    options:
+        default_avatar: bundles/adminlte/images/default_avatar.png
+        skin: 'skin-blue'
+        fixed_layout: true
+        boxed_layout: false
+        collapsed_sidebar: false
+        mini_sidebar: true
+        #max_navbar_notifications: 10
+        #max_navbar_tasks: 10
+        #max_navbar_messages: 10
+
+    control_sidebar:
+        home:
+            icon: fas fa-home
+            template: control-sidebar/home.html.twig
+        settings:
+            icon: fas fa-cogs
+            controller: 'App\Controller\DefaultController::userPreferences'
+
+#    theme:
+#        widget:
+#            type: warning
+#            bordered: true
+#            collapsible: true
+#            collapsible_title: 'Collapse'
+#            removable: false
+#            removable_title: 'Remove'
+#            solid: false
+#            use_footer: false
+#        button:
+#            type: 'primary'
+#            size: false
+
+    knp_menu:
+        enable: true
+        # the default value is adminlte_main, so we don't need to set it manually
+        #main_menu: adminlte_main
+        breadcrumb_menu: false
+
+    routes:
+        adminlte_welcome: homepage
+        adminlte_login: fos_user_security_login
+        adminlte_login_check: fos_user_security_check
+        adminlte_registration: fos_user_registration_register
+        adminlte_password_reset: fos_user_resetting_request
+        adminlte_message: homepage
+        adminlte_messages: homepage
+        adminlte_notification: homepage
+        adminlte_notifications: homepage
+        adminlte_task: homepage
+        adminlte_tasks: homepage
+        adminlte_profile: fos_user_profile_show

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RolePermission{% endblock %}
+
+{% block body %}
+    <h1>RolePermission</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ role_permission.id }}</td>
+            </tr>
+            <tr>
+                <th>Permission</th>
+                <td>{{ role_permission.permission }}</td>
+            </tr>
+            <tr>
+                <th>Allowed</th>
+                <td>{{ role_permission.allowed ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('role_permission_index') }}">back to list</a>
+
+    <a href="{{ path('role_permission_edit', {'id': role_permission.id}) }}">edit</a>
+
+    {{ include('role_permission/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Customer index{% endblock %}
+{% block page_title %} Employee {% endblock %}
+{% block page_subtitle %} new {% endblock %}
+{% block page_content %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+    {{ include('employee/_form.html.twig') }}
+                {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+    <a href="{{ path('employee_index') }}">back to list</a>
+{% endblock %}

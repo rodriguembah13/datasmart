@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+{% block page_title %} User {% endblock %}
+{% block page_subtitle %} list {% endblock %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class="btn btn-success btn-sm" href="{{ path('user_new') }}"><i class="fa fa-plus"></i></a>
+                <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row" id="jqbox_user">
+    {% for user in users %}
+        <div class="col-md-3">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+
+                {% block box_body %}
+                  {#  <img class="col-md-5" width="100" height="70"
+                         src="{{ asset('uploads/' ~ user.imageFilename) }}" title="my image"
+                         alt="My image">#}
+                    {% if employe.imageFilename is defined and user.imageFilename  is not null %}
+                        <img id="img_emp" class="col-md-5 img img-responsive img-thumbnail"style="height: 75px;"
+                             src="{{ asset('uploads/' ~ user.imageFilename) }}" title="{{ user.username }}"
+                             alt="My image">
+                    {% else %}  <img id="img_emp" class="col-md-5 img img-responsive img-thumbnail"style="height: 75px;"
+                                     src="{{ asset('bundles/adminlte/images/default_avatar.png') }}" title="{{ user.username }}"
+                                     alt="My image">
+                    {% endif %}
+                    <div class="col-md-7">
+                        {{ user.username }}<br>
+                        {{ user.email }}
+                        {# {{ employe.poste.libelle}}#}
+
+                    </div>
+                {% endblock %}
+                {% block box_footer %}
+                    <div class="btn-group">
+                        <a class="btn btn-info btn-xs" href="{{ path('user_show', {'id': user.id}) }}"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-primary btn-xs" href="{{ path('user_edit', {'id': user.id}) }}"><i class="fa fa-edit"></i></a>
+                        {% if user.enabled %}
+                            <a class="btn btn-success btn-xs" href="{{ path('user_enable', {'id': user.id}) }}"><i class="fa fa-check-circle"></i></a>
+                        {% else %}
+                            <a class="btn btn-danger btn-xs" href="{{ path('user_enable', {'id': user.id}) }}"><i class="fa fa-check-square"></i></a>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div> {% endfor %}</div>
+    <table class="table table-hover" id="jqtable_user">
+        <thead>
+            <tr class="bg-aqua">
+                <th>Username</th>
+                <th>Email</th>
+                <th>Enabled</th>
+                <th>LastLogin</th>
+                <th>Roles</th>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                {% if user.enabled %}
+                    <a class="btn btn-success btn-xs" href="{{ path('user_enable', {'id': user.id}) }}">active</a>
+                    {% else %}
+                        <a class="btn btn-danger btn-xs" href="{{ path('user_enable', {'id': user.id}) }}">desactive</a>
+                        {% endif %}
+                </td>
+                <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                <td>{{ user.id }}</td>
+                <td>
+                    <a class="btn btn-info btn-xs" href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                    <a class="btn btn-primary btn-xs" href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a class="btn btn-primary btn-xs" href="{{ path('user_enable', {'id': user.id}) }}">active</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'user/javascript.html.twig' %}
+{% endblock %}

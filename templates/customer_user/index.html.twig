@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}User index{% endblock %}
+{% block page_title %} User-Customer {% endblock %}
+{% block page_subtitle %} list {% endblock %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class="btn btn-success btn-sm" href="{{ path('customer_user_new') }}" data-toggle="tooltip" data-placement="top" title="create user"><i class="fa fa-plus"></i></a>
+                <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+    <table class="table contentimg table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Visible</th>
+                <th>RegisteredAt</th>
+                <th>CreatedBy</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for customer_user in customer_users %}
+            <tr>
+                <td>{{ customer_user.id }}</td>
+                <td>{{ customer_user.name }}</td>
+                <td>{{ customer_user.value }}</td>
+                <td>{{ customer_user.visible ? 'Yes' : 'No' }}</td>
+                <td>{{ customer_user.registeredAt ? customer_user.registeredAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ customer_user.createdBy}}</td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-info btn-sm" href="{{ path('customer_user_show', {'id': customer_user.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('customer_user_edit', {'id': customer_user.id}) }}" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+{% endblock %}

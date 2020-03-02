@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit StepStrategy{% endblock %}
+
+{% block body %}
+    <h1>Edit StepStrategy</h1>
+
+    {{ include('step_strategy/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('step_strategy_index') }}">back to list</a>
+
+    {{ include('step_strategy/_delete_form.html.twig') }}
+{% endblock %}

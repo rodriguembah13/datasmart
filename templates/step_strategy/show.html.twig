@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StepStrategy{% endblock %}
+
+{% block body %}
+    <h1>StepStrategy</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ step_strategy.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('step_strategy_index') }}">back to list</a>
+
+    <a href="{{ path('step_strategy_edit', {'id': step_strategy.id}) }}">edit</a>
+
+    {{ include('step_strategy/_delete_form.html.twig') }}
+{% endblock %}

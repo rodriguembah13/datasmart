@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{#
+    Demo of the "avanzu shim layout" capabilities
+#}
+
+{% block document_title %}Dashboard gest_pers{% endblock %}
+{% block page_title %}Dashboard Ges-P{% endblock %}
+{% block page_subtitle %} gestion de Personnel {% endblock %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-3">
+            {# ... infobox widget, solid background ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+            'solid' : 'red',
+            'icon'  : 'far fa-star',
+            } %}
+
+                {% block box_text %}Strategie Digitale{% endblock %}
+                {% block box_number %}{% endblock %}
+                {% block progress_description %}{% endblock %}
+            {% endembed %}
+
+        </div>
+        <div class="col-md-3">
+
+            {# ... infobox widget, colored icon ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+            'solid' : 'aqua',
+            'icon'  : 'fas fa-comments',
+            } %}
+                {% block box_text %}Customers{% endblock %}
+                {% block box_number %}{% endblock %}
+                {% block progress_description %}{% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-md-3">
+
+            {# ... infobox widget, colored icon ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                'color' : 'indigo',
+                'icon'  : 'fa fa-users',
+            } %}
+                {% block box_text %}Employees{% endblock %}
+                {% block box_number %}{% endblock %}
+                {% block progress_description %}{% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-md-3">
+
+            {# ... infobox widget, colored icon ... #}
+            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
+                'color' : 'green',
+                'icon'  : 'fa fa-bolt',
+            } %}
+                {% block box_text %}Utilisateurs{% endblock %}
+                {% block box_number %}{% endblock %}
+                {% block progress_description %}{% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+ {#  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>#}
+    <script src="{{asset('loader.js')}}"></script>
+    <script src="{{asset('js/highcharts.js')}}"></script>
+    <script src="{{asset('js/exporting.js')}}"></script>
+  {#  <script type="text/javascript">
+       {{ chart(chart) }}
+    </script>#}
+{% endblock %}

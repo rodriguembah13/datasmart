@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block page_title %} Strategy {% endblock %}
+{% block page_subtitle %} new {% endblock %}
+{% block page_content %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+
+    {{ include('strategy_digital/_form.html.twig') }}
+                {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+    <a href="{{ path('strategy_digital_index') }}">back to list</a>
+{% endblock %}

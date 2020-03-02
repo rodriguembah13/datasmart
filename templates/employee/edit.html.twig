@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Employee{% endblock %}
+{% block page_content %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+    {{ include('employee/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('employee_index') }}">back to list</a>
+                {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+    {{ include('employee/_delete_form.html.twig') }}
+{% endblock %}

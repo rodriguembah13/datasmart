@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Planing index{% endblock %}
+{% block page_title %} Planning {% endblock %}
+{% block page_subtitle %} list {% endblock %}
+{% block page_content %}
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-3">
+        <div class="btn-group pull-right">
+          {#  <a class="btn btn-success btn-sm" href="{{ path('strateg') }}" data-toggle="tooltip" data-placement="top" title="create customer"><i class="fa fa-plus"></i></a>
+            <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i></a>#}
+        </div>
+    </div>
+</div>
+<br>
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for planning_strategy in planning_strategies %}
+            <tr>
+                <td>{{ planning_strategy.id }}</td>
+                <td>{{ planning_strategy.startDate ? planning_strategy.startDate|date('Y-m-d') : '' }}</td>
+                <td>{{ planning_strategy.endDate ? planning_strategy.endDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('planning_strategy_show', {'id': planning_strategy.id}) }}">show</a>
+                    <a href="{{ path('planning_strategy_edit', {'id': planning_strategy.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+{% endblock %}

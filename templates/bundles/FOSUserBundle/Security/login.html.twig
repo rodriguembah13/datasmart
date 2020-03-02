@@ -1,0 +1,18 @@
+{% extends '@AdminLTE/FOSUserBundle/Security/login.html.twig' %}
+{% block title %}Gers-P | Log in{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+{% endblock %}
+{% block logo_login %}{% endblock %}
+{% block login_box_icon %}
+    <img id="img" class="" src="{{ asset('images/logo_gp.png') }}" title="my image" alt="My image"style="height: 150px">
+{% endblock %}
+{% block login_actions %}
+    {% if 'adminlte_password_reset'|route_alias != 'adminlte_password_reset' %}
+        <a href="{{ path('adminlte_password_reset'|route_alias) }}">
+            {{ 'I forgot my password'|trans({}, 'AdminLTEBundle') }}
+        </a>
+        <br>
+    {% endif %}
+{% endblock %}

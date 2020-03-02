@@ -1,0 +1,32 @@
+version: '3'
+services:
+  geste_personnel:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/www/html/vendor
+      - .:/var/www/html
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'tutoriel'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'tutoriel'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'tutoriel'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'tutoriel'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3310:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./data/dump:/docker-entrypoint-initdb.d
+      - ./data/db:/var/lib/mysql
