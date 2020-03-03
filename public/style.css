@@ -11,6 +11,12 @@ body.login-page .login-logo {
 /*.nametd{
     width: 300px;
 }*/
+.skin-blue .sidebar-menu > li.header {
+    color: beige;
+    background: #1a2226;
+    font-size: revert;
+    font-weight: bold;
+}
 .box.box-primary {
     border-top-color:
             #3c8d0c;

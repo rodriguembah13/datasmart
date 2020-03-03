@@ -14,5 +14,6 @@
 
     {% block box_after %}{% endblock %}
 {% endembed %}
-    <a href="{{ path('customer_index') }}">back to list</a>
+    <a class="btn btn-warning" href="{{ path('customer_index') }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+
 {% endblock %}

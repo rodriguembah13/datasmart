@@ -55,14 +55,11 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'menu-customer',
             ['label' => 'Customer', 'childOptions' => $event->getChildOptions()]
         )->setAttribute('class', 'header');
-        $menu->addChild(
-            'customers',
-            ['route' => 'customer_index', 'label' => 'Customer', 'childOptions' => $event->getChildOptions()]
-        )->setLabelAttribute('icon', 'fab fa-wpforms');
+
         $menu->addChild(
             'customer_user',
             ['route' => 'customer_user_index', 'label' => 'Customer User', 'childOptions' => $event->getChildOptions()]
-        )->setLabelAttribute('icon', 'fab fa-wpforms');
+        )->setLabelAttribute('icon', 'fa fa-users');
         $menu->addChild(
             'strategy_digital',
             ['route' => 'strategy_digital_index', 'label' => 'Strategy Digital', 'childOptions' => $event->getChildOptions()]
@@ -72,22 +69,30 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
              'managecustomer',
              ['label' => 'Manage Customer', 'childOptions' => $event->getChildOptions(), 'options' => ['branch_class' => 'treeview']]
          )->setLabelAttribute('icon', 'far fa-arrow-alt-circle-right');*/
-        $menu->addChild(
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $menu->addChild(
             'menu-admin',
             ['label' => 'Administration', 'childOptions' => $event->getChildOptions()]
         )->setAttribute('class', 'header');
-        $menu->addChild(
+            $menu->addChild(
+            'customers',
+            ['route' => 'customer_index', 'label' => 'Customer', 'childOptions' => $event->getChildOptions()]
+        )->setLabelAttribute('icon', 'fa fa-user-friends');
+            $menu->addChild(
             'user',
             ['route' => 'user_index', 'label' => 'user', 'childOptions' => $event->getChildOptions()]
-        )->setLabelAttribute('icon', 'fab fa-wpforms');
-        $menu->addChild(
+        )->setLabelAttribute('icon', 'fa fa-users-cog');
+            if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+                $menu->addChild(
             'employee',
             ['route' => 'employee_index', 'label' => 'employee', 'childOptions' => $event->getChildOptions()]
-        )->setLabelAttribute('icon', 'fab fa-wpforms');
-        $menu->addChild(
+        )->setLabelAttribute('icon', 'fa fa-user-cog');
+                $menu->addChild(
             'permissions',
             ['route' => 'role_permission_index', 'label' => 'permissions', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fab fa-wpforms');
+            }
+        }
         /*$menu->addChild(
             'context',
             ['route' => 'context', 'label' => 'AdminLTE context', 'childOptions' => $event->getChildOptions()]

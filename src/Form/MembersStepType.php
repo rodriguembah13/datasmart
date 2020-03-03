@@ -9,10 +9,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MembersStepType extends AbstractType
 {
+     private $repository;
+    /**
+     * MembersStepType constructor.
+     */
+    public function __construct()
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stepStrategy')
+            //->add('stepStrategy')
             ->add('customerUser')
         ;
     }

@@ -13,16 +13,11 @@ interface PermissionSectionInterface
 {
     /**
      * Returns the section title (which will be translated).
-     *
-     * @return string
      */
     public function getTitle(): string;
 
     /**
-     * Returns whether the given permission is part of this section
-     *
-     * @param string $permission
-     * @return bool
+     * Returns whether the given permission is part of this section.
      */
     public function filter(string $permission): bool;
 }

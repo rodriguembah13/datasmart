@@ -7,6 +7,7 @@ use App\Entity\StrategyDigital;
 use App\Form\StrategyDigitalType;
 use App\Repository\StepRepository;
 use App\Repository\StrategyDigitalRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/strategy/digital")
+ * @Security("is_granted('view_project')")
  */
 class StrategyDigitalController extends AbstractController
 {/**
@@ -35,12 +37,23 @@ class StrategyDigitalController extends AbstractController
     public function index(StrategyDigitalRepository $strategyDigitalRepository): Response
     {
         return $this->render('strategy_digital/index.html.twig', [
-            'strategy_digitals' => $strategyDigitalRepository->findAll(),
+            'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomer()]),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/planning", name="strategy_digital_planning", methods={"GET"})
+     */
+    public function planning(StrategyDigital $strategyDigital,StrategyDigitalRepository $strategyDigitalRepository): Response
+    {
+        return $this->render('strategy_digital/planning.html.twig', [
+            'strategy_digital' => $strategyDigital,
         ]);
     }
 
     /**
      * @Route("/new", name="strategy_digital_new", methods={"GET","POST"})
+     * @Security("is_granted('create_project')")
      */
     public function new(Request $request): Response
     {
@@ -51,7 +64,14 @@ class StrategyDigitalController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $strategyDigital->setStatut(false);
-            $strategyDigital->setCreateBy($this->getUser()->getCustomer());
+            if (null == $this->getUser()->getCustomer()) {
+                $this->addFlash('error', 'Desole,Il faut etre un customer');
+
+                return $this->redirectToRoute('homepage');
+            } else {
+                $strategyDigital->setCreateBy($this->getUser()->getCustomer());
+            }
+
             $entityManager->persist($strategyDigital);
             $this->createStep($strategyDigital);
             $entityManager->flush();
@@ -92,6 +112,7 @@ class StrategyDigitalController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="strategy_digital_edit", methods={"GET","POST"})
+     * @Security("is_granted('edit_project')")
      */
     public function edit(Request $request, StrategyDigital $strategyDigital): Response
     {
@@ -112,6 +133,7 @@ class StrategyDigitalController extends AbstractController
 
     /**
      * @Route("/{id}", name="strategy_digital_delete", methods={"DELETE"})
+     * @Security("is_granted('delete_project')")
      */
     public function delete(Request $request, StrategyDigital $strategyDigital): Response
     {

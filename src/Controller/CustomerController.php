@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/customer")
+ * @Security("is_granted('view_customer')")
  */
 class CustomerController extends AbstractController
 {
@@ -27,6 +29,7 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/new", name="customer_new", methods={"GET","POST"})
+     * @Security("is_granted('create_customer')")
      */
     public function new(Request $request): Response
     {
@@ -41,6 +44,7 @@ class CustomerController extends AbstractController
             $entityManager->persist($customer);
             $entityManager->flush();
             $url = $this->generateUrl('user_new_customer', ['id' => $customer->getId()]);
+
             return $this->redirect($url);
         }
 
@@ -62,6 +66,7 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="customer_edit", methods={"GET","POST"})
+     * @Security("is_granted('edit_customer')")
      */
     public function edit(Request $request, Customer $customer): Response
     {
@@ -82,6 +87,8 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/{id}", name="customer_delete", methods={"DELETE"})
+     * @Security("is_granted('delete_customer')")
+     *
      */
     public function delete(Request $request, Customer $customer): Response
     {
@@ -93,8 +100,10 @@ class CustomerController extends AbstractController
 
         return $this->redirectToRoute('customer_index');
     }
+
     /**
      * @Route("/{id}/enable", name="customer_enable", methods={"GET"})
+     * @Security("is_granted('edit_customer')")
      */
     public function enableuser(Request $request, Customer $customer): Response
     {

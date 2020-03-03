@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block page_title %} Strategy Step{% endblock %}
+{% block page_subtitle %} {{ step_strategy }} {% endblock %}
+{% block page_content %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-success"><i class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+                    {{ form_end(form) }}
+                {% endblock %}
+    {% block box_footer %}
+
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Users</th>
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for members_step in step_strategy.membersSteps %}
+                            <tr>
+                                <td>{{ members_step.id }}</td>
+                                <td>{{ members_step.customerUser}}</td>
+                                <td>
+                                    <a class="btn btn-danger" href="{{ path('members_step_delete', {'id': members_step.id}) }}"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endblock %}
+    {% endembed %}
+    <a class="btn btn-warning" href="{{ path('step_strategy_index2',{'id':step_strategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+
+{% endblock %}

@@ -38,6 +38,11 @@ class StrategyDigital
      */
     private $statut;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CustomerUser", inversedBy="strategyDigitals")
+     */
+    private $lead;
+
     public function __construct()
     {
         $this->stepStrategies = new ArrayCollection();
@@ -114,4 +119,22 @@ class StrategyDigital
 
         return $this;
     }
+
+    public function getLead(): ?CustomerUser
+    {
+        return $this->lead;
+    }
+
+    public function setLead(?CustomerUser $lead): self
+    {
+        $this->lead = $lead;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }

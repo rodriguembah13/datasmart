@@ -25,18 +25,20 @@ class CustomerType extends AbstractType
     {
         $builder
             ->add('date_from', DateType::class, [
+                'label' => 'Date De Debut',
         'widget' => 'single_text',
         'html5' => false,
         'required' => false,
     ])
             ->add('date_to', DateType::class, [
+                'label' => 'Date De Fin',
                 'widget' => 'single_text',
                 'html5' => false,
                 'required' => false,
             ])
             ->add('name')
             //->add('value')
-            //->add('visible')
+            ->add('visible')
             ->add('company')
             ->add('address')
             ->add('telephone')

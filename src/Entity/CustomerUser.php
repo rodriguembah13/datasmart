@@ -33,9 +33,15 @@ class CustomerUser
      */
     private $membersSteps;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\StrategyDigital", mappedBy="lead")
+     */
+    private $strategyDigitals;
+
     public function __construct()
     {
         $this->membersSteps = new ArrayCollection();
+        $this->strategyDigitals = new ArrayCollection();
     }
     use ColunmTrait;
     public function getId(): ?int
@@ -96,6 +102,37 @@ class CustomerUser
             // set the owning side to null (unless already changed)
             if ($membersStep->getCustomerUser() === $this) {
                 $membersStep->setCustomerUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StrategyDigital[]
+     */
+    public function getStrategyDigitals(): Collection
+    {
+        return $this->strategyDigitals;
+    }
+
+    public function addStrategyDigital(StrategyDigital $strategyDigital): self
+    {
+        if (!$this->strategyDigitals->contains($strategyDigital)) {
+            $this->strategyDigitals[] = $strategyDigital;
+            $strategyDigital->setLead($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStrategyDigital(StrategyDigital $strategyDigital): self
+    {
+        if ($this->strategyDigitals->contains($strategyDigital)) {
+            $this->strategyDigitals->removeElement($strategyDigital);
+            // set the owning side to null (unless already changed)
+            if ($strategyDigital->getLead() === $this) {
+                $strategyDigital->setLead(null);
             }
         }
 

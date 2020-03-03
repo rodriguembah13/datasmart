@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StrategyDigital{% endblock %}
+{% block page_title %} Planning {% endblock %}
+{% block page_subtitle %} {{ strategy_digital }} {% endblock %}
+{% block page_content %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% block box_before %}{% endblock %}
+    {% block box_body %}
+        <div class="table-bordered">
+
+
+        <table class="table">
+        <thead class="bg-aqua">
+        <tr>
+            <th><div class="firstcol"> Semaines</div></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th>
+            <th>10</th> <th>11</th> <th>12</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        </table></div>
+    {% endblock %}
+{% endembed %}
+{% endblock %}

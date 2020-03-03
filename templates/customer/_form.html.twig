@@ -1,4 +1,16 @@
 {{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6">
+        {{  form_row(form.name) }}
+        {{form_row(form.company) }}
+        {{  form_row(form.date_from) }}
+    </div>
+    <div class="col-md-6">
+        {{  form_row(form.telephone) }}
+        {{  form_row(form.address) }}
+        {{  form_row(form.date_to) }}
+    </div>
+</div>
     {{ form_widget(form) }}
 <div class="pull-right">
     <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>

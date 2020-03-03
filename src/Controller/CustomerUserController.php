@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CustomerUser;
 use App\Form\CustomerUserType;
 use App\Repository\CustomerUserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/users/customer")
+ * @Security("is_granted('view_customeruser')")
  */
 class CustomerUserController extends AbstractController
 {
@@ -27,6 +29,7 @@ class CustomerUserController extends AbstractController
 
     /**
      * @Route("/new", name="customer_user_new", methods={"GET","POST"})
+     * @Security("is_granted('create_customeruser')")
      */
     public function new(Request $request): Response
     {
@@ -37,13 +40,13 @@ class CustomerUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             if (null == $this->getUser()->getCustomer()) {
-                $this->addFlash('error', 'il faut etre customer');
+                $this->addFlash('error', 'Desole,Il faut etre un customer');
 
-                //return $this->redirectToRoute('customer_user_new');
+                return $this->redirectToRoute('homepage');
             } else {
                 $customerUser->setCreatedBy($this->getUser()->getCustomer());
             }
-
+            $customerUser->setVisible(true);
             $customerUser->setRegisteredAt(new \DateTime('now'));
             $entityManager->persist($customerUser);
             $entityManager->flush();
@@ -70,6 +73,7 @@ class CustomerUserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="customer_user_edit", methods={"GET","POST"})
+     * @Security("is_granted('edit_customeruser')")
      */
     public function edit(Request $request, CustomerUser $customerUser): Response
     {
@@ -90,6 +94,7 @@ class CustomerUserController extends AbstractController
 
     /**
      * @Route("/{id}", name="customer_user_delete", methods={"DELETE"})
+     * @Security("is_granted('delete_customeruser')")
      */
     public function delete(Request $request, CustomerUser $customerUser): Response
     {
@@ -97,6 +102,25 @@ class CustomerUserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($customerUser);
             $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('customer_user_index');
+    }
+
+    /**
+     * @Route("/{id}/enable", name="customer_user_enable", methods={"GET"})
+     * @Security("is_granted('edit_customeruser')")
+     */
+    public function enableuser(Request $request, CustomerUser $customer): Response
+    {
+        if ($customer->isVisible()) {
+            $customer->setVisible(false);
+            $customer->getCompte()->setEnabled(false);
+            $this->getDoctrine()->getManager()->flush();
+        } else {
+            $customer->setVisible(true);
+            $customer->getCompte()->setEnabled(true);
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->redirectToRoute('customer_user_index');

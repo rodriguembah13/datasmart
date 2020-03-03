@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\CustomerUser;
+use App\Entity\MembersStep;
 use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
+use App\Form\MembersStepType;
 use App\Form\StepStrategyType;
 use App\Repository\StepStrategyRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/step/strategy")
+ * @Security("is_granted('view_step')")
  */
 class StepStrategyController extends AbstractController
 {
@@ -37,14 +43,46 @@ class StepStrategyController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/menber", name="step_strategy_member", methods={"GET","POST"})
+     */
+    public function assignMembers(Request $request, StepStrategy $stepStrategy): Response
+    {
+        $membersStep = new MembersStep();
+        /* $form = $this->createForm(MembersStepType::class, $membersStep);
+         $form->handleRequest($request);*/
+        $form = $this->createFormBuilder($membersStep)
+            ->add('customerUser', EntityType::class, [
+                'class' => CustomerUser::class,
+                'choices' => $stepStrategy->getStrategy()->getCreateBy()->getCustomerUsers(),
+                'attr' => ['class' => 'selectpicker', 'data-size' => 5, 'data-live-seach' => true],
+            ])->getForm();
+        $form->handleRequest($request);
+        //dump($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $membersStep->setStepStrategy($stepStrategy);
+            $entityManager->persist($membersStep);
+            $entityManager->flush();
+            $url = $this->generateUrl('step_strategy_member', ['id' => $stepStrategy->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        return $this->render('step_strategy/assign.html.twig', [
+            'step_strategy' => $stepStrategy,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="step_strategy_new", methods={"GET","POST"})
+     * @Security("is_granted('create_step')")
      */
     public function new(Request $request): Response
     {
         $stepStrategy = new StepStrategy();
         $form = $this->createForm(StepStrategyType::class, $stepStrategy);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($stepStrategy);
@@ -71,6 +109,7 @@ class StepStrategyController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="step_strategy_edit", methods={"GET","POST"})
+     * @Security("is_granted('edit_step')")
      */
     public function edit(Request $request, StepStrategy $stepStrategy): Response
     {
@@ -91,6 +130,7 @@ class StepStrategyController extends AbstractController
 
     /**
      * @Route("/{id}", name="step_strategy_delete", methods={"DELETE"})
+     * @Security("is_granted('delete_step')")
      */
     public function delete(Request $request, StepStrategy $stepStrategy): Response
     {

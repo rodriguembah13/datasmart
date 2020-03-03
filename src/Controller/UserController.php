@@ -45,6 +45,7 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             //$user->setImageFilename($user->getEmploye()->getImageFilename());
             //$user->setAvatar($user->getEmploye()->getImageFilename());
+            $user->setEnabled(true);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -70,10 +71,13 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setCustomer($customer);
+            if ($customer->isVisible()){
+                $user->setEnabled(true);
+            }
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('customer_index');
         }
 
         return $this->render('user/new.html.twig', [
@@ -94,10 +98,13 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setEmployee($employee);
+            if ($employee->isVisible()){
+                $user->setEnabled(true);
+            }
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('employee_index');
         }
 
         return $this->render('user/new.html.twig', [
@@ -118,10 +125,13 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setCustomerUser($customerUser);
+            if ($customerUser->isVisible()){
+                $user->setEnabled(true);
+            }
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('customer_user_index');
         }
 
         return $this->render('user/new.html.twig', [
