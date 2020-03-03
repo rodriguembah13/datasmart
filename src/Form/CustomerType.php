@@ -35,8 +35,11 @@ class CustomerType extends AbstractType
                 'required' => false,
             ])
             ->add('name')
-            ->add('value')
-            ->add('visible')
+            //->add('value')
+            //->add('visible')
+            ->add('company')
+            ->add('address')
+            ->add('telephone')
             //->add('registeredAt')
            // ->add('createdBy')
             //->add('compte', new UserType($this->roles))

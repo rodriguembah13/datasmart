@@ -93,4 +93,21 @@ class CustomerController extends AbstractController
 
         return $this->redirectToRoute('customer_index');
     }
+    /**
+     * @Route("/{id}/enable", name="customer_enable", methods={"GET"})
+     */
+    public function enableuser(Request $request, Customer $customer): Response
+    {
+        if ($customer->isVisible()) {
+            $customer->setVisible(false);
+            $customer->getCompte()->setEnabled(false);
+            $this->getDoctrine()->getManager()->flush();
+        } else {
+            $customer->setVisible(true);
+            $customer->getCompte()->setEnabled(true);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('customer_index');
+    }
 }

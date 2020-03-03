@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MembersStep index{% endblock %}
+
+{% block body %}
+    <h1>MembersStep index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for members_step in members_steps %}
+            <tr>
+                <td>{{ members_step.id }}</td>
+                <td>
+                    <a href="{{ path('members_step_show', {'id': members_step.id}) }}">show</a>
+                    <a href="{{ path('members_step_edit', {'id': members_step.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('members_step_new') }}">Create new</a>
+{% endblock %}

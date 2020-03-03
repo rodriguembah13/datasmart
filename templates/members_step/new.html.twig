@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New MembersStep{% endblock %}
+
+{% block body %}
+    <h1>Create new MembersStep</h1>
+
+    {{ include('members_step/_form.html.twig') }}
+
+    <a href="{{ path('members_step_index') }}">back to list</a>
+{% endblock %}

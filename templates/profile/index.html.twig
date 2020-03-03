@@ -1,0 +1,135 @@
+{% extends "base.html.twig" %}
+{% block page_title %} profil {% endblock %}
+{% block page_subtitle %} {{ personne }} {% endblock %}
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-3">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle"
+                             src="{{ asset('bundles/adminlte/images/default_avatar.png') }}"
+                             alt="User profile picture">
+                    </div>
+                    <h3 class="profile-username text-center">{{ user.username }}</h3>
+
+                    <p class="text-muted text-center">{{ user.email}}</p>
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>Strategy Digital</b> <a class="float-right">1,322</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Task</b> <a class="float-right">543</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Friends</b> <a class="float-right">13,287</a>
+                        </li>
+                    </ul>
+
+                {% endblock %}
+
+                {% block box_after %}{% endblock %}
+            {% endembed %}
+        </div><div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                        {% block box_before %}{% endblock %}
+                        {% block box_body %}
+                            <ul class="nav nav-pills">
+                                {% for tab in tabs %}
+                                    <li class="nav-item"><a class="nav-link active" href="{{tab[1]}}" data-toggle="tab">{{tab[0]  }}</a></li>
+                                {% endfor %}
+                             {#   <li class="nav-item"><a class="nav-link active" href="#personnelle" data-toggle="tab">information personnelle</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#professionelle" data-toggle="tab">Mon Compte</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#scolaire" data-toggle="tab">Change Password</a></li>#}
+                            </ul>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="personnelle">
+                                    <!-- Post -->
+                                    <p>
+                                        Lorem ipsum represents a long-held tradition for designers,
+                                        typographers and the like. Some people hate it and argue for
+                                        its demise, but others ignore the hate as they create awesome
+                                        tools to help create filler text for everyone from bacon lovers
+                                        to Charlie Sheen fans.
+                                    </p>
+                                </div>
+                                <div class="tab-pane" id="professionelle">
+                                    <!-- The timeline -->
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Launch demo modal
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="active tab-pane" id="scolaire">
+                                    <!-- Post -->
+                                    <p>
+                                        Lorem ipsum represents a long-held tradition for designers,
+                                        typographers and the like. Some people hate it and argue for
+                                        its demise, but others ignore the hate as they create awesome
+                                        tools to help create filler text for everyone from bacon lovers
+                                        to Charlie Sheen fans.
+                                    </p>
+                                </div>
+                                <div class="active tab-pane" id="experience">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for strategy_digital in strategy_digitals %}
+                                            <tr>
+                                                <td>{{ strategy_digital.id }}</td>
+                                                <td>{{ strategy_digital.name }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-info btn-sm" href="{{ path('strategy_digital_show', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>
+                                                        <a class="btn btn-warning btn-sm" href="{{ path('step_strategy_index2', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="planning"><i class="fa fa-cogs"></i></a>
+                                                        <a class="btn btn-primary btn-sm" href="{{ path('customer_user_edit', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="assign"><i class="fa fa-user-plus"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="3">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block box_after %}{% endblock %}
+                    {% endembed %}
+                </div>
+            </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MembersStep{% endblock %}
+
+{% block body %}
+    <h1>Edit MembersStep</h1>
+
+    {{ include('members_step/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('members_step_index') }}">back to list</a>
+
+    {{ include('members_step/_delete_form.html.twig') }}
+{% endblock %}

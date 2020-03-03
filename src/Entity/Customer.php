@@ -47,6 +47,21 @@ class Customer
      * @ORM\OneToMany(targetEntity="App\Entity\StrategyDigital", mappedBy="createBy")
      */
     private $strategyDigitals;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $company;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $telephone;
     use ColunmTrait;
     public function __construct()
     {
@@ -170,6 +185,42 @@ class Customer
                 $strategyDigital->setCreateBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +35,16 @@ class StepStrategy
      * @ORM\OneToOne(targetEntity="App\Entity\Response", mappedBy="stepStrategy", cascade={"persist", "remove"})
      */
     private $response;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembersStep", mappedBy="stepStrategy")
+     */
+    private $membersSteps;
+
+    public function __construct()
+    {
+        $this->membersSteps = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -101,6 +113,37 @@ class StepStrategy
     public function __toString()
     {
         return $this->getStep()->getName();
+    }
+
+    /**
+     * @return Collection|MembersStep[]
+     */
+    public function getMembersSteps(): Collection
+    {
+        return $this->membersSteps;
+    }
+
+    public function addMembersStep(MembersStep $membersStep): self
+    {
+        if (!$this->membersSteps->contains($membersStep)) {
+            $this->membersSteps[] = $membersStep;
+            $membersStep->setStepStrategy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembersStep(MembersStep $membersStep): self
+    {
+        if ($this->membersSteps->contains($membersStep)) {
+            $this->membersSteps->removeElement($membersStep);
+            // set the owning side to null (unless already changed)
+            if ($membersStep->getStepStrategy() === $this) {
+                $membersStep->setStepStrategy(null);
+            }
+        }
+
+        return $this;
     }
 
 }

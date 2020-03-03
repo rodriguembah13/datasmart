@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class CustomerUser
      * @ORM\OneToOne(targetEntity="App\Entity\User", cascade={"persist", "remove"})
      */
     private $compte;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MembersStep", mappedBy="customerUser")
+     */
+    private $membersSteps;
+
+    public function __construct()
+    {
+        $this->membersSteps = new ArrayCollection();
+    }
     use ColunmTrait;
     public function getId(): ?int
     {
@@ -57,5 +69,36 @@ class CustomerUser
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|MembersStep[]
+     */
+    public function getMembersSteps(): Collection
+    {
+        return $this->membersSteps;
+    }
+
+    public function addMembersStep(MembersStep $membersStep): self
+    {
+        if (!$this->membersSteps->contains($membersStep)) {
+            $this->membersSteps[] = $membersStep;
+            $membersStep->setCustomerUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembersStep(MembersStep $membersStep): self
+    {
+        if ($this->membersSteps->contains($membersStep)) {
+            $this->membersSteps->removeElement($membersStep);
+            // set the owning side to null (unless already changed)
+            if ($membersStep->getCustomerUser() === $this) {
+                $membersStep->setCustomerUser(null);
+            }
+        }
+
+        return $this;
     }
 }
