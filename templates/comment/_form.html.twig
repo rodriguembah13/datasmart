@@ -1,4 +1,12 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% form_theme form '@AdminLTE/layout/form-theme-horizontal.html.twig' %}
+{{ form_start(formComment) }}{{  form_row(formComment.libelle) }}
+<button class="btn btn-primary pull-left">{{ button_label|default('Save') }}</button>
+{#<div class="row">
+<div class="col-md-9">
+
+</div>
+<div class="col-md-3">
+
+</div>
+</div>#}
+{{ form_end(formComment) }}

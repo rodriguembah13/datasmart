@@ -29,9 +29,16 @@ class Comment
     private $employee;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Response", mappedBy="comment")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Response", inversedBy="comments")
      */
     private $response;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+
 
     public function __construct()
     {
@@ -67,34 +74,34 @@ class Comment
         return $this;
     }
 
-    /**
-     * @return Collection|Response[]
-     */
-    public function getResponse(): Collection
+    public function getResponse(): ArrayCollection
     {
         return $this->response;
     }
 
-    public function addResponse(Response $response): self
+    public function setResponse(?Response $response): self
     {
-        if (!$this->response->contains($response)) {
-            $this->response[] = $response;
-            $response->setComment($this);
-        }
+        $this->response = $response;
 
         return $this;
     }
 
-    public function removeResponse(Response $response): self
+    public function __toString()
     {
-        if ($this->response->contains($response)) {
-            $this->response->removeElement($response);
-            // set the owning side to null (unless already changed)
-            if ($response->getComment() === $this) {
-                $response->setComment(null);
-            }
-        }
+        return $this->libelle;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
+
+
 }

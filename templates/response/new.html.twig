@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}New Response{% endblock %}
-
-{% block body %}
-    <h1>Create new Response</h1>
-
+{% block page_title %}Implentation {% endblock %}
+{% block page_subtitle %} {{stepStrategy}} {% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
     {{ include('response/_form.html.twig') }}
+{% endblock %}
+    {% block box_footer %}
 
-    <a href="{{ path('response_index') }}">back to list</a>
+    {% endblock %}
+
+    {% block box_after %}{% endblock %}
+{% endembed %}
+<a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+
 {% endblock %}

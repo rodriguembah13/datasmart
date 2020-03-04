@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
+use App\Form\StrategyDigitalEditType;
 use App\Form\StrategyDigitalType;
 use App\Repository\StepRepository;
 use App\Repository\StrategyDigitalRepository;
@@ -44,11 +45,16 @@ class StrategyDigitalController extends AbstractController
     /**
      * @Route("/{id}/planning", name="strategy_digital_planning", methods={"GET"})
      */
-    public function planning(StrategyDigital $strategyDigital,StrategyDigitalRepository $strategyDigitalRepository): Response
+    public function planning(StrategyDigital $strategyDigital, StrategyDigitalRepository $strategyDigitalRepository): Response
     {
         return $this->render('strategy_digital/planning.html.twig', [
             'strategy_digital' => $strategyDigital,
         ]);
+    }
+
+    private function nbreweekbetween(\DateTime $dateBegin, \DateTime $dateEnd)
+    {
+
     }
 
     /**
@@ -116,7 +122,7 @@ class StrategyDigitalController extends AbstractController
      */
     public function edit(Request $request, StrategyDigital $strategyDigital): Response
     {
-        $form = $this->createForm(StrategyDigitalType::class, $strategyDigital);
+        $form = $this->createForm(StrategyDigitalEditType::class, $strategyDigital);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

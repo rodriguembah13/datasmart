@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +29,15 @@ class Response
     private $stepStrategy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="response")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="response")
      */
-    private $comment;
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -60,14 +68,33 @@ class Response
         return $this;
     }
 
-    public function getComment(): ?Comment
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
     {
-        return $this->comment;
+        return $this->comments;
     }
 
-    public function setComment(?Comment $comment): self
+    public function addComment(Comment $comment): self
     {
-        $this->comment = $comment;
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setResponse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getResponse() === $this) {
+                $comment->setResponse(null);
+            }
+        }
 
         return $this;
     }

@@ -13,7 +13,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('employee')
+           // ->add('employee')
         ;
     }
 

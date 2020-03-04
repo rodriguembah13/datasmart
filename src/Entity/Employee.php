@@ -37,11 +37,17 @@ class Employee
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="employee")
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Customer", mappedBy="coachs")
+     */
+    private $customersCoach;
     use ColunmTrait;
     public function __construct()
     {
         $this->customers = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->customersCoach = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +140,34 @@ class Employee
             if ($comment->getEmployee() === $this) {
                 $comment->setEmployee(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Customer[]
+     */
+    public function getCustomersCoach(): Collection
+    {
+        return $this->customersCoach;
+    }
+
+    public function addCustomersCoach(Customer $customersCoach): self
+    {
+        if (!$this->customersCoach->contains($customersCoach)) {
+            $this->customersCoach[] = $customersCoach;
+            $customersCoach->addCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomersCoach(Customer $customersCoach): self
+    {
+        if ($this->customersCoach->contains($customersCoach)) {
+            $this->customersCoach->removeElement($customersCoach);
+            $customersCoach->removeCoach($this);
         }
 
         return $this;

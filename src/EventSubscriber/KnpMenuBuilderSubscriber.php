@@ -78,6 +78,10 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             'customers',
             ['route' => 'customer_index', 'label' => 'Customer', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fa fa-user-friends');
+        $menu->addChild(
+            'documentaire',
+            ['route' => 'documentaire_index', 'label' => 'Documentaire', 'childOptions' => $event->getChildOptions()]
+        )->setLabelAttribute('icon', 'fa fa-archive');
             $menu->addChild(
             'user',
             ['route' => 'user_index', 'label' => 'user', 'childOptions' => $event->getChildOptions()]

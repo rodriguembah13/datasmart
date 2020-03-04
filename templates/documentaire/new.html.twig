@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Documentaire{% endblock %}
+
+{% block body %}
+    <h1>Create new Documentaire</h1>
+
+    {{ include('documentaire/_form.html.twig') }}
+
+    <a href="{{ path('documentaire_index') }}">back to list</a>
+{% endblock %}

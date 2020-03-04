@@ -1,13 +1,57 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Edit Response{% endblock %}
-
-{% block body %}
-    <h1>Edit Response</h1>
+{% block page_title %}Implentation {% endblock %}
+{% block page_subtitle %} {{stepStrategy}} {% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
 
     {{ include('response/_form.html.twig', {'button_label': 'Update'}) }}
+        {% endblock %}
+        {% block box_footer %}
 
-    <a href="{{ path('response_index') }}">back to list</a>
+        {% endblock %}
 
-    {{ include('response/_delete_form.html.twig') }}
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_title %}Comments{% endblock %}
+        {% block box_body %}
+
+            {{ include('comment/_form.html.twig') }}
+            <br><br>
+            {% for comment in response.comments %}
+            <div class="direct-chat-msg right">
+                <div class="direct-chat-infos clearfix">
+                    <span class="direct-chat-name float-right">{{comment.employee}}</span>
+                    <span class="direct-chat-timestamp float-left">{{comment.createdAt ? comment.createdAt|date('Y-m-d h:m:s') : '' }}</span>
+                </div>
+                <!-- /.direct-chat-infos
+                <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">-->
+                {% if comment.employee.compte.imageFilename is defined and comment.employee.compte.imageFilename  is not null %}
+                    <img id="img_emp" class="direct-chat-img"style=""
+                         src="{{ asset('uploads/' ~ comment.employee.compte.imageFilename) }}" title="{{ comment.employee.compte.username }}"
+                         alt="My image">
+                {% else %}  <img id="img_emp" class="direct-chat-img"style=""
+                                 src="{{ asset('bundles/adminlte/images/default_avatar.png') }}" title="{{ comment.employee.compte.username }}"
+                                 alt="My image">
+                {% endif %}
+                <!-- /.direct-chat-img -->
+                <div class="direct-chat-text">
+                   {{comment}}
+                </div>
+                <!-- /.direct-chat-text -->
+            </div>
+            {% endfor %}
+        {% endblock %}
+        {% block box_footer %}
+
+        {% endblock %}
+
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+
+    <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+
 {% endblock %}

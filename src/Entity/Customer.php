@@ -62,11 +62,17 @@ class Customer
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $telephone;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Employee", inversedBy="customersCoach")
+     */
+    private $coachs;
     use ColunmTrait;
     public function __construct()
     {
         $this->customerUsers = new ArrayCollection();
         $this->strategyDigitals = new ArrayCollection();
+        $this->coachs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +227,32 @@ class Customer
     public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Employee[]
+     */
+    public function getCoachs(): Collection
+    {
+        return $this->coachs;
+    }
+
+    public function addCoach(Employee $coach): self
+    {
+        if (!$this->coachs->contains($coach)) {
+            $this->coachs[] = $coach;
+        }
+
+        return $this;
+    }
+
+    public function removeCoach(Employee $coach): self
+    {
+        if ($this->coachs->contains($coach)) {
+            $this->coachs->removeElement($coach);
+        }
 
         return $this;
     }

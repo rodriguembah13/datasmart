@@ -2,8 +2,9 @@
 
 {% block title %}StrategyDigital{% endblock %}
 {% block page_title %} Strategy {% endblock %}
-{% block page_subtitle %} list {% endblock %}
+{% block page_subtitle %} {{strategy_digital}} {% endblock %}
 {% block page_content %}
+    <br>
 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
     {% block box_title %}Dashboard{% endblock %}
@@ -35,7 +36,7 @@
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-info btn-sm" href="{{ path('strategy_digital_show', {'id': step_strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Documentaire"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-success btn-sm" href="{{ path('planning_strategy_new', {'id': step_strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Implementation"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-success btn-sm" href="{{ path('response_new', {'id': step_strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Implementation"><i class="fa fa-edit"></i></a>
                             </div>
                         </td>
                         </td>

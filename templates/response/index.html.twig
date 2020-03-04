@@ -2,7 +2,7 @@
 
 {% block title %}Response index{% endblock %}
 
-{% block body %}
+{% block page_content %}
     <h1>Response index</h1>
 
     <table class="table">
@@ -16,7 +16,9 @@
         <tbody>
         {% for response in responses %}
             <tr>
-                <td>{{ response.id }}</td>
+                <td>{% for comment in response.comments %}
+                <span>{{ comment }}</span>{% endfor %}
+                </td>
                 <td>{{ response.name }}</td>
                 <td>
                     <a href="{{ path('response_show', {'id': response.id}) }}">show</a>
@@ -31,5 +33,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('response_new') }}">Create new</a>
 {% endblock %}

@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Response as Reponse;
+use App\Entity\StepStrategy;
+use App\Form\CommentType;
 use App\Form\ResponseType;
 use App\Repository\ResponseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,24 +29,31 @@ class ResponseController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="response_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="response_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(StepStrategy $stepStrategy, Request $request): Response
     {
+        if (null !== $stepStrategy->getResponse()) {
+            $url = $this->generateUrl('response_edit', ['id' => $stepStrategy->getId()]);
+            return $this->redirect($url);
+        }
         $response = new Reponse();
         $form = $this->createForm(ResponseType::class, $response);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $response->setStepStrategy($stepStrategy);
             $entityManager->persist($response);
             $entityManager->flush();
+            $url = $this->generateUrl('response_edit', ['id' => $stepStrategy->getId()]);
 
-            return $this->redirectToRoute('response_index');
+            return $this->redirect($url);
         }
 
         return $this->render('response/new.html.twig', [
             'response' => $response,
+            'stepStrategy' => $stepStrategy,
             'form' => $form->createView(),
         ]);
     }
@@ -61,20 +71,37 @@ class ResponseController extends AbstractController
     /**
      * @Route("/{id}/edit", name="response_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Reponse $response): Response
+    public function edit(Request $request, StepStrategy $stepStrategy): Response
     {
-        $form = $this->createForm(ResponseType::class, $response);
+        $form = $this->createForm(ResponseType::class, $stepStrategy->getResponse());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('response_edit', ['id' => $stepStrategy->getId()]);
 
-            return $this->redirectToRoute('response_index');
+            return $this->redirect($url);
         }
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
 
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setResponse($stepStrategy->getResponse());
+            $comment->setCreatedAt(new \DateTime('now'));
+            $entityManager->flush();
+            $url = $this->generateUrl('response_edit', ['id' => $stepStrategy->getId()]);
+
+            return $this->redirect($url);
+        }
         return $this->render('response/edit.html.twig', [
-            'response' => $response,
+            'response' => $stepStrategy->getResponse(),
             'form' => $form->createView(),
+            'formComment' => $formComment->createView(),
+            'stepStrategy' => $stepStrategy,
         ]);
     }
 

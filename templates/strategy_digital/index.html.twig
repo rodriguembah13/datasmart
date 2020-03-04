@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Customer index{% endblock %}
+{% block title %}Strategy index{% endblock %}
 {% block page_title %} Strategy {% endblock %}
 {% block page_subtitle %} list {% endblock %}
 {% block page_content %}
@@ -25,6 +25,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Lead Project</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -33,9 +34,11 @@
             <tr>
                 <td>{{ strategy_digital.id }}</td>
                 <td>{{ strategy_digital.name }}</td>
+                <td>{{ strategy_digital.lead }}</td>
                 <td>
                     <div class="btn-group">
                         <a class="btn btn-info btn-sm" href="{{ path('strategy_digital_show', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-default btn-sm" href="{{ path('strategy_digital_edit', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
                         <a class="btn btn-warning btn-sm" href="{{ path('step_strategy_index2', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="Step"><i class="fa fa-cogs"></i></a>
                         <a class="btn btn-success btn-sm" href="{{ path('strategy_digital_planning', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="planning"><i class="fa fa-calendar"></i></a>
                         <a class="btn btn-primary btn-sm" href="{{ path('step_strategy_index2', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="assign"><i class="fa fa-user-plus"></i></a>
