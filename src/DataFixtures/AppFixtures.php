@@ -17,6 +17,7 @@ class AppFixtures extends Fixture
         $user->setUsername('admin');
         $user->setEnabled(true);
         $user->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN']);
+
         $manager->persist($user);
 
         $employee = new Employee();

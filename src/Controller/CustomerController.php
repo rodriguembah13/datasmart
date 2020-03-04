@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +22,14 @@ class CustomerController extends AbstractController
     /**
      * @Route("/", name="customer_index", methods={"GET"})
      */
-    public function index(CustomerRepository $customerRepository): Response
+    public function index(CustomerRepository $customerRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request): Response
     {
+        $dql = 'SELECT a FROM App\Entity\Customer a';
+        $query = $manager->createQuery($dql);
+        $paginator = $paginator->paginate($query, $request->query->getInt('page', 1), 8);
+
         return $this->render('customer/index.html.twig', [
-            'customers' => $customerRepository->findAll(),
+            'customers' => $paginator,
         ]);
     }
 
@@ -88,7 +94,6 @@ class CustomerController extends AbstractController
     /**
      * @Route("/{id}", name="customer_delete", methods={"DELETE"})
      * @Security("is_granted('delete_customer')")
-     *
      */
     public function delete(Request $request, Customer $customer): Response
     {

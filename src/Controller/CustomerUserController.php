@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\CustomerUser;
 use App\Form\CustomerUserType;
+use App\Form\UserCustomerType;
 use App\Repository\CustomerUserRepository;
+use FOS\UserBundle\Form\Type\ProfileFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,12 +64,37 @@ class CustomerUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="customer_user_show", methods={"GET"})
+     * @Route("/{id}", name="customer_user_show", methods={"GET","POST"})
      */
-    public function show(CustomerUser $customerUser): Response
+    public function show(Request $request, CustomerUser $customerUser): Response
     {
+        $form = $this->createForm(CustomerUserType::class, $customerUser);
+        $formPassword = $this->createForm(ProfileFormType::class, $customerUser->getCompte());
+        $formUser = $this->createForm(UserCustomerType::class, $customerUser->getCompte());
+        $form->handleRequest($request);
+        $formPassword->handleRequest($request);
+        $formUser->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('customer_user_show', ['id' => $customerUser->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('customer_user_show', ['id' => $customerUser->getId()]);
+
+            return $this->redirect($url);
+        }
         return $this->render('customer_user/show.html.twig', [
             'customer_user' => $customerUser,
+            'user' => $customerUser->getCompte(),
+            'strategy_digitals' => $customerUser->getStrategyDigitals(),
+            'form' => $form->createView(),
+            'formPassworld' => $formPassword->createView(),
+            'formUser' => $formUser->createView(),
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'],['Mes Strategies Digital', '#strategie']],
         ]);
     }
 

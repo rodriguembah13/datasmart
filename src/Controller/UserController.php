@@ -9,6 +9,8 @@ use App\Entity\User;
 use App\Form\UserCustomerType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +26,14 @@ class UserController extends AbstractController
      * @Route("/", name="user_index", methods={"GET"})
      * @Security("is_granted('view_user')")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request): Response
     {
+        $dql = 'SELECT a FROM App\Entity\User a';
+        $query = $manager->createQuery($dql);
+        $paginator = $paginator->paginate($query, $request->query->getInt('page', 1), 12);
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $paginator,
         ]);
     }
 
@@ -71,7 +77,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setCustomer($customer);
-            if ($customer->isVisible()){
+            if ($customer->isVisible()) {
                 $user->setEnabled(true);
             }
             $entityManager->persist($user);
@@ -85,6 +91,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/new/employee/{id}", name="user_new_employee", methods={"GET","POST"})
      * @Security("is_granted('create_user')")
@@ -98,7 +105,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setEmployee($employee);
-            if ($employee->isVisible()){
+            if ($employee->isVisible()) {
                 $user->setEnabled(true);
             }
             $entityManager->persist($user);
@@ -112,6 +119,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/new/customeruser/{id}", name="user_new_customer_user", methods={"GET","POST"})
      * @Security("is_granted('create_user')")
@@ -125,7 +133,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $user->setCustomerUser($customerUser);
-            if ($customerUser->isVisible()){
+            if ($customerUser->isVisible()) {
                 $user->setEnabled(true);
             }
             $entityManager->persist($user);
@@ -139,6 +147,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      * @Security("is_granted('view_user')")

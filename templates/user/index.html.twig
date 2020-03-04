@@ -17,6 +17,7 @@
         </div>
     </div>
     <br>
+
     <div class="row" id="jqbox_user">
     {% for user in users %}
         <div class="col-md-3">
@@ -37,6 +38,7 @@
                     <div class="col-md-7">
                         {{ user.username }}<br>
                         {{ user.email }}
+                        {{ user.roles ? user.roles|join(', ') : '' }}
                         {# {{ employe.poste.libelle}}#}
 
                     </div>
@@ -94,7 +96,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <div class="navigation">
+        {{ knp_pagination_render(users) }}
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

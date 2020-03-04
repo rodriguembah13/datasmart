@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Documentaire;
+use App\Entity\StepStrategy;
 use App\Form\DocumentaireType;
 use App\Repository\DocumentaireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,7 +58,16 @@ class DocumentaireController extends AbstractController
             'documentaire' => $documentaire,
         ]);
     }
-
+    /**
+     * @Route("/{id}/doc", name="documentaire_read", methods={"GET"})
+     */
+    public function viewDoc(StepStrategy $stepStrategy): Response
+    {
+        return $this->render('documentaire/show.html.twig', [
+            'documentaires' => $stepStrategy->getStep()->getDocumentaires(),
+            'stepStrategy'=>$stepStrategy,
+        ]);
+    }
     /**
      * @Route("/{id}/edit", name="documentaire_edit", methods={"GET","POST"})
      */

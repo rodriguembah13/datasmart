@@ -41,9 +41,15 @@ class StepStrategy
      */
     private $membersSteps;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Documentaire", mappedBy="stepStrategy")
+     */
+    private $documentaires;
+
     public function __construct()
     {
         $this->membersSteps = new ArrayCollection();
+        $this->documentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +146,37 @@ class StepStrategy
             // set the owning side to null (unless already changed)
             if ($membersStep->getStepStrategy() === $this) {
                 $membersStep->setStepStrategy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Documentaire[]
+     */
+    public function getDocumentaires(): Collection
+    {
+        return $this->documentaires;
+    }
+
+    public function addDocumentaire(Documentaire $documentaire): self
+    {
+        if (!$this->documentaires->contains($documentaire)) {
+            $this->documentaires[] = $documentaire;
+            $documentaire->setStepStrategy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentaire(Documentaire $documentaire): self
+    {
+        if ($this->documentaires->contains($documentaire)) {
+            $this->documentaires->removeElement($documentaire);
+            // set the owning side to null (unless already changed)
+            if ($documentaire->getStepStrategy() === $this) {
+                $documentaire->setStepStrategy(null);
             }
         }
 

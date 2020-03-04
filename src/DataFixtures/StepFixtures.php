@@ -11,7 +11,7 @@ class StepFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $faker=Factory::create();
+
         $step = new Step();
         $step->setName('Planification détaillée de la mise en œuvre de la stratégie de marketing digitale');
         $step2 = new Step();
@@ -57,7 +57,6 @@ class StepFixtures extends Fixture
         $manager->persist($step13);
         $manager->persist($step14);
         $manager->persist($step15);
-
         $manager->flush();
     }
 }

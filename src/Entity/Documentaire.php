@@ -21,6 +21,12 @@ class Documentaire
      */
     private $libelle;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Step", inversedBy="documentaires")
+     */
+    private $step;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,4 +43,17 @@ class Documentaire
 
         return $this;
     }
+
+    public function getStep(): ?Step
+    {
+        return $this->step;
+    }
+
+    public function setStep(?Step $step): self
+    {
+        $this->step = $step;
+
+        return $this;
+    }
+
 }

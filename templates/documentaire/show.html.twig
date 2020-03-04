@@ -1,26 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Documentaire{% endblock %}
+{% block page_title %} Documentaire {% endblock %}
+{% block page_subtitle %} {{stepStrategy}} {% endblock %}
+{% block page_content %}
+    <br>
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_title %}Dashboard{% endblock %}
+        {% block box_body %}
 
-{% block body %}
-    <h1>Documentaire</h1>
+        {% endblock %}
+        {% block box_footer %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ documentaire.id }}</td>
-            </tr>
-            <tr>
-                <th>Libelle</th>
-                <td>{{ documentaire.libelle }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {% endblock %}
 
-    <a href="{{ path('documentaire_index') }}">back to list</a>
-
-    <a href="{{ path('documentaire_edit', {'id': documentaire.id}) }}">edit</a>
-
-    {{ include('documentaire/_delete_form.html.twig') }}
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+    <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
 {% endblock %}
