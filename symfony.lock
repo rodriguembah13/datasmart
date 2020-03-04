@@ -16,9 +16,6 @@
             "src/Entity/.gitignore"
         ]
     },
-    "cmen/google-charts-bundle": {
-        "version": "3.2.1"
-    },
     "composer/semver": {
         "version": "1.4.2"
     },
