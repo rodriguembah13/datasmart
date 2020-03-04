@@ -5,11 +5,13 @@ namespace App\DataFixtures;
 use App\Entity\Step;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 
 class StepFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker=Factory::create();
         $step = new Step();
         $step->setName('Planification détaillée de la mise en œuvre de la stratégie de marketing digitale');
         $step2 = new Step();

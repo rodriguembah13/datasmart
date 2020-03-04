@@ -9,6 +9,7 @@
         "doctrine/doctrine-bundle": "^1.9",
         "dompdf/dompdf": "^0.8.4",
         "friendsofsymfony/user-bundle": "~2.0",
+        "fzaninotto/faker": "^1.9",
         "kevinpapst/adminlte-bundle": "~3.0",
         "knplabs/knp-menu-bundle": "^2.2",
         "knplabs/knp-paginator-bundle": "^5.0",
