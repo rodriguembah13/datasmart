@@ -130,6 +130,15 @@
             "ref": "81dee417d2cc60cd1c9d6208dff2ec22a1103e93"
         }
     },
+    "friendsofsymfony/jsrouting-bundle": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
+        }
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
@@ -543,6 +552,9 @@
     },
     "webmozart/assert": {
         "version": "1.6.0"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v1.1.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"

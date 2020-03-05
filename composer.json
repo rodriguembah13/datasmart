@@ -8,6 +8,7 @@
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-bundle": "^1.9",
         "dompdf/dompdf": "^0.8.4",
+        "friendsofsymfony/jsrouting-bundle": "^2.5",
         "friendsofsymfony/user-bundle": "~2.0",
         "fzaninotto/faker": "^1.9",
         "kevinpapst/adminlte-bundle": "~3.0",

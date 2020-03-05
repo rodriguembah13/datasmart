@@ -1,0 +1,63 @@
+{% if stepStrategy.step.value=='Définition_des_objectifs_de_base_à_atteindre' %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Objectif</th>
+            <th>Quantite</th>
+            <th>Valeur</th>
+            <th>Delai</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for responseStep in response.responseSteps %}
+            <tr>
+                <td>{{ responseStep.id }}
+                </td>
+                <td>{{ responseStep.objectif }}</td>
+                <td>{{ responseStep.quantite }}</td>
+                <td>{{ responseStep.frequence }}</td>
+                <td>{{ responseStep.delai }}</td>
+                <td>
+                    <a href="{{ path('response_show', {'id': responseStep.id}) }}">show</a>
+                    <a href="{{ path('response_edit', {'id': responseStep.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% if stepStrategy.step.value=='Identification_de_la_cible_principale_ou_du_client_idéal' %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for responseStep in response.responseSteps %}
+            <tr>
+                <td>{{ responseStep.id }}
+                </td>
+                <td>{{ response.question }}</td>
+                <td>{{ response.answer }}</td>
+                <td>
+                    <a href="{{ path('response_show', {'id': responseStep.id}) }}">show</a>
+                    <a href="{{ path('response_edit', {'id': responseStep.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

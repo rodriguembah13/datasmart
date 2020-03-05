@@ -1,0 +1,143 @@
+<script type="text/javascript">
+    $(function () {
+       // alert("test");
+if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
+
+
+        $("div#form1").append(
+// Creating Form Div and Adding <h2> and <p> Paragraph Tag in it.
+           /* $("<h3/>").text("Contact Form"), $("<p/>").text("This is my form. Please fill it out. It's awesome!"),*/
+            $("<form/>", {
+                action: '#',
+                method: '#'
+            }).append(
+// Create <form> Tag and Appending in HTML Div form1.
+                $("<div class='row'>"),
+                $("<div class='col'>"),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Qui est ce?").attr({id: 'question1'}),
+                /* $("<input/>", {
+                     type: 'text',
+                     id: 'vname',
+                     name: 'name',
+                     placeholder: 'Your Name'
+                 }), // Creating Input Element With Attribute.
+               /*$("<input/>", {
+                     type: 'text',
+                     id: 'vemail',
+                     name: 'email',
+                     placeholder: 'Your Email'
+                 }),*/ $("<textarea/>", {
+                    rows: '3px',
+                    cols: '27px',
+                    type: 'text',
+                    id: 'vmsg',
+                    name: 'msg',
+                    class:'form-control',
+                    placeholder: 'Message'
+                }),
+                $("<div class='row'>"),
+                $("<div class='col'>"),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Combien gagne t-il ou potentiellement quelle plage de revebu a-t-il?").attr({id: 'question2'}),
+                $("<textarea/>", {
+                    rows: '3px',
+                    cols: '27px',
+                    type: 'text',
+                    id: 'vmsg',
+                    name: 'msg',
+                    class:'form-control',
+                    placeholder: 'Message'
+                }),
+                $("<div class='row'>"),
+                $("<div class='col'>"),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Quels sont ses problemes les preoccupants ainsi que les solutions potentielles existantes?").attr({id: 'question3'}),
+                $("<textarea/>", {
+                    rows: '3px',
+                    cols: '27px',
+                    type: 'text',
+                    id: 'vmsg',
+                    name: 'msg',
+                    class:'form-control',
+                    placeholder: 'Message'
+                }),
+                $("<div class='row'>"),
+                $("<br/>"), $("<input/>", {
+                    type: 'submit',
+                    id: 'submit',
+                    value: 'Submit',
+                    class:'btn btn-primary'
+                })))
+}
+        if ($('#typesetep').text() == "Définition_des_objectifs_de_base_à_atteindre") {
+            $("div#form1").append(
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Selection de l'objectif marketing vise").attr({id: 'question1'}),
+                $("<select>", {
+                    type: 'select',
+                    id: 'selectStep',
+                    class:'form-control'
+                }).append(`<option value="vente">Vente</option>
+<option value="Notoriete produit ou service">Notoriete produit ou service</option>
+<option value="Notoriete entreprise">Notoriete entreprise</option>
+<option value="Acquisition de prospect froid">Acquisition de prospect froid</option>
+<option value="Acquisition de prospect qualifie">Acquisition de prospect qualifie</option>
+<option value="Notoriete entreprise">Impact client</option>
+<option value="Notoriete entreprise">Fidélisation client</option>
+<option value="">Autres</option>`),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Quantite").attr({id: 'lquantite'}),
+                $("<input/>", {
+                    type: 'text',
+                    id: 'quantite',
+                    name: 'quantite',
+                    class:'form-control',
+                }),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Valeur").attr({id: 'lvaleur'}),
+                $("<input/>", {
+                    type: 'text',
+                    id: 'valeur',
+                    name: 'quantite',
+                    class:'form-control',
+                }),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Delai").attr({id: 'ldelai'}),
+                $("<input/>", {
+                    type: 'text',
+                    id: 'quantite',
+                    name: 'quantite',
+                    class:'form-control',
+                }),
+                $("<br/>"), $("<input/>", {
+                    type: 'submit',
+                    id: 'submitStep2',
+                    value: 'Submit',
+                    class:'btn btn-primary'
+                })
+            )
+        }
+
+        $('#submitStep2').click(function () {
+          //alert($('#selectStep option:selected').val());
+            $.ajax({
+                url : "{{ path('response_post') }}",
+                type: 'GET',
+                dataType:"JSON",
+                data: {
+                    id_step:$('#id_step').text(),
+                    quantite:$('#quantite').val(),
+                    valeur:$('#valeur').val(),
+                    objectif:$('#selectStep option:selected').val(),
+                    typeStep:$('#typesetep').text(),
+                },success:function (data) {
+alert("ok")
+                },error:function (err) {
+                    alert("error")
+                }
+            });
+        })
+    });
+
+</script>

@@ -38,3 +38,5 @@ fos_user_change_password:
     prefix: /{_locale}/password
 calendar:
     resource: "@CalendarBundle/Resources/config/routing.yaml"
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

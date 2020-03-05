@@ -41,7 +41,15 @@ class StrategyDigitalController extends AbstractController
             'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomer()]),
         ]);
     }
-
+    /**
+     * @Route("/admin", name="strategy_digital_index_admin", methods={"GET"})
+     */
+    public function index_admin(StrategyDigitalRepository $strategyDigitalRepository): Response
+    {
+        return $this->render('strategy_digital/index.html.twig', [
+            'strategy_digitals' => $strategyDigitalRepository->findAll(),
+        ]);
+    }
     /**
      * @Route("/{id}/planning", name="strategy_digital_planning", methods={"GET"})
      */

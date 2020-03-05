@@ -1,18 +1,28 @@
 {% extends 'base.html.twig' %}
-{% block page_title %}Implentation {% endblock %}
+{% block page_title %}Implementation {% endblock %}
 {% block page_subtitle %} {{stepStrategy}} {% endblock %}
 {% block page_content %}
+    <span id="typesetep" class="hidden">{{ typeStep }}</span>
+    <span id="id_step" class="hidden">{{stepStrategy.id}}</span>
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
         {% block box_body %}
-    {{ include('response/_form.html.twig') }}
+   {# {{ include('response/_form.html.twig') }}#}
+            <div id="form1">
+                <!-- Dynamic Form Div -->
+            </div>
 {% endblock %}
-    {% block box_footer %}
-
-    {% endblock %}
-
-    {% block box_after %}{% endblock %}
 {% endembed %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}{% endblock %}
+        {% block box_body %}
+            {{ include('response/include_step.html.twig') }}
+        {% endblock %}
+    {% endembed %}
 <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'response/javascript.html.twig' %}
 {% endblock %}

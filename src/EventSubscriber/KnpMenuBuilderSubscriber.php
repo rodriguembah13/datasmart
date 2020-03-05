@@ -65,20 +65,25 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
             ['route' => 'strategy_digital_index', 'label' => 'Strategy Digital', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fab fa-wpforms');
 
-        /* $menu->addChild(
-             'managecustomer',
-             ['label' => 'Manage Customer', 'childOptions' => $event->getChildOptions(), 'options' => ['branch_class' => 'treeview']]
-         )->setLabelAttribute('icon', 'far fa-arrow-alt-circle-right');*/
+
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $menu->addChild(
             'menu-admin',
             ['label' => 'Administration', 'childOptions' => $event->getChildOptions()]
         )->setAttribute('class', 'header');
             $menu->addChild(
-            'customers',
+                'managecustomer',
+                ['label' => 'Manage Customer', 'childOptions' => $event->getChildOptions(), 'options' => ['branch_class' => 'treeview']]
+            )->setLabelAttribute('icon', 'far fa-arrow-alt-circle-right');
+            $menu->getChild('managecustomer')->addChild(
+            'customers_admin',
             ['route' => 'customer_index', 'label' => 'Customer', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fa fa-user-friends');
-        $menu->addChild(
+            $menu->getChild('managecustomer')->addChild(
+                'strategy_digital_admin',
+                ['route' => 'strategy_digital_index_admin', 'label' => 'Strategy Digital', 'childOptions' => $event->getChildOptions()]
+            )->setLabelAttribute('icon', 'fab fa-wpforms');
+            $menu->addChild(
             'documentaire',
             ['route' => 'documentaire_index', 'label' => 'Documentaire', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fa fa-archive');

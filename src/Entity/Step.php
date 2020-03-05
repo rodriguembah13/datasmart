@@ -33,6 +33,11 @@ class Step
      */
     private $documentaires;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $value;
+
     public function __construct()
     {
         $this->stepStrategies = new ArrayCollection();
@@ -119,6 +124,18 @@ class Step
                 $documentaire->setStep(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(?string $value): self
+    {
+        $this->value = $value;
 
         return $this;
     }

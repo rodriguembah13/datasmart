@@ -38,9 +38,15 @@ class Response
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ResponseStep", mappedBy="response")
+     */
+    private $responseSteps;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->responseSteps = new ArrayCollection();
     }
 
 
@@ -112,6 +118,37 @@ class Response
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResponseStep[]
+     */
+    public function getResponseSteps(): Collection
+    {
+        return $this->responseSteps;
+    }
+
+    public function addResponseStep(ResponseStep $responseStep): self
+    {
+        if (!$this->responseSteps->contains($responseStep)) {
+            $this->responseSteps[] = $responseStep;
+            $responseStep->setResponse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResponseStep(ResponseStep $responseStep): self
+    {
+        if ($this->responseSteps->contains($responseStep)) {
+            $this->responseSteps->removeElement($responseStep);
+            // set the owning side to null (unless already changed)
+            if ($responseStep->getResponse() === $this) {
+                $responseStep->setResponse(null);
+            }
+        }
 
         return $this;
     }
