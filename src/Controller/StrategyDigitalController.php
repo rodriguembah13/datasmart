@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Response as Reponse;
 use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
 use App\Form\StrategyDigitalEditType;
@@ -41,6 +42,7 @@ class StrategyDigitalController extends AbstractController
             'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomer()]),
         ]);
     }
+
     /**
      * @Route("/admin", name="strategy_digital_index_admin", methods={"GET"})
      */
@@ -50,6 +52,7 @@ class StrategyDigitalController extends AbstractController
             'strategy_digitals' => $strategyDigitalRepository->findAll(),
         ]);
     }
+
     /**
      * @Route("/{id}/planning", name="strategy_digital_planning", methods={"GET"})
      */
@@ -62,7 +65,6 @@ class StrategyDigitalController extends AbstractController
 
     private function nbreweekbetween(\DateTime $dateBegin, \DateTime $dateEnd)
     {
-
     }
 
     /**
@@ -105,10 +107,15 @@ class StrategyDigitalController extends AbstractController
         $steps = $this->stepRepository->findAll();
         foreach ($steps as $step) {
             $stepStrategy = new StepStrategy();
+            $response = new Reponse();
+            $response->setCreatedAt(new \DateTime('now'));
+            $response->setName(' ');
             $stepStrategy->setStep($step);
             $stepStrategy->setStrategy($strategyDigital);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($stepStrategy);
+            $response->setStepStrategy($stepStrategy);
+            $entityManager->persist($response);
         }
         $entityManager->flush();
     }

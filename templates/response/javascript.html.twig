@@ -1,8 +1,13 @@
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script type="text/javascript">
-    $(function () {
+  
+    //import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+    //Routing.setRoutingData(routes);
+    //$(function () {  const routes = require('../../public/js/fos_js_routes.json');
+        $(function () {
        // alert("test");
 if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
-
 
         $("div#form1").append(
 // Creating Form Div and Adding <h2> and <p> Paragraph Tag in it.
@@ -14,25 +19,24 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
 // Create <form> Tag and Appending in HTML Div form1.
                 $("<div class='row'>"),
                 $("<div class='col'>"),
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Qui est ce?").attr({id: 'question1'}),
-                /* $("<input/>", {
-                     type: 'text',
-                     id: 'vname',
-                     name: 'name',
-                     placeholder: 'Your Name'
-                 }), // Creating Input Element With Attribute.
-               /*$("<input/>", {
-                     type: 'text',
-                     id: 'vemail',
-                     name: 'email',
-                     placeholder: 'Your Email'
-                 }),*/ $("<textarea/>", {
+                $("<label  class='control-label required'>").text("Qui est ce?").attr({id: 'question0'}),
+                $("<textarea/>", {
                     rows: '3px',
                     cols: '27px',
                     type: 'text',
-                    id: 'vmsg',
-                    name: 'msg',
+                    id: 'vmsg0',
+                    name: 'msg1',
+                    class:'form-control',
+                    placeholder: 'Message'
+                }),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Est-il un homme, une femme, autres ?").attr({id: 'question1'}),
+              $("<textarea/>", {
+                    rows: '3px',
+                    cols: '27px',
+                    type: 'text',
+                    id: 'vmsg1',
+                    name: 'msg1',
                     class:'form-control',
                     placeholder: 'Message'
                 }),
@@ -44,8 +48,8 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                     rows: '3px',
                     cols: '27px',
                     type: 'text',
-                    id: 'vmsg',
-                    name: 'msg',
+                    id: 'vmsg2',
+                    name: 'msg2',
                     class:'form-control',
                     placeholder: 'Message'
                 }),
@@ -57,18 +61,43 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                     rows: '3px',
                     cols: '27px',
                     type: 'text',
-                    id: 'vmsg',
-                    name: 'msg',
+                    id: 'vmsg3',
+                    name: 'msg3',
                     class:'form-control',
                     placeholder: 'Message'
                 }),
                 $("<div class='row'>"),
                 $("<br/>"), $("<input/>", {
                     type: 'submit',
-                    id: 'submit',
+                    id: 'submitStep',
                     value: 'Submit',
                     class:'btn btn-primary'
-                })))
+                })));
+        var number=4;
+    $('#submitStep').click(function () {
+        for (let i = 0; i <number; i++) {
+         //var id_lablel="question"+i;
+           // alert($("#question"+i).text());
+            alert($("#vmsg"+i).val());
+       /* $.ajax({
+            url : "{{ path('response_post') }}",
+            type: 'GET',
+            dataType:"JSON",
+            data: {
+                id_step:$('#id_step').text(),
+                quantite:$('#quantite').val(),
+                valeur:$('#valeur').val(),
+                frequence:$('#valeur').val(),
+                objectif:valeurobjectif,
+                typeStep:$('#typesetep').text(),
+            },success:function (data) {
+                window.location.href=Routing.generate('response_new', { id: $('#id_step').text() });
+            },error:function (err) {
+                alert("error")
+            }
+        });*/
+        }
+    });
 }
         if ($('#typesetep').text() == "Définition_des_objectifs_de_base_à_atteindre") {
             $("div#form1").append(
@@ -85,8 +114,15 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
 <option value="Acquisition de prospect qualifie">Acquisition de prospect qualifie</option>
 <option value="Notoriete entreprise">Impact client</option>
 <option value="Notoriete entreprise">Fidélisation client</option>
-<option value="">Autres</option>`),
+<option value="autre">Autres</option>`),
                 $("<div class='form-group'>"),
+                $("<input/>", {
+                    type: 'text',
+                    id: 'newobjectif',
+                    name: 'newobjectif',
+                    class:'form-control',
+                    placeholder:"l'objectif marketing vise",
+                }),
                 $("<label  class='control-label required'>").text("Quantite").attr({id: 'lquantite'}),
                 $("<input/>", {
                     type: 'text',
@@ -99,15 +135,23 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                 $("<input/>", {
                     type: 'text',
                     id: 'valeur',
-                    name: 'quantite',
+                    name: 'valeur',
+                    class:'form-control',
+                }),
+                $("<div class='form-group'>"),
+                $("<label  class='control-label required'>").text("Frequence").attr({id: 'lfrequence'}),
+                $("<input/>", {
+                    type: 'text',
+                    id: 'frequence',
+                    name: 'frequence',
                     class:'form-control',
                 }),
                 $("<div class='form-group'>"),
                 $("<label  class='control-label required'>").text("Delai").attr({id: 'ldelai'}),
                 $("<input/>", {
                     type: 'text',
-                    id: 'quantite',
-                    name: 'quantite',
+                    id: 'delai',
+                    name: 'delai',
                     class:'form-control',
                 }),
                 $("<br/>"), $("<input/>", {
@@ -116,28 +160,49 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                     value: 'Submit',
                     class:'btn btn-primary'
                 })
-            )
-        }
-
-        $('#submitStep2').click(function () {
-          //alert($('#selectStep option:selected').val());
-            $.ajax({
-                url : "{{ path('response_post') }}",
-                type: 'GET',
-                dataType:"JSON",
-                data: {
-                    id_step:$('#id_step').text(),
-                    quantite:$('#quantite').val(),
-                    valeur:$('#valeur').val(),
-                    objectif:$('#selectStep option:selected').val(),
-                    typeStep:$('#typesetep').text(),
-                },success:function (data) {
-alert("ok")
-                },error:function (err) {
-                    alert("error")
+            );
+            $('#newobjectif').hide();
+            $('#selectStep').change(function () {
+                valeurobjectif="";
+                if($('#selectStep option:selected').val()==='autre'){
+                    $('#newobjectif').show();
+                    valeurobjectif=$('#newobjectif').val();
+                }else {
+                    $('#newobjectif').hide();
+                    valeurobjectif=$('#selectStep option:selected').val();
                 }
             });
-        })
+            $('#submitStep2').click(function () {
+                var valeurobjectif;
+                if($('#selectStep option:selected').val()==='autre'){
+                    $('#newobjectif').show();
+                    valeurobjectif=$('#newobjectif').val();
+                }else {
+                    $('#newobjectif').hide();
+                    valeurobjectif=$('#selectStep option:selected').val();
+                }
+                $.ajax({
+                    url : "{{ path('response_post') }}",
+                    type: 'GET',
+                    dataType:"JSON",
+                    data: {
+                        id_step:$('#id_step').text(),
+                        quantite:$('#quantite').val(),
+                        valeur:$('#valeur').val(),
+                        frequence:$('#valeur').val(),
+                        objectif:valeurobjectif,
+                        typeStep:$('#typesetep').text(),
+                    },success:function (data) {
+                        window.location.href=Routing.generate('response_new', { id: $('#id_step').text() });
+                    },error:function (err) {
+                        alert("error")
+                    }
+                });
+            })
+        }
+
+
+
     });
 
 </script>

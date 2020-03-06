@@ -54,7 +54,6 @@ class ResponseController extends AbstractController
             $entityManager->persist($response);
             $entityManager->flush();
             $url = $this->generateUrl('response_edit', ['id' => $stepStrategy->getId()]);
-
             return $this->redirect($url);
         }
 
@@ -84,11 +83,11 @@ class ResponseController extends AbstractController
         $postStep = new ResponseStep();
         $postStep->setDelai($delai);
         $strategyStep = $stepStrategyRepository->find($id);
-        if (null == $strategyStep->getResponse()) {
+      /*  if (null == $strategyStep->getResponse()) {
             $response = new Reponse();
             $response->setStepStrategy($strategyStep);
             $entityManager->persist($response);
-        }
+        }*/
         // $postStep->set($valeur);
         $postStep->setQuantite($quantite);
         $postStep->setObjectif($objectif);

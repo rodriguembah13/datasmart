@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for responseStep in response.responseSteps %}
+        {% for responseStep in stepStrategy.response.responseSteps %}
             <tr>
                 <td>{{ responseStep.id }}
                 </td>
@@ -19,8 +19,7 @@
                 <td>{{ responseStep.frequence }}</td>
                 <td>{{ responseStep.delai }}</td>
                 <td>
-                    <a href="{{ path('response_show', {'id': responseStep.id}) }}">show</a>
-                    <a href="{{ path('response_edit', {'id': responseStep.id}) }}">edit</a>
+                    <a class="btn btn-danger" href="{{ path('response_edit', {'id': responseStep.id}) }}"><i class="fa fa-trash-alt"></i></a>
                 </td>
             </tr>
         {% else %}

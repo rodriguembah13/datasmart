@@ -1,6 +1,7 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
+  {#  {{ encore_entry_link_tags('app') }}#}
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 {% endblock %}
 {% block page_title %}SMARTWORLD{% endblock %}
@@ -43,5 +44,6 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% include 'includes/javascript.html.twig' %}
+   {# {{ encore_entry_script_tags('app') }}#}
+   {% include 'includes/javascript.html.twig' %}
 {% endblock %}

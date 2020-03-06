@@ -2,6 +2,8 @@
 {% block page_title %}Implementation {% endblock %}
 {% block page_subtitle %} {{stepStrategy}} {% endblock %}
 {% block page_content %}
+    <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+   <br>
     <span id="typesetep" class="hidden">{{ typeStep }}</span>
     <span id="id_step" class="hidden">{{stepStrategy.id}}</span>
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
@@ -16,7 +18,7 @@
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_title %}{% endblock %}
         {% block box_body %}
-            {{ include('response/include_step.html.twig') }}
+           {{ include('response/include_step.html.twig') }}
         {% endblock %}
     {% endembed %}
 <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
@@ -24,5 +26,6 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    {#<script src="{{ asset('js/app.js') }}"></script>#}
     {% include 'response/javascript.html.twig' %}
 {% endblock %}

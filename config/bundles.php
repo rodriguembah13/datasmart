@@ -23,4 +23,5 @@ return [
     ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
     CalendarBundle\CalendarBundle::class => ['all' => true],
     Ob\HighchartsBundle\ObHighchartsBundle::class => ['all' => true],
+    FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
 ];
