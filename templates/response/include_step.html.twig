@@ -19,7 +19,7 @@
                 <td>{{ responseStep.frequence }}</td>
                 <td>{{ responseStep.delai }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{{ path('response_edit', {'id': responseStep.id}) }}"><i class="fa fa-trash-alt"></i></a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#modal-delete" onclick='getId({{ responseStep.id }})' href="#"><i class="fa fa-trash-alt"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -60,3 +60,24 @@
         </tbody>
     </table>
 {% endif %}
+<div id="modal-delete1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>Vous voulez supprimer</h4>
+                <p>produit</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">
+                    <span class="btn-label">cancel</span>
+                </button>
+
+                <button type="button" data-dismiss="modal" class="btn btn-danger" id="modal-delete-button">
+                    <i class="fa fa-trash-alt"></i>
+                    <span class="btn-label">Delete</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

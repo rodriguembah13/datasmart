@@ -13,6 +13,7 @@
             <div id="form1">
                 <!-- Dynamic Form Div -->
             </div>
+
 {% endblock %}
 {% endembed %}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
@@ -22,7 +23,27 @@
         {% endblock %}
     {% endembed %}
 <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+    <div id="modal-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Vous voulez supprimer</h4>
+                    <p>produit</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">
+                        <span class="btn-label">cancel</span>
+                    </button>
 
+                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="modal-delete-button">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="btn-label">Delete</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

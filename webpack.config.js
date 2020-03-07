@@ -1,12 +1,13 @@
 var Encore = require('@symfony/webpack-encore');
-
+var webpack=require('webpack');
 Encore
 // the project directory where compiled assets will be stored
-    .setOutputPath('public/bundles/adminlte/')
-
+    //.setOutputPath('public/bundles/adminlte/')
+    .setOutputPath('public/build/')
     // the public path used by the web server to access the previous directory
-    .setPublicPath('/bundles/adminlte/')
-
+   // .setPublicPath('/bundles/adminlte/')
+    .setPublicPath('build/')
+    .setManifestKeyPrefix('build/')
     // delete old files before creating them
     .cleanupOutputBeforeBuild()
 
@@ -16,11 +17,15 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    // generate only two files: app.js and app.css
+    // generate only two files: app.js and app.scss
     .addEntry('adminlte', './assets/adminlte-demo.js')
+    /*.splitEntryChunks()
+    .enableSingleRuntimeChunk()
+    .enableIntegrityHashes()*/
 
     // enable sass/scss parser
     .enableSassLoader()
+    //.autoProvidejQuery()
 
     // show OS notifications when builds finish/fail
     .enableBuildNotifications()
@@ -44,7 +49,8 @@ Encore
         css: '[name].css?[contenthash]',
         images: 'images/[name].[ext]?[hash:8]',
         fonts: 'fonts/[name].[ext]?[hash:8]'
-    })
+    })/**/
 ;
-
-module.exports = Encore.getWebpackConfig();
+var config=Encore.getWebpackConfig();
+config.module.rules[3].options.publicPath='./';
+module.exports = config;

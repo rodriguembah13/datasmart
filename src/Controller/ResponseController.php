@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ResponseController extends AbstractController
 {
     /**
-     * @Route("/", name="response_index", methods={"GET"})
+     * @Route("/", name="response_index", methods={"GET"},options={"expose"=true})
      */
     public function index(ResponseRepository $responseRepository): Response
     {
@@ -32,7 +32,7 @@ class ResponseController extends AbstractController
     }
 
     /**
-     * @Route("/new/{id}", name="response_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="response_new", methods={"GET","POST"},options={"expose"=true})
      */
     public function new(StepStrategy $stepStrategy, Request $request): Response
     {
@@ -163,5 +163,17 @@ class ResponseController extends AbstractController
         }
 
         return $this->redirectToRoute('response_index');
+    }
+    /**
+     * @Route("/{id}", name="responseStep_delete", methods={"DELETE"},options={"expose"=true})
+     */
+    public function deleteResponseStep(Request $request, ResponseStep $response): JsonResponse
+    {
+        $id_strat=$response->getResponse()->getStepStrategy()->getId();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($response);
+            $entityManager->flush();
+
+        return new JsonResponse($id_strat,200);
     }
 }

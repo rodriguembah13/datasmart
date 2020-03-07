@@ -7,6 +7,7 @@
     //$(function () {  const routes = require('../../public/js/fos_js_routes.json');
         $(function () {
        // alert("test");
+
 if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
 
         $("div#form1").append(
@@ -193,6 +194,7 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                         objectif:valeurobjectif,
                         typeStep:$('#typesetep').text(),
                     },success:function (data) {
+                        //Routing.generate('response_index');
                         window.location.href=Routing.generate('response_new', { id: $('#id_step').text() });
                     },error:function (err) {
                         alert("error")
@@ -200,9 +202,18 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
                 });
             })
         }
-
-
-
+let id_="";
+            function getId(id) {
+                id_=id;
+            }
+$('#modal-delete-button').click(function () {
+    $.ajax({
+        url: Routing.generate('responseStep_delete',{id:id_}),
+        type:'DELETE',success:function(data) {
+            window.location.href=Routing.generate('response_new', { id: data });
+    }
+    })
+})
     });
 
 </script>
