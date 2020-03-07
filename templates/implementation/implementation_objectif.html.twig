@@ -7,10 +7,16 @@
         {% block box_before %}{% endblock %}
         {% block box_body %}
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            <div class="col-md-6">
+                {{ form_row(form.offre) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.delai) }}
+            </div>
             <div class="pull-right">
                 <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
-                <button type="submit" class="btn btn-primary "><i class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
+                <button type="submit" class="btn btn-primary "><i
+                            class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
             </div>
             {{ form_end(form) }}
 
@@ -21,18 +27,76 @@
 
         {% block box_after %}{% endblock %}
     {% endembed %}
-{% if state=="edit" %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_before %}{% endblock %}
-        {% block box_body %}
-            <div id="form1">
+    {% if state=="edit" %}
+        <span id="id_step" class="hidden">{{ implObjectif.id }}</span>
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+            {% block box_before %}{% endblock %}
+            {% block box_body %}
+                <div id="form1">
 
-            </div>
-
-        {% endblock %}
-    {% endembed %}
+                </div>
+            {% endblock %}
+        {% endembed %}
+        <br>
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+            {% block box_title %} Les Objectifs Marketing {% endblock %}
+            {% block box_body %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Objectif</th>
+                        <th>Quantite</th>
+                        <th>Valeur</th>
+                        <th>Delai</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for responseStep in implObjectif.objectifs %}
+                        <tr>
+                            <td>{{ responseStep.id }}
+                            </td>
+                            <td>{{ responseStep.libelle }}</td>
+                            <td>{{ responseStep.quantite }}</td>
+                            <td>{{ responseStep.value }}</td>
+                            <td>{{ implObjectif.delai }}</td>
+                            <td>
+                                <a class="btn btn-danger" data-toggle="modal" data-target="#modal-delete"
+                                   onclick="getId({{ responseStep.id }})" href="#"><i class="fa fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endblock %}
+        {% endembed %}
     {% endif %}
-<a href="{{ path('employee_index') }}">back to list</a>
+    <a href="{{ path('employee_index') }}">back to list</a>
+    <div id="modal-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Vous voulez supprimer</h4>
+                    <p>produit</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">
+                        <span class="btn-label">cancel</span>
+                    </button>
+
+                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="modal-delete-button">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="btn-label">Delete</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

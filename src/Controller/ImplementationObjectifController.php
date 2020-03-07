@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ImplObjectif;
 use App\Entity\Objectif;
 use App\Form\ImplObjectifType;
+use App\Repository\ImplObjectifRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class ImplementationObjectifController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/new", name="implementation_objectif_new", methods={"GET","POST"})
+     * @Route("/{id}/new", name="implementation_objectif_new", methods={"GET","POST"},options={"expose"=true})
      */
     public function newObjectif(Request $request, ImplObjectif $implementation): Response
     {
@@ -49,16 +50,16 @@ class ImplementationObjectifController extends AbstractController
         }
 
         return $this->render('implementation/implementation_objectif.html.twig', [
-            'implementation' => $implementation,
+            'implObjectif' => $implementation,
             'form' => $form->createView(),
             'state' => $state,
         ]);
     }
 
     /**
-     * @Route("/post/response", name="response_post", methods={"GET"})
+     * @Route("/post/objectif", name="implementation_objectif_post", methods={"GET"})
      */
-    public function postresponse(Request $request): JsonResponse
+    public function postresponse(Request $request,ImplObjectifRepository $implObjectifRepository): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $objectif = $request->query->get('objectif');
@@ -66,21 +67,13 @@ class ImplementationObjectifController extends AbstractController
         $valeur = $request->query->get('valeur');
         $delai = $request->query->get('delai');
         $frequence = $request->query->get('frequence');
-        //$id = $stepStrategyRepository->find($request->query->getInt('id_step'));
-        /* if (null == $id) {
-             return new JsonResponse('nok', 404);
-         }*/
+        $implObjectif = $implObjectifRepository->find($request->query->getInt('id_step'));
+
         $postStep = new Objectif();
-       // $strategyStep = $stepStrategyRepository->find($id);
-        /*  if (null == $strategyStep->getResponse()) {
-              $response = new Reponse();
-              $response->setStepStrategy($strategyStep);
-              $entityManager->persist($response);
-          }*/
-        // $postStep->set($valeur);
         $postStep->setQuantite($quantite);
-        $postStep->set($objectif);
+        $postStep->setLibelle($objectif);
         $postStep->setValue($valeur);
+        $postStep->setImplObjectif($implObjectif);
 
         $entityManager->persist($postStep);
         $entityManager->flush();
@@ -90,24 +83,15 @@ class ImplementationObjectifController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="implementation_objectif_edit", methods={"GET","POST"})
+     * @Route("/delete/{id}", name="implementation_objectif_delete", methods={"DELETE"},options={"expose"=true})
      */
-    public function EditObjectif(Request $request, ImplObjectif $implementation): Response
+    public function deleteResponseStep(Request $request, Objectif $objectif): JsonResponse
     {
-        $form = $this->createForm(ImplObjectifType::class, $implementation);
-        $form->handleRequest($request);
+        $id_strat=$objectif->getImplObjectif()->getId();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($objectif);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($implementation);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('implementation_index');
-        }
-
-        return $this->render('implementation/implementation_objectif.html.twig', [
-            'implementation' => $implementation,
-            'form' => $form->createView(),
-        ]);
+        return new JsonResponse($id_strat,200);
     }
 }

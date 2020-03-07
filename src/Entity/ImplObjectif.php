@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,16 @@ class ImplObjectif
      * @ORM\OneToOne(targetEntity="App\Entity\Implementation", inversedBy="implObjectif", cascade={"persist", "remove"})
      */
     private $implementation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="implObjectif")
+     */
+    private $objectifs;
+
+    public function __construct()
+    {
+        $this->objectifs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -71,4 +83,36 @@ class ImplObjectif
 
         return $this;
     }
+
+    /**
+     * @return Collection|Objectif[]
+     */
+    public function getObjectifs(): Collection
+    {
+        return $this->objectifs;
+    }
+
+    public function addObjectif(Objectif $objectif): self
+    {
+        if (!$this->objectifs->contains($objectif)) {
+            $this->objectifs[] = $objectif;
+            $objectif->setImplObjectif($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectif(Objectif $objectif): self
+    {
+        if ($this->objectifs->contains($objectif)) {
+            $this->objectifs->removeElement($objectif);
+            // set the owning side to null (unless already changed)
+            if ($objectif->getImplObjectif() === $this) {
+                $objectif->setImplObjectif(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

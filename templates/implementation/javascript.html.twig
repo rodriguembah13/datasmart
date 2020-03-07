@@ -1,113 +1,96 @@
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script type="text/javascript">
-  
+
     //import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
     //Routing.setRoutingData(routes);
     //$(function () {  const routes = require('../../public/js/fos_js_routes.json');
-        $(function () {
-       // alert("test");
+    $(function () {
+        // alert("test");
 
-if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
+        if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
 
-        $("div#form1").append(
-// Creating Form Div and Adding <h2> and <p> Paragraph Tag in it.
-           /* $("<h3/>").text("Contact Form"), $("<p/>").text("This is my form. Please fill it out. It's awesome!"),*/
-            $("<form/>", {
-                action: '#',
-                method: '#'
-            }).append(
-// Create <form> Tag and Appending in HTML Div form1.
-                $("<div class='row'>"),
-                $("<div class='col'>"),
-                $("<label  class='control-label required'>").text("Qui est ce?").attr({id: 'question0'}),
-                $("<textarea/>", {
-                    rows: '3px',
-                    cols: '27px',
-                    type: 'text',
-                    id: 'vmsg0',
-                    name: 'msg1',
-                    class:'form-control',
-                    placeholder: 'Message'
-                }),
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Est-il un homme, une femme, autres ?").attr({id: 'question1'}),
-              $("<textarea/>", {
-                    rows: '3px',
-                    cols: '27px',
-                    type: 'text',
-                    id: 'vmsg1',
-                    name: 'msg1',
-                    class:'form-control',
-                    placeholder: 'Message'
-                }),
-                $("<div class='row'>"),
-                $("<div class='col'>"),
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Combien gagne t-il ou potentiellement quelle plage de revebu a-t-il?").attr({id: 'question2'}),
-                $("<textarea/>", {
-                    rows: '3px',
-                    cols: '27px',
-                    type: 'text',
-                    id: 'vmsg2',
-                    name: 'msg2',
-                    class:'form-control',
-                    placeholder: 'Message'
-                }),
-                $("<div class='row'>"),
-                $("<div class='col'>"),
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Quels sont ses problemes les preoccupants ainsi que les solutions potentielles existantes?").attr({id: 'question3'}),
-                $("<textarea/>", {
-                    rows: '3px',
-                    cols: '27px',
-                    type: 'text',
-                    id: 'vmsg3',
-                    name: 'msg3',
-                    class:'form-control',
-                    placeholder: 'Message'
-                }),
-                $("<div class='row'>"),
-                $("<br/>"), $("<input/>", {
-                    type: 'submit',
-                    id: 'submitStep',
-                    value: 'Submit',
-                    class:'btn btn-primary'
-                })));
-        var number=4;
-    $('#submitStep').click(function () {
-        for (let i = 0; i <number; i++) {
-         //var id_lablel="question"+i;
-           // alert($("#question"+i).text());
-            alert($("#vmsg"+i).val());
-       /* $.ajax({
-            url : "{{ path('response_post') }}",
-            type: 'GET',
-            dataType:"JSON",
-            data: {
-                id_step:$('#id_step').text(),
-                quantite:$('#quantite').val(),
-                valeur:$('#valeur').val(),
-                frequence:$('#valeur').val(),
-                objectif:valeurobjectif,
-                typeStep:$('#typesetep').text(),
-            },success:function (data) {
-                window.location.href=Routing.generate('response_new', { id: $('#id_step').text() });
-            },error:function (err) {
-                alert("error")
-            }
-        });*/
-        }
-    });
-}
             $("div#form1").append(
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Selection de l'objectif marketing vise").attr({id: 'question1'}),
-                $("<select>", {
-                    type: 'select',
-                    id: 'selectStep',
-                    class:'form-control'
-                }).append(`<option value="vente">Vente</option>
+// Creating Form Div and Adding <h2> and <p> Paragraph Tag in it.
+                /* $("<h3/>").text("Contact Form"), $("<p/>").text("This is my form. Please fill it out. It's awesome!"),*/
+                $("<form/>", {
+                    action: '#',
+                    method: '#'
+                }).append(
+// Create <form> Tag and Appending in HTML Div form1.
+                    $("<div class='row'>"),
+                    $("<div class='col'>"),
+                    $("<label  class='control-label required'>").text("Qui est ce?").attr({id: 'question0'}),
+                    $("<textarea/>", {
+                        rows: '3px',
+                        cols: '27px',
+                        type: 'text',
+                        id: 'vmsg0',
+                        name: 'msg1',
+                        class: 'form-control',
+                        placeholder: 'Message'
+                    }),
+                    $("<div class='form-group'>"),
+                    $("<label  class='control-label required'>").text("Est-il un homme, une femme, autres ?").attr({id: 'question1'}),
+                    $("<textarea/>", {
+                        rows: '3px',
+                        cols: '27px',
+                        type: 'text',
+                        id: 'vmsg1',
+                        name: 'msg1',
+                        class: 'form-control',
+                        placeholder: 'Message'
+                    }),
+                    $("<div class='row'>"),
+                    $("<div class='col'>"),
+                    $("<div class='form-group'>"),
+                    $("<label  class='control-label required'>").text("Combien gagne t-il ou potentiellement quelle plage de revebu a-t-il?").attr({id: 'question2'}),
+                    $("<textarea/>", {
+                        rows: '3px',
+                        cols: '27px',
+                        type: 'text',
+                        id: 'vmsg2',
+                        name: 'msg2',
+                        class: 'form-control',
+                        placeholder: 'Message'
+                    }),
+                    $("<div class='row'>"),
+                    $("<div class='col'>"),
+                    $("<div class='form-group'>"),
+                    $("<label  class='control-label required'>").text("Quels sont ses problemes les preoccupants ainsi que les solutions potentielles existantes?").attr({id: 'question3'}),
+                    $("<textarea/>", {
+                        rows: '3px',
+                        cols: '27px',
+                        type: 'text',
+                        id: 'vmsg3',
+                        name: 'msg3',
+                        class: 'form-control',
+                        placeholder: 'Message'
+                    }),
+                    $("<div class='row'>"),
+                    $("<br/>"), $("<input/>", {
+                        type: 'submit',
+                        id: 'submitStep',
+                        value: 'Submit',
+                        class: 'btn btn-primary'
+                    })));
+            var number = 4;
+            $('#submitStep').click(function () {
+                for (let i = 0; i < number; i++) {
+                    //var id_lablel="question"+i;
+                    // alert($("#question"+i).text());
+                    alert($("#vmsg" + i).val());
+                }
+            });
+        }
+        $("div#form1").append(
+            $("<div class='form-group'>"),
+            $("<label  class='control-label required'>").text("Selection de l'objectif marketing vise").attr({id: 'question1'}),
+            $("<select>", {
+                type: 'select',
+                id: 'selectStep',
+                class: 'form-control'
+            }).append(`<option value="vente">Vente</option>
 <option value="Notoriete produit ou service">Notoriete produit ou service</option>
 <option value="Notoriete entreprise">Notoriete entreprise</option>
 <option value="Acquisition de prospect froid">Acquisition de prospect froid</option>
@@ -115,88 +98,89 @@ if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_clien
 <option value="Notoriete entreprise">Impact client</option>
 <option value="Notoriete entreprise">Fidélisation client</option>
 <option value="autre">Autres</option>`),
-                $("<div class='form-group'>"),
-                $("<input/>", {
-                    type: 'text',
-                    id: 'newobjectif',
-                    name: 'newobjectif',
-                    class:'form-control',
-                    placeholder:"l'objectif marketing vise",
-                }),
-                $("<label  class='control-label required'>").text("Quantite").attr({id: 'lquantite'}),
-                $("<input/>", {
-                    type: 'text',
-                    id: 'quantite',
-                    name: 'quantite',
-                    class:'col-md-6 form-control',
-                }),$("</div>"),
-                $("<div class='form-group'>"),
-                $("<label  class='control-label required'>").text("Valeur").attr({id: 'lvaleur'}),
-                $("<input/>", {
-                    type: 'text',
-                    id: 'valeur',
-                    name: 'valeur',
-                    class:'form-control',
-                }),
-                $("<br/>"), $("<input/>", {
-                    type: 'submit',
-                    id: 'submitStep2',
-                    value: 'Submit',
-                    class:'btn btn-primary'
-                })
-            );
-            $('#newobjectif').hide();
-            $('#selectStep').change(function () {
-                valeurobjectif="";
-                if($('#selectStep option:selected').val()==='autre'){
-                    $('#newobjectif').show();
-                    valeurobjectif=$('#newobjectif').val();
-                }else {
-                    $('#newobjectif').hide();
-                    valeurobjectif=$('#selectStep option:selected').val();
+            $("<div class='form-group'>"),
+            $("<input/>", {
+                type: 'text',
+                id: 'newobjectif',
+                name: 'newobjectif',
+                class: 'form-control',
+                placeholder: "l'objectif marketing vise",
+            }),
+            $("<label  class='control-label required'>").text("Quantite").attr({id: 'lquantite'}),
+            $("<input/>", {
+                type: 'text',
+                id: 'quantite',
+                name: 'quantite',
+                class: 'col-md-6 form-control',
+            }), $("</div>"),
+            $("<div class='form-group'>"),
+            $("<label  class='control-label required'>").text("Valeur").attr({id: 'lvaleur'}),
+            $("<input/>", {
+                type: 'text',
+                id: 'valeur',
+                name: 'valeur',
+                class: 'form-control',
+            }),
+            $("<br/>"), $("<input/>", {
+                type: 'submit',
+                id: 'submitStep2',
+                value: 'Submit',
+                class: 'btn btn-primary'
+            })
+        );
+        $('#newobjectif').hide();
+        $('#selectStep').change(function () {
+            valeurobjectif = "";
+            if ($('#selectStep option:selected').val() === 'autre') {
+                $('#newobjectif').show();
+                valeurobjectif = $('#newobjectif').val();
+            } else {
+                $('#newobjectif').hide();
+                valeurobjectif = $('#selectStep option:selected').val();
+            }
+        });
+        $('#submitStep2').click(function () {
+            var valeurobjectif;
+            if ($('#selectStep option:selected').val() === 'autre') {
+                $('#newobjectif').show();
+                valeurobjectif = $('#newobjectif').val();
+            } else {
+                $('#newobjectif').hide();
+                valeurobjectif = $('#selectStep option:selected').val();
+            }
+            $.ajax({
+                url: "{{ path('implementation_objectif_post') }}",
+                type: 'GET',
+                dataType: "JSON",
+                data: {
+                    id_step: $('#id_step').text(),
+                    quantite: $('#quantite').val(),
+                    valeur: $('#valeur').val(),
+                    frequence: $('#valeur').val(),
+                    objectif: valeurobjectif,
+                }, success: function (data) {
+                    //Routing.generate('response_index');
+                    window.location.href = Routing.generate('implementation_objectif_new', {id: $('#id_step').text()});
+                }, error: function (err) {
+                    alert("error")
                 }
             });
-            $('#submitStep2').click(function () {
-                var valeurobjectif;
-                if($('#selectStep option:selected').val()==='autre'){
-                    $('#newobjectif').show();
-                    valeurobjectif=$('#newobjectif').val();
-                }else {
-                    $('#newobjectif').hide();
-                    valeurobjectif=$('#selectStep option:selected').val();
-                }
-                $.ajax({
-                    url : "{{ path('response_post') }}",
-                    type: 'GET',
-                    dataType:"JSON",
-                    data: {
-                        id_step:$('#id_step').text(),
-                        quantite:$('#quantite').val(),
-                        valeur:$('#valeur').val(),
-                        frequence:$('#valeur').val(),
-                        objectif:valeurobjectif,
-                        typeStep:$('#typesetep').text(),
-                    },success:function (data) {
-                        //Routing.generate('response_index');
-                        window.location.href=Routing.generate('response_new', { id: $('#id_step').text() });
-                    },error:function (err) {
-                        alert("error")
-                    }
-                });
-            })
+        });
 
-let id_="";
-            function getId(id) {
-                id_=id;
-            }
-$('#modal-delete-button').click(function () {
-    $.ajax({
-        url: Routing.generate('responseStep_delete',{id:id_}),
-        type:'DELETE',success:function(data) {
-            window.location.href=Routing.generate('response_new', { id: data });
-    }
-    })
-})
+        let id_ = "";
+
+        function getId(id) {
+            id_ = id;
+        }
+
+        $('#modal-delete-button').click(function () {
+            $.ajax({
+                url: Routing.generate('implementation_objectif_delete', {id: id_}),
+                type: 'DELETE', success: function (data) {
+                    window.location.href = Routing.generate('implementation_objectif_new', {id: $('#id_step').text()});
+                }
+            })
+        })
     });
 
 </script>

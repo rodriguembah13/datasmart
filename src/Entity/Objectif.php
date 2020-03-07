@@ -34,19 +34,10 @@ class Objectif
     private $libelle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Objectif", inversedBy="objectifs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ImplObjectif", inversedBy="objectifs")
      */
     private $implObjectif;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="implObjectif")
-     */
-    private $objectifs;
-
-    public function __construct()
-    {
-        $this->objectifs = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -89,46 +80,16 @@ class Objectif
         return $this;
     }
 
-    public function getImplObjectif(): ?self
+    public function getImplObjectif(): ?ImplObjectif
     {
         return $this->implObjectif;
     }
 
-    public function setImplObjectif(?self $implObjectif): self
+    public function setImplObjectif(?ImplObjectif $implObjectif): self
     {
         $this->implObjectif = $implObjectif;
 
         return $this;
     }
 
-    /**
-     * @return Collection|self[]
-     */
-    public function getObjectifs(): Collection
-    {
-        return $this->objectifs;
-    }
-
-    public function addObjectif(self $objectif): self
-    {
-        if (!$this->objectifs->contains($objectif)) {
-            $this->objectifs[] = $objectif;
-            $objectif->setImplObjectif($this);
-        }
-
-        return $this;
-    }
-
-    public function removeObjectif(self $objectif): self
-    {
-        if ($this->objectifs->contains($objectif)) {
-            $this->objectifs->removeElement($objectif);
-            // set the owning side to null (unless already changed)
-            if ($objectif->getImplObjectif() === $this) {
-                $objectif->setImplObjectif(null);
-            }
-        }
-
-        return $this;
-    }
 }
