@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ImplAvatar;
+use App\Entity\ImplDefault;
 use App\Entity\Implementation;
+use App\Entity\ImplObjectif;
 use App\Entity\ImplPlanning;
 use App\Entity\Response as Reponse;
 use App\Entity\StepStrategy;
@@ -116,7 +119,8 @@ class StrategyDigitalController extends AbstractController
             $stepStrategy->setStrategy($strategyDigital);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($stepStrategy);
-            $response->setStepStrategy($stepStrategy);
+            //$response->setStepStrategy($stepStrategy);
+            $this->createImplementation($stepStrategy);
             $entityManager->persist($response);
         }
         $entityManager->flush();
@@ -128,11 +132,24 @@ class StrategyDigitalController extends AbstractController
         $impl = new Implementation();
         $impl->setStepStrategy($stepStrategy);
         $impl->setReference($stepStrategy->getStep()->getValue());
-        $entityManager->persist($stepStrategy);
+        $entityManager->persist($impl);
         if ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $impl->getReference()) {
             $planning = new ImplPlanning();
             $planning->setImplementation($impl);
             $planning->setStatus(false);
+            $entityManager->persist($planning);
+        } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $impl->getReference()) {
+            $defObjec = new ImplObjectif();
+            $defObjec->setImplementation($impl);
+            $entityManager->persist($defObjec);
+        } elseif ('Identification_de_la_cible_principale_ou_du_client_idéal' === $impl->getReference()) {
+            $avatar = new ImplAvatar();
+            $avatar->setImplementation($impl);
+            $entityManager->persist($avatar);
+        } else {
+            $defaul = new ImplDefault();
+            $defaul->setImplementation($impl);
+            $entityManager->persist($defaul);
         }
     }
 

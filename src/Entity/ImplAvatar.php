@@ -26,6 +26,11 @@ class ImplAvatar
      */
     private $answer;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Implementation", inversedBy="implAvatar", cascade={"persist", "remove"})
+     */
+    private $implementation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class ImplAvatar
     public function setAnswer(?string $answer): self
     {
         $this->answer = $answer;
+
+        return $this;
+    }
+
+    public function getImplementation(): ?Implementation
+    {
+        return $this->implementation;
+    }
+
+    public function setImplementation(?Implementation $implementation): self
+    {
+        $this->implementation = $implementation;
 
         return $this;
     }

@@ -41,6 +41,11 @@ class Implementation
      */
     private $implDefault;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ImplAvatar", mappedBy="implementation", cascade={"persist", "remove"})
+     */
+    private $implAvatar;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +124,24 @@ class Implementation
         $newImplementation = null === $implDefault ? null : $this;
         if ($implDefault->getImplementation() !== $newImplementation) {
             $implDefault->setImplementation($newImplementation);
+        }
+
+        return $this;
+    }
+
+    public function getImplAvatar(): ?ImplAvatar
+    {
+        return $this->implAvatar;
+    }
+
+    public function setImplAvatar(?ImplAvatar $implAvatar): self
+    {
+        $this->implAvatar = $implAvatar;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newImplementation = null === $implAvatar ? null : $this;
+        if ($implAvatar->getImplementation() !== $newImplementation) {
+            $implAvatar->setImplementation($newImplementation);
         }
 
         return $this;
