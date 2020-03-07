@@ -1,8 +1,40 @@
 {% extends 'base.html.twig' %}
 {% block title %}implementation objectif{% endblock %}
 {% block page_title %} Implementation {% endblock %}
-{% block page_subtitle %} Objectif {% endblock %}
+{% block page_subtitle %} Objectif {{ state }}{% endblock %}
 {% block page_content %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="pull-right">
+                <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                <button type="submit" class="btn btn-primary "><i class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
+            </div>
+            {{ form_end(form) }}
 
+        {% endblock %}
+        {% block box_footer %}
+
+        {% endblock %}
+
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+{% if state=="edit" %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            <div id="form1">
+
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+    {% endif %}
 <a href="{{ path('employee_index') }}">back to list</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'implementation/javascript.html.twig' %}
 {% endblock %}

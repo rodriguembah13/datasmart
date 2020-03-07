@@ -14,7 +14,7 @@ class ImplObjectifType extends AbstractType
         $builder
             ->add('offre')
             ->add('delai')
-            ->add('implementation')
+            //->add('implementation')
         ;
     }
 
