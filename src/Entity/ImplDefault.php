@@ -21,6 +21,11 @@ class ImplDefault
      */
     private $value;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Implementation", inversedBy="implDefault", cascade={"persist", "remove"})
+     */
+    private $implementation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class ImplDefault
     public function setValue(?string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getImplementation(): ?Implementation
+    {
+        return $this->implementation;
+    }
+
+    public function setImplementation(?Implementation $implementation): self
+    {
+        $this->implementation = $implementation;
 
         return $this;
     }

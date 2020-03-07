@@ -36,6 +36,11 @@ class Implementation
      */
     private $implObjectif;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ImplDefault", mappedBy="implementation", cascade={"persist", "remove"})
+     */
+    private $implDefault;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +101,24 @@ class Implementation
         $newImplementation = null === $implObjectif ? null : $this;
         if ($implObjectif->getImplementation() !== $newImplementation) {
             $implObjectif->setImplementation($newImplementation);
+        }
+
+        return $this;
+    }
+
+    public function getImplDefault(): ?ImplDefault
+    {
+        return $this->implDefault;
+    }
+
+    public function setImplDefault(?ImplDefault $implDefault): self
+    {
+        $this->implDefault = $implDefault;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newImplementation = null === $implDefault ? null : $this;
+        if ($implDefault->getImplementation() !== $newImplementation) {
+            $implDefault->setImplementation($newImplementation);
         }
 
         return $this;

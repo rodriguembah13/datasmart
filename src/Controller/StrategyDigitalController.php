@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Implementation;
+use App\Entity\ImplPlanning;
 use App\Entity\Response as Reponse;
 use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
@@ -118,6 +120,20 @@ class StrategyDigitalController extends AbstractController
             $entityManager->persist($response);
         }
         $entityManager->flush();
+    }
+
+    public function createImplementation(StepStrategy $stepStrategy)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $impl = new Implementation();
+        $impl->setStepStrategy($stepStrategy);
+        $impl->setReference($stepStrategy->getStep()->getValue());
+        $entityManager->persist($stepStrategy);
+        if ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $impl->getReference()) {
+            $planning = new ImplPlanning();
+            $planning->setImplementation($impl);
+            $planning->setStatus(false);
+        }
     }
 
     /**
