@@ -46,6 +46,11 @@ class StepStrategy
      */
     private $documentaires;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Implementation", mappedBy="stepStrategy", cascade={"persist", "remove"})
+     */
+    private $implementation;
+
     public function __construct()
     {
         $this->membersSteps = new ArrayCollection();
@@ -178,6 +183,24 @@ class StepStrategy
             if ($documentaire->getStepStrategy() === $this) {
                 $documentaire->setStepStrategy(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getImplementation(): ?Implementation
+    {
+        return $this->implementation;
+    }
+
+    public function setImplementation(?Implementation $implementation): self
+    {
+        $this->implementation = $implementation;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newStepStrategy = null === $implementation ? null : $this;
+        if ($implementation->getStepStrategy() !== $newStepStrategy) {
+            $implementation->setStepStrategy($newStepStrategy);
         }
 
         return $this;

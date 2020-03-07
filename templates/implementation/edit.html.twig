@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Implementation{% endblock %}
+
+{% block body %}
+    <h1>Edit Implementation</h1>
+
+    {{ include('implementation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('implementation_index') }}">back to list</a>
+
+    {{ include('implementation/_delete_form.html.twig') }}
+{% endblock %}

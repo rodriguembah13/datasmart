@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Implementation index{% endblock %}
+
+{% block body %}
+    <h1>Implementation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Reference</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for implementation in implementations %}
+            <tr>
+                <td>{{ implementation.id }}</td>
+                <td>{{ implementation.reference }}</td>
+                <td>
+                    <a href="{{ path('implementation_show', {'id': implementation.id}) }}">show</a>
+                    <a href="{{ path('implementation_edit', {'id': implementation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('implementation_new') }}">Create new</a>
+{% endblock %}
