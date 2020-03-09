@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,47 +19,23 @@ class ImplAvatar
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $question;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $answer;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Implementation", inversedBy="implAvatar", cascade={"persist", "remove"})
      */
     private $implementation;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CibleAvatar", mappedBy="implAvatar")
+     */
+    private $cibleAvatars;
+
+    public function __construct()
+    {
+        $this->cibleAvatars = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQuestion(): ?string
-    {
-        return $this->question;
-    }
-
-    public function setQuestion(?string $question): self
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    public function getAnswer(): ?string
-    {
-        return $this->answer;
-    }
-
-    public function setAnswer(?string $answer): self
-    {
-        $this->answer = $answer;
-
-        return $this;
     }
 
     public function getImplementation(): ?Implementation
@@ -68,6 +46,37 @@ class ImplAvatar
     public function setImplementation(?Implementation $implementation): self
     {
         $this->implementation = $implementation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CibleAvatar[]
+     */
+    public function getCibleAvatars(): Collection
+    {
+        return $this->cibleAvatars;
+    }
+
+    public function addCibleAvatar(CibleAvatar $cibleAvatar): self
+    {
+        if (!$this->cibleAvatars->contains($cibleAvatar)) {
+            $this->cibleAvatars[] = $cibleAvatar;
+            $cibleAvatar->setImplAvatar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCibleAvatar(CibleAvatar $cibleAvatar): self
+    {
+        if ($this->cibleAvatars->contains($cibleAvatar)) {
+            $this->cibleAvatars->removeElement($cibleAvatar);
+            // set the owning side to null (unless already changed)
+            if ($cibleAvatar->getImplAvatar() === $this) {
+                $cibleAvatar->setImplAvatar(null);
+            }
+        }
 
         return $this;
     }

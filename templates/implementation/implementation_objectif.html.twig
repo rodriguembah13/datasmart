@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}implementation objectif{% endblock %}
 {% block page_title %} Implementation {% endblock %}
-{% block page_subtitle %} Objectif {{ state }}{% endblock %}
+{% block page_subtitle %} {{ implObjectif.implementation }}{% endblock %}
 {% block page_content %}
     <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': implObjectif.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
     <br>

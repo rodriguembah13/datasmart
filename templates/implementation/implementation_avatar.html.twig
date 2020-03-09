@@ -1,8 +1,51 @@
 {% extends 'base.html.twig' %}
-{% block title %}implementation objectif{% endblock %}
-{% block page_title %} Implementation {% endblock %}
-{% block page_subtitle %} Objectif {% endblock %}
+{% block title %}implementation {% endblock %}
+{% block page_title %} implementation {% endblock %}
+{% block page_subtitle %} {{ cible.implementation }} {% endblock %}
 {% block page_content %}
+    <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': avatar.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+    <br>
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="pull-right">
+                <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                <button type="submit" class="btn btn-primary "><i
+                            class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+            </div>
+            {{ form_end(form) }}
+        {% endblock %}
 
-<a href="{{ path('employee_index') }}">back to list</a>
+    {% endembed %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cible in cibles %}
+                    <tr>
+                        <td>{{ cible.id }}</td>
+                        <td>{{ cible.question}}</td>
+                        <td>{{ cible.answer}}</td>
+                        <td></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

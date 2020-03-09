@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}implementation objectif{% endblock %}
+{% block page_title %}Details  {% endblock %}
+{% block page_subtitle %}{{ cible.implementation }}{% endblock %}
+{% block page_content %}
+    <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': cible.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+    <br>
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for implementation in cible.cibleAvatars %}
+                    <tr>
+                        <td>{{ implementation.id }}</td>
+                        <td>{{ implementation.question }}</td>
+                        <td>{{ implementation.answer }}</td>
+                        <td>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

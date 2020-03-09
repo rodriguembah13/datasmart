@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\CibleAvatar;
+use App\Entity\ImplAvatar;
 use App\Entity\Implementation;
-use App\Entity\ImplObjectif;
 use App\Entity\ImplPlanning;
 use App\Entity\Planning;
 use App\Entity\StepStrategy;
+use App\Form\CibleAvatarType;
 use App\Form\ImplementationType;
-use App\Form\ImplObjectifType;
 use App\Form\PlanningType;
+use App\Repository\CibleAvatarRepository;
 use App\Repository\ImplementationRepository;
 use App\Repository\PlanningRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,7 +92,7 @@ class ImplementationController extends AbstractController
     public function displayView(StepStrategy $stepStrategy): Response
     {
         if ('Identification_de_la_cible_principale_ou_du_client_idéal' === $stepStrategy->getImplementation()->getReference()) {
-            $url = $this->generateUrl('implementation_new_avatar', ['id' => $stepStrategy->getImplementation()->getImplAvatar()->getId()]);
+            $url = $this->generateUrl('implementation_view_avatar', ['id' => $stepStrategy->getImplementation()->getImplAvatar()->getId()]);
         } elseif ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_view_planning', ['id' => $stepStrategy->getImplementation()->getImplPlanning()->getId()]);
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
@@ -141,22 +143,26 @@ class ImplementationController extends AbstractController
     /**
      * @Route("/{id}/avatar/new", name="implementation_new_avatar", methods={"GET","POST"})
      */
-    public function newAvatar(ImplObjectif $implementation, Request $request): Response
+    public function newAvatar(ImplAvatar $implementation, Request $request, CibleAvatarRepository $cibleAvatarRepository): Response
     {
-        $form = $this->createForm(ImplObjectifType::class, $implementation);
+        $cible = new CibleAvatar();
+        $form = $this->createForm(CibleAvatarType::class, $cible);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($implementation);
+            $cible->setImplAvatar($implementation);
+            $entityManager->persist($cible);
             $entityManager->flush();
+            $url = $this->generateUrl('implementation_new_avatar', ['id' => $implementation->getId()]);
 
-            return $this->redirectToRoute('implementation_index');
+            return $this->redirect($url);
         }
 
         return $this->render('implementation/implementation_avatar.html.twig', [
-            'implementation' => $implementation,
-            //'form' => $form->createView(),
+            'avatar' => $implementation,
+            'form' => $form->createView(),
+            'cibles' => $cibleAvatarRepository->findBy(['implAvatar' => $implementation]),
         ]);
     }
 
@@ -201,6 +207,16 @@ class ImplementationController extends AbstractController
             'week' => $this->getNumberWeekOfDays(date_create($min_date), date_create($max_date)),
             'monday' => $this->getNumberMondayOfDays(date_create($min_date), date_create($max_date)),
             'diff' => date_create($min_date)->diff(date_create($max_date))->d,
+        ]);
+    }
+    /**
+     * @Route("/viewAvatar/{id}", name="implementation_view_avatar", methods={"GET"})
+     */
+    public function viewAvatar(ImplAvatar $implementation, EntityManagerInterface $manager, PlanningRepository $planningRepository): Response
+    {
+
+        return $this->render('implementation/viewAvatar.html.twig', [
+            'cible' => $implementation,
         ]);
     }
 
