@@ -43,10 +43,16 @@ class StepStrategy
      */
     private $implementation;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Planning", mappedBy="stepStrategy")
+     */
+    private $plannings;
+
     public function __construct()
     {
         $this->membersSteps = new ArrayCollection();
         $this->documentaires = new ArrayCollection();
+        $this->plannings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,6 +199,37 @@ class StepStrategy
         $newStepStrategy = null === $implementation ? null : $this;
         if ($implementation->getStepStrategy() !== $newStepStrategy) {
             $implementation->setStepStrategy($newStepStrategy);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Planning[]
+     */
+    public function getPlannings(): Collection
+    {
+        return $this->plannings;
+    }
+
+    public function addPlanning(Planning $planning): self
+    {
+        if (!$this->plannings->contains($planning)) {
+            $this->plannings[] = $planning;
+            $planning->setStepStrategy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanning(Planning $planning): self
+    {
+        if ($this->plannings->contains($planning)) {
+            $this->plannings->removeElement($planning);
+            // set the owning side to null (unless already changed)
+            if ($planning->getStepStrategy() === $this) {
+                $planning->setStepStrategy(null);
+            }
         }
 
         return $this;

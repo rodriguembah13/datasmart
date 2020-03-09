@@ -3,13 +3,15 @@
 {% block page_title %} planning {% endblock %}
 {% block page_subtitle %} Objectif {% endblock %}
 {% block page_content %}
+    <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': planning.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+    <br>
 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
         {% block box_body %}
             {{ form_start(form) }}
-            {{ form_row(form.implementation) }}
+            {{ form_row(form.stepStrategy) }}
             <div class="col-md-6">
-                {{ form_row(form.datebegin) }}
+                {{ form_row(form.dateBegin) }}
             </div>
             <div class="col-md-6">
                 {{ form_row(form.dateEnd) }}
@@ -39,10 +41,10 @@
                 {% for planning in plannings %}
                     <tr>
                         <td>{{ planning.id }}</td>
-                        <td>{{ planning.datebegin ? planning.datebegin|date('Y-m-d') : '' }}</td>
+                        <td>{{ planning.dateBegin ? planning.dateBegin|date('Y-m-d') : '' }}</td>
                         <td>{{ planning.dateEnd ? planning.dateEnd|date('Y-m-d') : '' }}</td>
                         <td>
-                          {{ planning.implementation }}
+                          {{ planning.stepStrategy }}
                         </td>
                     </tr>
                 {% else %}
@@ -54,5 +56,5 @@
             </table>
         {% endblock %}
     {% endembed %}
-<a href="{{ path('employee_index') }}">back to list</a>
+
 {% endblock %}

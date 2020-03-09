@@ -112,16 +112,16 @@ class StrategyDigitalController extends AbstractController
         $steps = $this->stepRepository->findAll();
         foreach ($steps as $step) {
             $stepStrategy = new StepStrategy();
-            $response = new Reponse();
+            /*$response = new Reponse();
             $response->setCreatedAt(new \DateTime('now'));
-            $response->setName(' ');
+            $response->setName(' ');*/
             $stepStrategy->setStep($step);
             $stepStrategy->setStrategy($strategyDigital);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($stepStrategy);
             //$response->setStepStrategy($stepStrategy);
             $this->createImplementation($stepStrategy);
-            $entityManager->persist($response);
+           /// $entityManager->persist($response);
         }
         $entityManager->flush();
     }

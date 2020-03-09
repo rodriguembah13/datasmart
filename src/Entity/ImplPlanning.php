@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,16 +19,6 @@ class ImplPlanning
     private $id;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $datebegin;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $dateEnd;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $status;
@@ -36,33 +28,19 @@ class ImplPlanning
      */
     private $implementation;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Planning", mappedBy="implPlanning")
+     */
+    private $plannings;
+
+    public function __construct()
+    {
+        $this->plannings = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDatebegin(): ?\DateTimeInterface
-    {
-        return $this->datebegin;
-    }
-
-    public function setDatebegin(?\DateTimeInterface $datebegin): self
-    {
-        $this->datebegin = $datebegin;
-
-        return $this;
-    }
-
-    public function getDateEnd(): ?\DateTimeInterface
-    {
-        return $this->dateEnd;
-    }
-
-    public function setDateEnd(?\DateTimeInterface $dateEnd): self
-    {
-        $this->dateEnd = $dateEnd;
-
-        return $this;
     }
 
     public function getStatus(): ?bool
@@ -88,4 +66,41 @@ class ImplPlanning
 
         return $this;
     }
+
+    /**
+     * @return Collection|Planning[]
+     */
+    public function getPlannings(): Collection
+    {
+        return $this->plannings;
+    }
+
+    public function addPlanning(Planning $planning): self
+    {
+        if (!$this->plannings->contains($planning)) {
+            $this->plannings[] = $planning;
+            $planning->setImplPlanning($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanning(Planning $planning): self
+    {
+        if ($this->plannings->contains($planning)) {
+            $this->plannings->removeElement($planning);
+            // set the owning side to null (unless already changed)
+            if ($planning->getImplPlanning() === $this) {
+                $planning->setImplPlanning(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getImplementation()->getStepStrategy()->getStep()->getValue();
+    }
+
 }

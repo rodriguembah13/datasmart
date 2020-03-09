@@ -18,7 +18,9 @@ class PlanningRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Planning::class);
     }
-
+public function findMinDate(){
+        //return $this->cre
+}
     // /**
     //  * @return Planning[] Returns an array of Planning objects
     //  */

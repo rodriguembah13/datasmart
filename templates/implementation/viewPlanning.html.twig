@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}implementation objectif{% endblock %}
+{% block page_title %} planning {% endblock %}
+{% block page_subtitle %} Objectif {% endblock %}
+{% block page_content %}
+<a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': planning.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+<br>
+{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% block box_before %}{% endblock %}
+    {% block box_body %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+{{ min }}:{{ max }} __{{ week }}<br>
+            {{ monday }}__{{ diff }}
+            <br> {{ min_|date('y-m-d') }}
+<br> {{ max_|date('y-m-d') }}
+            </tbody>
+        </table>
+    {% endblock %}
+{% endembed %}
+{% endblock %}
