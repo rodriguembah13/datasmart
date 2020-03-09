@@ -29,11 +29,6 @@ class Comment
     private $employee;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Response", inversedBy="comments")
-     */
-    private $response;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;

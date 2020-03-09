@@ -27,14 +27,6 @@ class StepStrategy
      * @ORM\ManyToOne(targetEntity="App\Entity\Step", inversedBy="stepStrategies")
      */
     private $step;
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PlanningStrategy", mappedBy="stepStrategy", cascade={"persist", "remove"})
-     */
-    private $planning;
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Response", mappedBy="stepStrategy", cascade={"persist", "remove"})
-     */
-    private $response;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MembersStep", mappedBy="stepStrategy")

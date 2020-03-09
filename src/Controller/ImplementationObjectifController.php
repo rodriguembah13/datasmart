@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImplementationObjectifController extends AbstractController
 {
     /**
-     * @Route("/", name="implementation_objectif")
+     * @Route("/{id}/view", name="implementation_objectif")
      */
-    public function index()
+    public function index(ImplObjectif $implementation)
     {
         return $this->render('implementation_objectif/index.html.twig', [
-            'controller_name' => 'ImplementationObjectifController',
+            'implementation' => $implementation,
         ]);
     }
 

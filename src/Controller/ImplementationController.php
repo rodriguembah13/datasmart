@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Implementation;
 use App\Entity\ImplObjectif;
+use App\Entity\ImplPlanning;
 use App\Entity\StepStrategy;
 use App\Form\ImplementationType;
 use App\Form\ImplObjectifType;
+use App\Form\ImplPlanningType;
 use App\Repository\ImplementationRepository;
+use App\Repository\ImplPlanningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +72,7 @@ class ImplementationController extends AbstractController
         if ('Identification_de_la_cible_principale_ou_du_client_idéal' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_new_avatar', ['id' => $stepStrategy->getImplementation()->getImplAvatar()->getId()]);
         } elseif ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $stepStrategy->getImplementation()->getReference()) {
-            $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+            $url = $this->generateUrl('implementation_new_planning', ['id' => $stepStrategy->getImplementation()->getImplPlanning()->getId()]);
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
         } else {
@@ -80,24 +83,45 @@ class ImplementationController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/view", name="implementation_display_vew", methods={"GET"})
+     */
+    public function displayView(StepStrategy $stepStrategy): Response
+    {
+        if ('Identification_de_la_cible_principale_ou_du_client_idéal' === $stepStrategy->getImplementation()->getReference()) {
+            $url = $this->generateUrl('implementation_new_avatar', ['id' => $stepStrategy->getImplementation()->getImplAvatar()->getId()]);
+        } elseif ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $stepStrategy->getImplementation()->getReference()) {
+            $url = $this->generateUrl('implementation_new_planning', ['id' => $stepStrategy->getImplementation()->getImplPlanning()->getId()]);
+        } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
+            $url = $this->generateUrl('implementation_objectif', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+        } else {
+            $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+        }
+
+        return $this->redirect($url);
+    }
+
+    /**
      * @Route("/{id}/planning/new", name="implementation_new_planning", methods={"GET","POST"})
      */
-    public function newPlanning(ImplObjectif $implementation, Request $request): Response
+    public function newPlanning(ImplPlanning $implementation, Request $request, ImplPlanningRepository $planningRepository): Response
     {
         // $implObjectif = $implementation->getImplObjectif();
-        $form = $this->createForm(ImplObjectifType::class, $implementation);
+        $form = $this->createForm(ImplPlanningType::class, $implementation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($implementation);
             $entityManager->flush();
+            $url = $this->generateUrl('implementation_new_planning', ['id' => $implementation->getId()]);
 
-            return $this->redirectToRoute('implementation_index');
+            return $this->redirect($url);
         }
+        $plannings = $planningRepository->findAll();
 
         return $this->render('implementation/implementation_planning.html.twig', [
-            'implementation' => $implementation,
+            'planning' => $implementation,
+            'plannings' => $plannings,
             'form' => $form->createView(),
         ]);
     }

@@ -172,15 +172,19 @@
         function getId(id) {
             id_ = id;
         }
-
         $('#modal-delete-button').click(function () {
             $.ajax({
-                url: Routing.generate('implementation_objectif_delete', {id: id_}),
+                url: Routing.generate('implementation_objectif_delete', {id: $("#employe_id").val()}),
                 type: 'DELETE', success: function (data) {
                     window.location.href = Routing.generate('implementation_objectif_new', {id: $('#id_step').text()});
                 }
             })
         })
+
     });
+    function getEmployeId(id) {
+        $("#employe_id").val(id);
+        //alert("ok");
+    }
 
 </script>
