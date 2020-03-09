@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Default controller.
@@ -30,6 +31,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $security;
+
+    public function __construct(AuthorizationCheckerInterface $security)
+    {
+        $this->security = $security;
+    }
+
     /**
      * @Route("/", defaults={}, name="homepage")
      */
@@ -91,19 +102,30 @@ class DefaultController extends AbstractController
                  }');
             $ob->tooltip->formatter($formatter);*/
         $ob->series($series);
-
-        return $this->render('default/index.html.twig', [
-          //  'nbemp' => $count,
-            'nbusers' => count($users),
-            //'nbdepartements' => count($departements),
-           // 'precences' => count($presences), 'chart' => $ob,
-        ]);
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return $this->render('default/index.html.twig', [
+        //  'nbemp' => $count,
+        'nbusers' => count($users),
+                'user'=>'employee'
+        //'nbdepartements' => count($departements),
+        // 'precences' => count($presences), 'chart' => $ob,
+    ]);
+        } else {
+            return $this->render('default/index.html.twig', [
+        //  'nbemp' => $count,
+         'nbusers' => count($this->getUser()->getCustomer()->getCustomerUsers()),
+                'nbStrategies' => count($this->getUser()->getCustomer()->getStrategyDigitals()),
+        'user'=>'customer'
+        //'nbdepartements' => count($departements),
+        // 'precences' => count($presences), 'chart' => $ob,
+    ]);
+        }
     }
 
     /**
      * @Route("/config-rh", defaults={}, name="configpage")
      */
-    public function config(UserRepository $userRepository,EntityManagerInterface $em, PaginatorInterface $paginator, Request $request)
+    public function config(UserRepository $userRepository, EntityManagerInterface $em, PaginatorInterface $paginator, Request $request)
     {
         $dql = 'SELECT a FROM App\Entity\User a';
         $query = $em->createQuery($dql);

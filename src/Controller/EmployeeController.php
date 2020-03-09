@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Employee;
 use App\Form\EmployeeType;
+use App\Form\UserType;
 use App\Repository\EmployeeRepository;
+use FOS\UserBundle\Form\Type\ProfileFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,10 +54,34 @@ class EmployeeController extends AbstractController
     /**
      * @Route("/{id}", name="employee_show", methods={"GET"})
      */
-    public function show(Employee $employee): Response
-    {
+    public function show(Request $request, Employee $employee): Response
+    {$form = $this->createForm(EmployeeType::class, $employee);
+        $formPassword = $this->createForm(ProfileFormType::class, $employee->getCompte());
+        $formUser = $this->createForm(UserType::class, $employee->getCompte());
+        $form->handleRequest($request);
+        $formPassword->handleRequest($request);
+        $formUser->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('employee_show', ['id' => $employee->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('employee_show', ['id' => $employee->getId()]);
+
+            return $this->redirect($url);
+        }
         return $this->render('employee/show.html.twig', [
             'employee' => $employee,
+           // 'strategy_digitals' => $customerUser->getStrategyDigitals(),
+            'form' => $form->createView(),
+            'formPassworld' => $formPassword->createView(),
+            'formUser' => $formUser->createView(),
+            'user' => $employee->getCompte(),
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'],['Mes Strategies Digital', '#strategie']],
         ]);
     }
 

@@ -1,57 +1,97 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Customer{% endblock %}
 {% block page_title %} Customer {% endblock %}
 {% block page_subtitle %} Details {% endblock %}
 {% block page_content %}
-    <div class="">
-        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-            <li class="nav-item active">
-                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-information" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Informations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-stategie" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Strategie Digitale</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-                <div class="tab-pane active" id="custom-tabs-information">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>Id</th>
-                            <td>{{ customer.id }}</td>
-                        </tr>
-                        <tr>
-                            <th>Date_from</th>
-                            <td>{{ customer.dateFrom ? customer.dateFrom|date('Y-m-d') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Date_to</th>
-                            <td>{{ customer.dateTo ? customer.dateTo|date('Y-m-d') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <td>{{ customer.name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Value</th>
-                            <td>{{ customer.value }}</td>
-                        </tr>
-                        <tr>
-                            <th>Visible</th>
-                            <td>{{ customer.visible ? 'Yes' : 'No' }}</td>
-                        </tr>
-                        <tr>
-                            <th>RegisteredAt</th>
-                            <td>{{ customer.registeredAt ? customer.registeredAt|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            <div class="tab-pane active" id="custom-tabs-stategie">
 
+    <div class="row">
+        <div class="col-md-3">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle"
+                             src="{{ asset('bundles/adminlte/images/default_avatar.png') }}"
+                             alt="User profile picture">
+                    </div>
+                    <h3 class="profile-username text-center">{{ user.username }}</h3>
+
+                    <p class="text-muted text-center">{{ user.email}}</p>
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>Strategy Digital</b> <a class="float-right">1,322</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Task</b> <a class="float-right">543</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Customer user</b> <a class="float-right">13,287</a>
+                        </li>
+                    </ul>
+
+                {% endblock %}
+
+                {% block box_after %}{% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                        {% block box_before %}{% endblock %}
+                        {% block box_body %}
+                            <ul class="nav nav-pills">
+                                {% for tab in tabs %}
+                                    <li class="nav-item"><a class="nav-link active" href="{{tab[1]}}" data-toggle="tab">{{tab[0]  }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="personnelle">
+                                    {{ include('customer/_form.html.twig', {'button_label': 'Update'}) }}
+                                    <br>
+                                </div>
+
+                                {#gestion compte#}
+                                <div class="tab-pane" id="compte">
+                                    {{ form_start(formUser) }}
+                                    <div class="col-md-6">
+                                        {{ form_row(formUser.username) }}
+                                        {{ form_row(formUser.email) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_row(formUser.plainPassword) }}
+                                    </div>
+                                    {{ form_widget(formUser) }}
+
+                                    <div class="pull-right">
+                                        <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                                        <button type="submit" class="btn btn-primary "><i class="fa fa-check-square"></i> {{ button_label|default('Save') }}</button>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
+                                <div class="tab-pane" id="strategie">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block box_after %}{% endblock %}
+                    {% endembed %}
+                </div>
             </div>
         </div>
     </div>
-<br>
-
-    <a class="btn btn-warning" href="{{ path('customer_index') }}"><i class="fa fa-arrow-left"></i>back</a>
 {% endblock %}

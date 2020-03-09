@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Form\CustomerType;
+use App\Form\UserType;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\UserBundle\Form\Type\ProfileFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,10 +65,34 @@ class CustomerController extends AbstractController
     /**
      * @Route("/{id}", name="customer_show", methods={"GET"})
      */
-    public function show(Customer $customer): Response
-    {
+    public function show(Request $request, Customer $customer): Response
+    {$form = $this->createForm(CustomerType::class, $customer);
+        $formPassword = $this->createForm(ProfileFormType::class, $customer->getCompte());
+        $formUser = $this->createForm(UserType::class, $customer->getCompte());
+        $form->handleRequest($request);
+        $formPassword->handleRequest($request);
+        $formUser->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('employee_show', ['id' => $customer->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $url = $this->generateUrl('employee_show', ['id' => $customer->getId()]);
+
+            return $this->redirect($url);
+        }
         return $this->render('customer/show.html.twig', [
             'customer' => $customer,
+             'strategy_digitals' => $customer->getStrategyDigitals(),
+            'form' => $form->createView(),
+            'formPassworld' => $formPassword->createView(),
+            'formUser' => $formUser->createView(),
+            'user' => $customer->getCompte(),
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'],['Mes Strategies Digital', '#strategie']],
         ]);
     }
 

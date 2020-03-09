@@ -1,10 +1,24 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Documentaire index{% endblock %}
-
-{% block body %}
-    <h1>Documentaire index</h1>
-
+{% block title %}Documentaire{% endblock %}
+{% block page_title %} Documentaire {% endblock %}
+{% block page_subtitle %} list {% endblock %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class="btn btn-success btn-sm" href="{{ path('documentaire_new') }}" data-toggle="tooltip" data-placement="top" title="create documentaire"><i class="fa fa-plus"></i></a>
+                <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i></a>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_before %}{% endblock %}
+                {% block box_body %}
     <table class="table">
         <thead>
             <tr>
@@ -30,6 +44,9 @@
         {% endfor %}
         </tbody>
     </table>
+                {% endblock %}
 
+        {% block box_after %}{% endblock %}
+    {% endembed %}
     <a href="{{ path('documentaire_new') }}">Create new</a>
 {% endblock %}
