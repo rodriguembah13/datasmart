@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Documentaire{% endblock %}
-
-{% block body %}
-    <h1>Edit Documentaire</h1>
+{% block page_title %} Documentaire {% endblock %}
+{% block page_subtitle %} edit {% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
 
     {{ include('documentaire/_form.html.twig', {'button_label': 'Update'}) }}
+        {% endblock %}
+        {% block box_footer %}
 
-    <a href="{{ path('documentaire_index') }}">back to list</a>
+        {% endblock %}
 
-    {{ include('documentaire/_delete_form.html.twig') }}
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+    <a class="btn btn-warning" href="{{ path('documentaire_index') }}" data-toggle="tooltip" data-placement="top"
+       title="Back documentaire"><i class="fa fa-arrow-left"></i></a>
 {% endblock %}

@@ -23,6 +23,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Step</th>
                 <th>Libelle</th>
                 <th>actions</th>
             </tr>
@@ -31,10 +32,14 @@
         {% for documentaire in documentaires %}
             <tr>
                 <td>{{ documentaire.id }}</td>
+                <td>{{ documentaire.step }}</td>
                 <td>{{ documentaire.libelle }}</td>
                 <td>
-                    <a href="{{ path('documentaire_show', {'id': documentaire.id}) }}">show</a>
-                    <a href="{{ path('documentaire_edit', {'id': documentaire.id}) }}">edit</a>
+                    <div class="btn-group">
+{#                        <a class="btn btn-info btn-sm" href="{{ path('documentaire_show', {'id': documentaire.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>#}
+                        <a class="btn btn-warning btn-sm" href="{{ path('documentaire_edit', {'id': documentaire.id}) }}" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm" href="#" data-toggle="tooltip" data-placement="top" title="delete"><i class="fa fa-trash-alt"></i></a>
+                    </div>
                 </td>
             </tr>
         {% else %}
@@ -48,5 +53,4 @@
 
         {% block box_after %}{% endblock %}
     {% endembed %}
-    <a href="{{ path('documentaire_new') }}">Create new</a>
 {% endblock %}

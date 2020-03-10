@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Form\FormDemoModelType;
+use App\Repository\CustomerUserRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -44,9 +45,10 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", defaults={}, name="homepage")
      */
-    public function index(UserRepository $userRepository)
+    public function index(UserRepository $userRepository,CustomerUserRepository $customerUserRepository)
     {
         $users = $userRepository->findAll();
+        //$usersCustomer=
         //$count = count($items);
         $arrayDepartementts_code = [];
         $arrayDepartementts_effectifs = [];
@@ -106,19 +108,23 @@ class DefaultController extends AbstractController
             return $this->render('default/index.html.twig', [
         //  'nbemp' => $count,
         'nbusers' => count($users),
-                'user'=>'employee'
+                'user' => 'employee',
         //'nbdepartements' => count($departements),
         // 'precences' => count($presences), 'chart' => $ob,
     ]);
-        } else {
+        } elseif ($this->security->isGranted('ROLE_CUSTOMER')) {
             return $this->render('default/index.html.twig', [
-        //  'nbemp' => $count,
          'nbusers' => count($this->getUser()->getCustomer()->getCustomerUsers()),
                 'nbStrategies' => count($this->getUser()->getCustomer()->getStrategyDigitals()),
-        'user'=>'customer'
-        //'nbdepartements' => count($departements),
-        // 'precences' => count($presences), 'chart' => $ob,
+        'user' => 'customer',
     ]);
+        } else {
+            $userCustomer=$customerUserRepository->findBy(['createdBy'=>$this->getUser()->getCustomerUser()->getCreatedBy()]);
+            return $this->render('default/index.html.twig', [
+                'nbusers' => count($this->getUser()->getCustomerUser()->getCreatedBy()->getCustomerUsers()),
+                'nbStrategies' => count($this->getUser()->getCustomerUser()->getCreatedBy()->getStrategyDigitals()),
+                'user' => 'customer',
+            ]);
         }
     }
 

@@ -5,17 +5,14 @@
 {% block page_subtitle %} {{stepStrategy}} {% endblock %}
 {% block page_content %}
     <br>
+    {% for doc in documentaires %}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
-        {% block box_title %}Dashboard{% endblock %}
+        {% block box_title %}{{ doc.libelle }}{% endblock %}
         {% block box_body %}
-
+{{ doc.libelle }}
         {% endblock %}
-        {% block box_footer %}
-
-        {% endblock %}
-
-        {% block box_after %}{% endblock %}
     {% endembed %}
+    {% endfor %}
     <a class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
 {% endblock %}

@@ -58,6 +58,7 @@ class DocumentaireController extends AbstractController
             'documentaire' => $documentaire,
         ]);
     }
+
     /**
      * @Route("/{id}/doc", name="documentaire_read", methods={"GET"})
      */
@@ -65,9 +66,10 @@ class DocumentaireController extends AbstractController
     {
         return $this->render('documentaire/show.html.twig', [
             'documentaires' => $stepStrategy->getStep()->getDocumentaires(),
-            'stepStrategy'=>$stepStrategy,
+            'stepStrategy' => $stepStrategy,
         ]);
     }
+
     /**
      * @Route("/{id}/edit", name="documentaire_edit", methods={"GET","POST"})
      */

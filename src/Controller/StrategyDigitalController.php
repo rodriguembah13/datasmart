@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/strategy/digital")
@@ -29,13 +30,18 @@ class StrategyDigitalController extends AbstractController
  * @var StepRepository
  */
     private $stepRepository;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $security;
 
     /**
      * StrategyDigitalController constructor.
      */
-    public function __construct(StepRepository $stepRepository)
+    public function __construct(StepRepository $stepRepository, AuthorizationCheckerInterface $security)
     {
         $this->stepRepository = $stepRepository;
+        $this->security = $security;
     }
 
     /**
@@ -43,9 +49,17 @@ class StrategyDigitalController extends AbstractController
      */
     public function index(StrategyDigitalRepository $strategyDigitalRepository): Response
     {
-        return $this->render('strategy_digital/index.html.twig', [
-            'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomer()]),
-        ]);
+        if ($this->security->isGranted('ROLE_CUSTOMER')) {
+            return $this->render('strategy_digital/index.html.twig', [
+                'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomer()]),
+                'user' => 'customer',
+            ]);
+        } elseif ($this->security->isGranted('ROLE_USER')) {
+            return $this->render('strategy_digital/index.html.twig', [
+                'strategy_digitals' => $strategyDigitalRepository->findBy(['createBy' => $this->getUser()->getCustomerUser()->getCreatedBy()]),
+                'user' => 'customerUser',
+            ]);
+        }
     }
 
     /**
@@ -121,7 +135,7 @@ class StrategyDigitalController extends AbstractController
             $entityManager->persist($stepStrategy);
             //$response->setStepStrategy($stepStrategy);
             $this->createImplementation($stepStrategy);
-           /// $entityManager->persist($response);
+            /// $entityManager->persist($response);
         }
         $entityManager->flush();
     }
