@@ -10,8 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/members/step")
+ * @Security("is_granted('view_project')")
  */
 class MembersStepController extends AbstractController
 {
@@ -27,6 +29,7 @@ class MembersStepController extends AbstractController
 
     /**
      * @Route("/new", name="members_step_new", methods={"GET","POST"})
+     * @Security("is_granted('create_project')")
      */
     public function new(Request $request): Response
     {
@@ -50,6 +53,7 @@ class MembersStepController extends AbstractController
 
     /**
      * @Route("/{id}", name="members_step_show", methods={"GET"})
+     * @Security("is_granted('create_project')")
      */
     public function show(MembersStep $membersStep): Response
     {
@@ -60,6 +64,7 @@ class MembersStepController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="members_step_edit", methods={"GET","POST"})
+     * @Security("is_granted('create_project')")
      */
     public function edit(Request $request, MembersStep $membersStep): Response
     {

@@ -5,8 +5,13 @@
 {% block page_content %}
     <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': implObjectif.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
     <br>
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
+        'boxtype' : 'danger',
+        'solid' : 0,
+        'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+    }%}
         {% block box_before %}{% endblock %}
+        {% block box_title %}  {% endblock %}
         {% block box_body %}
             {{ form_start(form) }}
             <div class="col-md-6">
@@ -31,8 +36,13 @@
     {% endembed %}
     {% if state=="edit" %}
         <span id="id_step" class="hidden">{{ implObjectif.id }}</span>
-        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'success',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        }%}
             {% block box_before %}{% endblock %}
+            {% block box_title %}  {% endblock %}
             {% block box_body %}
                 <div id="form1">
 
@@ -40,7 +50,11 @@
             {% endblock %}
         {% endembed %}
         <br>
-        {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
+            'boxtype' : 'primary',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        }%}
             {% block box_title %} Les Objectifs Marketing {% endblock %}
             {% block box_body %}
                 <table class="table">
@@ -77,7 +91,7 @@
             {% endblock %}
         {% endembed %}
     {% endif %}
-    <a href="{{ path('employee_index') }}">back to list</a>
+
     <div id="modal-delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

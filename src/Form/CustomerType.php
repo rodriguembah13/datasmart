@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Customer;
+use App\Entity\Employee;
 use App\Security\RoleService;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,7 +44,12 @@ class CustomerType extends AbstractType
             ->add('company')
             ->add('address')
             ->add('telephone')
-            //->add('registeredAt')
+            ->add('coachs', EntityType::class, [
+                'class' => Employee::class,
+                'placeholder' => 'Select coach',
+                'multiple' => true,
+                'attr' => ['class' => 'selectpicker', 'data-size' => 10, 'data-live-search' => true],
+            ])
            // ->add('createdBy')
             //->add('compte', new UserType($this->roles))
         ;

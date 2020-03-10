@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\MembersStep;
 use App\Entity\StepStrategy;
+use App\Entity\StrategyDigital;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -22,19 +24,19 @@ class StepStrategyRepository extends ServiceEntityRepository
     // /**
     //  * @return StepStrategy[] Returns an array of StepStrategy objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByUser(StrategyDigital $strategyDigital,MembersStep $membersStep)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $membersStep)
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?StepStrategy

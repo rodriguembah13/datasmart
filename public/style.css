@@ -237,25 +237,7 @@ Basic Style
     /* steps already visited */
     color: #96c03d;
 }
-.cd-breadcrumb.custom-separator li::after, .cd-multi-steps.custom-separator li::after {
-    /* replace the default arrow separator with a custom icon */
-    content: '';
-    height: 16px;
-    width: 16px;
-    background: url(../img/cd-custom-separator.svg) no-repeat center center;
-    vertical-align: middle;
-}
-.cd-breadcrumb.custom-icons li > *::before, .cd-multi-steps.custom-icons li > *::before {
-    /* add a custom icon before each item */
-    content: '';
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    margin-right: .4em;
-    margin-top: -2px;
-    background: url(../img/cd-custom-icons-01.svg) no-repeat 0 0;
-    vertical-align: middle;
-}
+
 .cd-breadcrumb.custom-icons li:not(.current):nth-of-type(2) > *::before, .cd-multi-steps.custom-icons li:not(.current):nth-of-type(2) > *::before {
     /* change custom icon using image sprites */
     background-position: -20px 0;

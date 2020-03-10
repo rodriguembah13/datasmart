@@ -1,6 +1,7 @@
 require('../vendor/kevinpapst/adminlte-bundle/Resources/assets/admin-lte');
 require('admin-lte/dist/css/AdminLTE.min.css');
 require('./css/app.scss');
+require('../public/style.css');
 require('@fortawesome/fontawesome-free');
 global.$.AdminLTE={};
 global.$.AdminLTE.options={};

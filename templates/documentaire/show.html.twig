@@ -6,7 +6,11 @@
 {% block page_content %}
     <br>
     {% for doc in documentaires %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' with {
+        'boxtype' : 'success',
+        'solid' : 0,
+        'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+    } %}
         {% block box_before %}{% endblock %}
         {% block box_title %}{{ doc.libelle }}{% endblock %}
         {% block box_body %}

@@ -12,7 +12,9 @@ use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
 use App\Form\StrategyDigitalEditType;
 use App\Form\StrategyDigitalType;
+use App\Repository\MembersStepRepository;
 use App\Repository\StepRepository;
+use App\Repository\StepStrategyRepository;
 use App\Repository\StrategyDigitalRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,9 +69,23 @@ class StrategyDigitalController extends AbstractController
      */
     public function index_admin(StrategyDigitalRepository $strategyDigitalRepository): Response
     {
-        return $this->render('strategy_digital/index.html.twig', [
-            'strategy_digitals' => $strategyDigitalRepository->findAll(),
-        ]);
+        if ($this->security->isGranted(['ROLE_COACH'])) {
+            $existings = [];
+            foreach ($this->getUser()->getEmployee()->getCustomersCoach() as $customersCoach) {
+                $strategysBycustomer = $strategyDigitalRepository->findBy(['createBy' => $customersCoach]);
+                foreach ($strategysBycustomer as $strategy) {
+                    $existings[] = $strategy;
+                }
+            }
+
+            return $this->render('strategy_digital/index.html.twig', [
+                'strategy_digitals' => $existings,
+            ]);
+        } else {
+            return $this->render('strategy_digital/index.html.twig', [
+                'strategy_digitals' => $strategyDigitalRepository->findAll(),
+            ]);
+        }
     }
 
     /**
@@ -170,12 +186,29 @@ class StrategyDigitalController extends AbstractController
     /**
      * @Route("/{id}", name="strategy_digital_show", methods={"GET"})
      */
-    public function show(StrategyDigital $strategyDigital): Response
+    public function show(StrategyDigital $strategyDigital, StepStrategyRepository $stepStrategyRepository, MembersStepRepository $membersStepRepository): Response
     {
-        return $this->render('strategy_digital/show.html.twig', [
-            'strategy_digital' => $strategyDigital,
-            'step_strategies' => $strategyDigital->getStepStrategies(),
-        ]);
+        if ($this->security->isGranted('ROLE_CUSTOMER')) {
+            return $this->render('strategy_digital/show.html.twig', [
+                'step_strategies' => $stepStrategyRepository->findBy(['strategy' => $strategyDigital]),
+                'strategy_digital' => $strategyDigital,
+            ]);
+        } elseif ($this->security->isGranted('ROLE_USER')) {
+            $members = $membersStepRepository->findByCustomer($strategyDigital, $this->getUser()->getCustomerUser());
+            $existing = [];
+            foreach ($members as $step) {
+                $existing[] = $step->getStepStrategy();
+            }
+
+            return $this->render('strategy_digital/show.html.twig', [
+                'step_strategies' => $existing,
+                'strategy_digital' => $strategyDigital,
+            ]);
+        }
+        /* return $this->render('strategy_digital/show.html.twig', [
+             'strategy_digital' => $strategyDigital,
+             'step_strategies' => $strategyDigital->getStepStrategies(),
+         ]);*/
     }
 
     /**

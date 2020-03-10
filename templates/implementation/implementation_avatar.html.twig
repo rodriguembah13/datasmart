@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block title %}implementation {% endblock %}
 {% block page_title %} implementation {% endblock %}
-{% block page_subtitle %} {{ cible.implementation }} {% endblock %}
+{% block page_subtitle %} {{ avatar.implementation }} {% endblock %}
 {% block page_content %}
     <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': avatar.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
     <br>
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
+        'boxtype' : 'success',
+        'solid' : 0,
+        'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+    }%}
         {% block box_before %}{% endblock %}
         {% block box_body %}
             {{ form_start(form) }}
@@ -19,7 +23,11 @@
         {% endblock %}
 
     {% endembed %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
+        'boxtype' : 'success',
+        'solid' : 0,
+        'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+    }%}
         {% block box_before %}{% endblock %}
         {% block box_body %}
             <table class="table">

@@ -5,7 +5,12 @@
 {% block page_subtitle %} {{strategy_digital}} {% endblock %}
 {% block page_content %}
     <br>
-{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+{% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+    'boxtype' : 'danger',
+    'solid' : 0,
+    'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+}
+%}
         {% block box_before %}{% endblock %}
     {% block box_title %}Dashboard{% endblock %}
         {% block box_body %}
@@ -17,7 +22,12 @@
 
     {% block box_after %}{% endblock %}
 {% endembed %}
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+        'boxtype' : 'success',
+        'solid' : 1,
+        'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+    }%}
+        {% block box_title %}Steps{% endblock %}
         {% block box_body %}
             <table class="table">
                 <thead>

@@ -8,13 +8,15 @@ use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
 use App\Form\MembersStepType;
 use App\Form\StepStrategyType;
+use App\Repository\MembersStepRepository;
 use App\Repository\StepStrategyRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/step/strategy")
@@ -22,6 +24,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class StepStrategyController extends AbstractController
 {
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $security;
+
+    public function __construct(AuthorizationCheckerInterface $security)
+    {
+        $this->security = $security;
+    }
+
     /**
      * @Route("/", name="step_strategy_index", methods={"GET"})
      */
@@ -35,15 +47,29 @@ class StepStrategyController extends AbstractController
     /**
      * @Route("/{id}/list", name="step_strategy_index2", methods={"GET"})
      */
-    public function indexByStrategy(StrategyDigital $strategyDigital, StepStrategyRepository $stepStrategyRepository): Response
+    public function indexByStrategy(StrategyDigital $strategyDigital, StepStrategyRepository $stepStrategyRepository, MembersStepRepository $membersStepRepository): Response
     {
-        return $this->render('step_strategy/index.html.twig', [
-            'step_strategies' => $stepStrategyRepository->findBy(['strategy' => $strategyDigital]),
-        ]);
+        // $stepsCustomer = $stepStrategyRepository->findBy(['strategy' => $strategyDigital]);
+        if ($this->security->isGranted('ROLE_CUSTOMER')) {
+            return $this->render('step_strategy/index.html.twig', [
+                'step_strategies' => $stepStrategyRepository->findBy(['strategy' => $strategyDigital]),
+            ]);
+        } elseif ($this->security->isGranted('ROLE_USER')) {
+            $members = $membersStepRepository->findByCustomer($strategyDigital, $this->getUser()->getCustomerUser());
+            $existing = [];
+            foreach ($members as $step) {
+                $existing[] = $step->getStepStrategy();
+            }
+
+            return $this->render('step_strategy/index.html.twig', [
+                'step_strategies' => $existing,
+            ]);
+        }
     }
 
     /**
      * @Route("/{id}/menber", name="step_strategy_member", methods={"GET","POST"})
+     * @Security("is_granted('create_step')")
      */
     public function assignMembers(Request $request, StepStrategy $stepStrategy): Response
     {

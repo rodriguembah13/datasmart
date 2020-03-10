@@ -7,7 +7,6 @@
                 {% block box_body %}
     {{ include('employee/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('employee_index') }}">back to list</a>
                 {% endblock %}
     {% block box_footer %}
 
@@ -15,5 +14,6 @@
 
     {% block box_after %}{% endblock %}
 {% endembed %}
-    {{ include('employee/_delete_form.html.twig') }}
+    <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('employee_index') }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+
 {% endblock %}

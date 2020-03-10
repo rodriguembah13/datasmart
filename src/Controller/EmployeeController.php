@@ -52,7 +52,7 @@ class EmployeeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="employee_show", methods={"GET"})
+     * @Route("/{id}", name="employee_show", methods={"GET","POST"})
      */
     public function show(Request $request, Employee $employee): Response
     {$form = $this->createForm(EmployeeType::class, $employee);

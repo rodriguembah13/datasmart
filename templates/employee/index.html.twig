@@ -26,7 +26,7 @@
                 <th>IsCoach</th>
                 <th>Name</th>
                 <th>Value</th>
-                <th>Visible</th>
+                <th>Customers</th>
                 <th>RegisteredAt</th>
                 <th>actions</th>
             </tr>
@@ -38,7 +38,11 @@
                 <td>{{ employee.isCoach ? 'Yes' : 'No' }}</td>
                 <td>{{ employee.name }}</td>
                 <td>{{ employee.value }}</td>
-                <td>{{ employee.visible ? 'Yes' : 'No' }}</td>
+                <td>
+                    {% for member in employee.customersCoach %}
+                        <span class="label label-default">{{ member }}</span>
+                    {% endfor %}
+                </td>
                 <td>{{ employee.registeredAt ? employee.registeredAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <div class="btn-group">
