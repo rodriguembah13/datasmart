@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CibleAvatar;
 use App\Entity\ImplAvatar;
+use App\Entity\ImplDefault;
 use App\Entity\Implementation;
 use App\Entity\ImplPlanning;
 use App\Entity\Planning;
@@ -80,7 +81,7 @@ class ImplementationController extends AbstractController
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
         } else {
-            $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+            $url = $this->generateUrl('implementation_new_default', ['id' => $stepStrategy->getImplementation()->getId()]);
         }
 
         return $this->redirect($url);
@@ -137,6 +138,32 @@ class ImplementationController extends AbstractController
             'planning' => $implementation,
             'plannings' => $plannings,
             'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/{id}/default/new", name="implementation_new_default", methods={"GET","POST"})
+     */
+    public function newDefault(Implementation $implementation, Request $request): Response
+    {
+       // $cible = new CibleAvatar();
+        //$implementation = new Implementation();
+        $form = $this->createForm(ImplementationType::class, $implementation);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+           // $cible->setImplAvatar($implementation);
+           // $entityManager->persist($cible);
+            $entityManager->flush();
+            $url = $this->generateUrl('implementation_new_avatar', ['id' => $implementation->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        return $this->render('implementation/new.html.twig', [
+            'avatar' => $implementation,
+            'form' => $form->createView(),
+           // 'cibles' => $cibleAvatarRepository->findBy(['implAvatar' => $implementation]),
         ]);
     }
 

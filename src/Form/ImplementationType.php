@@ -14,8 +14,6 @@ class ImplementationType extends AbstractType
         $builder
             ->add('reference')
             ->add('stepStrategy')
-            ->add('implPlanning')
-            ->add('implObjectif')
         ;
     }
 

@@ -58,7 +58,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
 
         $menu->addChild(
             'customer_user',
-            ['route' => 'customer_user_index', 'label' => 'Customer User', 'childOptions' => $event->getChildOptions()]
+            ['route' => 'customer_user_index', 'label' => 'Users', 'childOptions' => $event->getChildOptions()]
         )->setLabelAttribute('icon', 'fa fa-users');
         $menu->addChild(
             'strategy_digital',

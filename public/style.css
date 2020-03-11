@@ -11,6 +11,19 @@ body.login-page .login-logo {
 /*.nametd{
     width: 300px;
 }*/
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > p {
+    margin: 10px 0 0 45px;
+}
+.content-header {
+    padding: 15px 15px 10px 15px;
+    border-bottom: 1px solid
+    #dee2e6;
+    z-index: 1034;
+}
+.skin-blue .content-header {
+    background:
+            white;
+}
 .skin-blue .sidebar-menu > li.header {
     color: beige;
     background: #1a2226;
