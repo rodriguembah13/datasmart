@@ -53,6 +53,10 @@ class CommentController extends AbstractController
      */
     public function show(Comment $comment): Response
     {
+        $comment->setStatus(true);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($comment);
+        $entityManager->flush();
         return $this->render('comment/show.html.twig', [
             'comment' => $comment,
         ]);

@@ -69,7 +69,11 @@ class StrategyDigitalController extends AbstractController
      */
     public function index_admin(StrategyDigitalRepository $strategyDigitalRepository): Response
     {
-        if ($this->security->isGranted(['ROLE_COACH'])) {
+        if ($this->security->isGranted(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'])) {
+            return $this->render('strategy_digital/index.html.twig', [
+                'strategy_digitals' => $strategyDigitalRepository->findAll(),
+            ]);
+        } elseif ($this->security->isGranted(['ROLE_COACH'])) {
             $existings = [];
             foreach ($this->getUser()->getEmployee()->getCustomersCoach() as $customersCoach) {
                 $strategysBycustomer = $strategyDigitalRepository->findBy(['createBy' => $customersCoach]);
@@ -80,10 +84,6 @@ class StrategyDigitalController extends AbstractController
 
             return $this->render('strategy_digital/index.html.twig', [
                 'strategy_digitals' => $existings,
-            ]);
-        } else {
-            return $this->render('strategy_digital/index.html.twig', [
-                'strategy_digitals' => $strategyDigitalRepository->findAll(),
             ]);
         }
     }

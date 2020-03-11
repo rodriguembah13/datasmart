@@ -47,9 +47,58 @@
         {% endblock %}
     {% endembed %}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_before %} <a  class="btn btn-default btn-sm" href="#"><i class="fa fa-download"></i>add Comment</a>{% endblock %}
+        {% block box_before %} <a  class="btn btn-default btn-sm" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-send"></i>add Comment</a>{% endblock %}
         {% block box_body %}
-
+{% for comment in implementation.implementation.stepStrategy.comments %}
+    <div class="direct-chat-msg">
+        <div class="direct-chat-infos clearfix">
+            <span class="direct-chat-name float-left">{{ comment.employee }}</span>
+            <span class="direct-chat-timestamp float-right">{{comment.createdAt|date('y-m-d h:m')}}</span>
+        </div>
+        {% if comment.employee.compte.imageFilename is defined and comment.employee.compte.imageFilename  is not null %}
+            <img id="img_emp" class="col-md-5 img img-responsive img-thumbnail"style="height: 75px;"
+                 src="{{ asset('uploads/' ~ comment.employee.compte.imageFilename) }}" title="{{ comment.employee.compte.username }}"
+                 alt="My image">
+        {% else %}  <img id="img_emp" class="direct-chat-img"
+                         src="{{ asset('bundles/adminlte/images/default_avatar.png') }}" title="{{ comment.employee.compte.username }}"
+                         alt="My image">
+        {% endif %}
+        <!-- /.direct-chat-img -->
+        <div class="direct-chat-text">
+            {{comment.libelle}}
+        </div>
+        <!-- /.direct-chat-text -->
+    </div>
+            {% endfor %}
         {% endblock %}
     {% endembed %}
+    <div id="modal-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Comment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{ form_start(form) }}  <div class="modal-body">
+
+                    {{ form_widget(form) }}
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">
+                        <span class="btn-label">cancel</span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" id="modal-delete-button">
+                        <i class="fa fa-share-alt"></i>
+                        <span class="btn-label">Send</span>
+                    </button>
+
+                </div>{{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

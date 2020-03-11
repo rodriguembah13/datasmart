@@ -1,5 +1,5 @@
 {% form_theme form '@AdminLTE/layout/form-theme-horizontal.html.twig' %}
-{{ form_start(formComment) }}{{  form_row(formComment.libelle) }}
+{{ form_start(form) }}{{  form_row(form.libelle) }}
 <button class="btn btn-primary pull-left">{{ button_label|default('Save') }}</button>
 {#<div class="row">
 <div class="col-md-9">
@@ -9,4 +9,4 @@
 
 </div>
 </div>#}
-{{ form_end(formComment) }}
+{{ form_end(form) }}

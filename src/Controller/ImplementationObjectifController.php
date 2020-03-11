@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\ImplObjectif;
 use App\Entity\Objectif;
+use App\Form\CommentType;
 use App\Form\ImplObjectifType;
 use App\Repository\ImplObjectifRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,10 +22,27 @@ class ImplementationObjectifController extends AbstractController
     /**
      * @Route("/{id}/view", name="implementation_objectif")
      */
-    public function index(ImplObjectif $implementation)
+    public function index(ImplObjectif $implementation, Request $request)
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
+            $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
+            $comment->setStatus(false);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $url = $this->generateUrl('implementation_objectif', ['id' => $implementation->getId()]);
+            return $this->redirect($url);
+        }
+
         return $this->render('implementation_objectif/index.html.twig', [
             'implementation' => $implementation,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -59,7 +78,7 @@ class ImplementationObjectifController extends AbstractController
     /**
      * @Route("/post/objectif", name="implementation_objectif_post", methods={"GET"})
      */
-    public function postresponse(Request $request,ImplObjectifRepository $implObjectifRepository): JsonResponse
+    public function postresponse(Request $request, ImplObjectifRepository $implObjectifRepository): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $objectif = $request->query->get('objectif');
@@ -87,11 +106,11 @@ class ImplementationObjectifController extends AbstractController
      */
     public function deleteResponseStep(Request $request, Objectif $objectif): JsonResponse
     {
-        $id_strat=$objectif->getImplObjectif()->getId();
+        $id_strat = $objectif->getImplObjectif()->getId();
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($objectif);
         $entityManager->flush();
 
-        return new JsonResponse($id_strat,200);
+        return new JsonResponse($id_strat, 200);
     }
 }

@@ -33,11 +33,26 @@ class Comment
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\StepStrategy", inversedBy="comments")
+     */
+    private $stepStrategy;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer")
+     */
+    private $sendTo;
+
 
 
     public function __construct()
     {
-        $this->response = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -69,18 +84,6 @@ class Comment
         return $this;
     }
 
-    public function getResponse(): ArrayCollection
-    {
-        return $this->response;
-    }
-
-    public function setResponse(?Response $response): self
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->libelle;
@@ -94,6 +97,42 @@ class Comment
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getStepStrategy(): ?StepStrategy
+    {
+        return $this->stepStrategy;
+    }
+
+    public function setStepStrategy(?StepStrategy $stepStrategy): self
+    {
+        $this->stepStrategy = $stepStrategy;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSendTo(): ?Customer
+    {
+        return $this->sendTo;
+    }
+
+    public function setSendTo(?Customer $sendTo): self
+    {
+        $this->sendTo = $sendTo;
 
         return $this;
     }

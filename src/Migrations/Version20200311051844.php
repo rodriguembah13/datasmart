@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200309120014 extends AbstractMigration
+final class Version20200311051844 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,9 @@ final class Version20200309120014 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE cible_avatar (id INT AUTO_INCREMENT NOT NULL, question VARCHAR(255) DEFAULT NULL, answer VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE impl_avatar DROP question, DROP answer');
+        $this->addSql('ALTER TABLE comment ADD send_to_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526C59574F23 FOREIGN KEY (send_to_id) REFERENCES customer (id)');
+        $this->addSql('CREATE INDEX IDX_9474526C59574F23 ON comment (send_to_id)');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +32,8 @@ final class Version20200309120014 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE cible_avatar');
-        $this->addSql('ALTER TABLE impl_avatar ADD question VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, ADD answer VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526C59574F23');
+        $this->addSql('DROP INDEX IDX_9474526C59574F23 ON comment');
+        $this->addSql('ALTER TABLE comment DROP send_to_id');
     }
 }
