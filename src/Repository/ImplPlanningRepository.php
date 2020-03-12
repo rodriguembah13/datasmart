@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ImplPlanning;
+use App\Entity\StrategyDigital;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -22,19 +23,19 @@ class ImplPlanningRepository extends ServiceEntityRepository
     // /**
     //  * @return ImplPlanning[] Returns an array of ImplPlanning objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByStrategy(StrategyDigital $strategyDigital)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->leftJoin('implentation', 'impl')
+            ->andWhere('impl.stepStrategy.strategy = :val')
+            ->setParameter('val', $strategyDigital)
             ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?ImplPlanning

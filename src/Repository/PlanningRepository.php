@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Planning;
+use App\Entity\StrategyDigital;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -18,25 +19,29 @@ class PlanningRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Planning::class);
     }
-public function findMinDate(){
+
+    public function findMinDate()
+    {
         //return $this->cre
-}
+    }
+
     // /**
     //  * @return Planning[] Returns an array of Planning objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByStrategy(StrategyDigital $strategyDigital)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->leftJoin('p.stepStrategy', 'step')
+            ->addSelect('step')
+            ->andWhere('step.strategy = :val')
+            ->setParameter('val', $strategyDigital)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Planning

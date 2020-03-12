@@ -10,7 +10,10 @@
 namespace App\Controller;
 
 use App\Form\FormDemoModelType;
+use App\Repository\CustomerRepository;
 use App\Repository\CustomerUserRepository;
+use App\Repository\EmployeeRepository;
+use App\Repository\StrategyDigitalRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
@@ -36,16 +39,22 @@ class DefaultController extends AbstractController
      * @var AuthorizationCheckerInterface
      */
     private $security;
+    private $strategyRepository;
+    private $employeeRepository;
+    private $customerRepository;
 
-    public function __construct(AuthorizationCheckerInterface $security)
+    public function __construct(AuthorizationCheckerInterface $security,CustomerRepository $customerRepository, EmployeeRepository $employeeRepository, StrategyDigitalRepository $strategyDigitalRepository)
     {
         $this->security = $security;
+        $this->strategyRepository = $strategyDigitalRepository;
+        $this->employeeRepository = $employeeRepository;
+        $this->customerRepository=$customerRepository;
     }
 
     /**
      * @Route("/", defaults={}, name="homepage")
      */
-    public function index(UserRepository $userRepository,CustomerUserRepository $customerUserRepository)
+    public function index(UserRepository $userRepository, CustomerUserRepository $customerUserRepository)
     {
         $users = $userRepository->findAll();
         //$usersCustomer=
@@ -58,14 +67,14 @@ class DefaultController extends AbstractController
                 'type' => 'column',
                 'color' => '#4572A7',
                 'yAxis' => 1,
-              //  'data' => [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                //  'data' => [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
                 'data' => $arrayDepartementts_effectifs,
             ],
         ];
         $yData = [
             [
                 'labels' => [
-                   // 'formatter' => new Expr('function () { return this.value + " degrees C" }'),
+                    // 'formatter' => new Expr('function () { return this.value + " degrees C" }'),
                     'style' => ['color' => '#AA4643'],
                 ],
                 'title' => [
@@ -74,9 +83,9 @@ class DefaultController extends AbstractController
                 ],
                 'opposite' => true,
             ],
-          [
+            [
                 'labels' => [
-                   // 'formatter' => new Expr('function () { return this.value + " mm" }'),
+                    // 'formatter' => new Expr('function () { return this.value + " mm" }'),
                     'style' => ['color' => '#4572A7'],
                 ],
                 'gridLineWidth' => 0,
@@ -104,22 +113,24 @@ class DefaultController extends AbstractController
                  }');
             $ob->tooltip->formatter($formatter);*/
         $ob->series($series);
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        if ($this->security->isGranted(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])) {
             return $this->render('default/index.html.twig', [
-        //  'nbemp' => $count,
-        'nbusers' => count($users),
+                //  'nbemp' => $count,
+                'nbusers' => count($users),
                 'user' => 'employee',
-        //'nbdepartements' => count($departements),
-        // 'precences' => count($presences), 'chart' => $ob,
-    ]);
+                'nbStrategies' => count($this->strategyRepository->findAll()),
+                'employees' => count($this->employeeRepository->findAll()),
+                'customers' => count($this->customerRepository->findAll()), 'chart' => $ob,
+            ]);
         } elseif ($this->security->isGranted('ROLE_CUSTOMER')) {
             return $this->render('default/index.html.twig', [
-         'nbusers' => count($this->getUser()->getCustomer()->getCustomerUsers()),
+                'nbusers' => count($this->getUser()->getCustomer()->getCustomerUsers()),
                 'nbStrategies' => count($this->getUser()->getCustomer()->getStrategyDigitals()),
-        'user' => 'customer',
-    ]);
+                'user' => 'customer',
+            ]);
         } else {
-            $userCustomer=$customerUserRepository->findBy(['createdBy'=>$this->getUser()->getCustomerUser()->getCreatedBy()]);
+            $userCustomer = $customerUserRepository->findBy(['createdBy' => $this->getUser()->getCustomerUser()->getCreatedBy()]);
+
             return $this->render('default/index.html.twig', [
                 'nbusers' => count($this->getUser()->getCustomerUser()->getCreatedBy()->getCustomerUsers()),
                 'nbStrategies' => count($this->getUser()->getCustomerUser()->getCreatedBy()->getStrategyDigitals()),
@@ -139,10 +150,10 @@ class DefaultController extends AbstractController
 
         return $this->render('default/config.html.twig', [
             'users' => $pagination,
-           /* 'nbholydays' => count($holidayRepository->findByBetweenDate('2020-01-01', '2020-01-31')),
-            'entreprises' => count($entrepriseRepository->findAll()),
-            'currencies' => count($currencyRepository->findAll()),
-            'workdays' => count($workDayRepository->findAll()),*/
+            /* 'nbholydays' => count($holidayRepository->findByBetweenDate('2020-01-01', '2020-01-31')),
+             'entreprises' => count($entrepriseRepository->findAll()),
+             'currencies' => count($currencyRepository->findAll()),
+             'workdays' => count($workDayRepository->findAll()),*/
         ]);
     }
 

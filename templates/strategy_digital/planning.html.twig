@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+  {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('js/gantt/jquery.ganttView.css') }}">
+{% endblock %}
 {% block title %}StrategyDigital{% endblock %}
 {% block page_title %} Planning {% endblock %}
 {% block page_subtitle %} {{ strategy_digital }} {% endblock %}
@@ -7,24 +10,71 @@
 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
     {% block box_before %}{% endblock %}
     {% block box_body %}
-        <div class="table-bordered">
 
-
-        <table class="table">
-        <thead class="bg-aqua">
-        <tr>
-            <th><div class="firstcol"> Semaines</div></th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th>
-            <th>10</th> <th>11</th> <th>12</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-        </table></div>
     {% endblock %}
 {% endembed %}
+    <div id="ganttChart"></div>
+    <span class="hidden" id="id_step">{{ strategy_digital.id }}</span>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    {#<script src="{{asset('js/gantt/data.js')}}"></script>#}
+    <script src="{{asset('js/gantt/date.js')}}"></script>
+    <script src="{{asset('js/gantt/jquery.ganttView.js')}}"></script>
+    <script type="text/javascript">
+        var ganttData=[];
+        $.ajax({
+            url:Routing.generate('strategy_digital_gantt', {id: $('#id_step').text()}),
+            type:"GET",
+            success:function (data) {
+                 ganttData=data ;
+                 $("#ganttChart").ganttView({
+                    data: ganttData,
+                    slideWidth: 800,
+                    behavior: {
+                        onClick: function (data) {
+                            var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                            $("#eventMessage").text(msg);
+                        },
+                        onResize: function (data) {
+                            var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                            $("#eventMessage").text(msg);
+                        },
+                        onDrag: function (data) {
+                            var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                            $("#eventMessage").text(msg);
+                        }
+                    }
+                });
+            },error:function (err) {
+                alert(err)
+            }
+        });   $(function () {
+            //var ganttData;
+
+            /*$("#ganttChart").ganttView({
+                data: ganttData,
+                slideWidth: 800,
+                behavior: {
+                    onClick: function (data) {
+                        var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    },
+                    onResize: function (data) {
+                        var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    },
+                    onDrag: function (data) {
+                        var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    }
+                }
+            });
+*/
+            // $("#ganttChart").ganttView("setSlideWidth", 600);
+        });
+    </script>
 {% endblock %}

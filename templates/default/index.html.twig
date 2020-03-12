@@ -57,7 +57,7 @@
             } %}
 
                 {% block box_text %}Strategie Digitale{% endblock %}
-                {% block box_number %}{% endblock %}
+                {% block box_number %}{{ nbStrategies }}{% endblock %}
                 {% block progress_description %}{% endblock %}
             {% endembed %}
 
@@ -70,7 +70,7 @@
                 'icon'  : 'fas fa-comments',
             } %}
                 {% block box_text %}Customers{% endblock %}
-                {% block box_number %}{% endblock %}
+                {% block box_number %}{{ customers }}{% endblock %}
                 {% block progress_description %}{% endblock %}
             {% endembed %}
         </div>
@@ -82,7 +82,7 @@
                 'icon'  : 'fa fa-users',
             } %}
                 {% block box_text %}Employees{% endblock %}
-                {% block box_number %}{% endblock %}
+                {% block box_number %}{{ employees }}{% endblock %}
                 {% block progress_description %}{% endblock %}
             {% endembed %}
         </div>
@@ -94,7 +94,7 @@
                 'icon'  : 'fa fa-bolt',
             } %}
                 {% block box_text %}Utilisateurs{% endblock %}
-                {% block box_number %}{% endblock %}
+                {% block box_number %}{{ nbusers }}{% endblock %}
                 {% block progress_description %}{% endblock %}
             {% endembed %}
         </div>

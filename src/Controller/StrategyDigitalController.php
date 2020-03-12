@@ -13,11 +13,14 @@ use App\Entity\StrategyDigital;
 use App\Form\StrategyDigitalEditType;
 use App\Form\StrategyDigitalType;
 use App\Repository\MembersStepRepository;
+use App\Repository\PlanningRepository;
 use App\Repository\StepRepository;
 use App\Repository\StepStrategyRepository;
 use App\Repository\StrategyDigitalRepository;
+use App\Util\Model\GanttData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -245,5 +248,40 @@ class StrategyDigitalController extends AbstractController
         }
 
         return $this->redirectToRoute('strategy_digital_index');
+    }
+
+    /**
+     * @Route("/{id}/gantt", name="strategy_digital_gantt", methods={"GET"},options={"expose"=true})
+     */
+    public function postDataGantt(StrategyDigital $strategyDigital, Request $request, PlanningRepository $planningRepository): JsonResponse
+    {
+        $data = [];
+        $steps = $planningRepository->findByStrategy($strategyDigital);
+        foreach ($steps as $step) {
+            $dataModel = new GanttData();
+            $series = [];
+            $dataModel->setName('Planned');
+            $dataModel->setStart(date_format($step->getDateBegin(), 'Y-m-d'));
+            $dataModel->setEnd(date_format($step->getDateEnd(), 'Y-m-d'));
+            $dataModel2 = new GanttData();
+            $dataModel2->setName('Actual');
+            $dataModel2->setStart(date_format($step->getDateBegin(), 'Y-m-d'));
+            $dataModel2->setEnd(new \DateTime('now'));
+
+            $val1 = ['name' => 'planned', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format($step->getDateEnd(), 'Y-m-d')];
+            $val2 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'),"color"=>"#f0f0f0"];
+            $series[] = [
+                $val1, $val2,
+            ];
+            $data[] = [
+                'name' => $step->getStepStrategy()->getStep()->getName(),
+                'series' => [
+                    $val1,$val2
+                ],
+                'id' => $step->getId(),
+            ];
+        }
+
+        return new JsonResponse($data);
     }
 }
