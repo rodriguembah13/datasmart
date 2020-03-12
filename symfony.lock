@@ -493,6 +493,9 @@
             "ref": "f75ac166398e107796ca94cc57fa1edaa06ec47f"
         }
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.0"
+    },
     "symfony/validator": {
         "version": "v4.1.1"
     },
@@ -565,6 +568,9 @@
         "files": [
             "config/routes/calendar.yaml"
         ]
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.3"
     },
     "twig/twig": {
         "version": "v2.4.8"

@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\CibleAvatar;
+use App\Entity\Comment;
 use App\Entity\ImplAvatar;
-use App\Entity\ImplDefault;
 use App\Entity\Implementation;
 use App\Entity\ImplPlanning;
 use App\Entity\Planning;
 use App\Entity\StepStrategy;
 use App\Form\CibleAvatarType;
+use App\Form\CommentType;
 use App\Form\ImplementationType;
 use App\Form\PlanningType;
 use App\Repository\CibleAvatarRepository;
@@ -140,20 +141,21 @@ class ImplementationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/{id}/default/new", name="implementation_new_default", methods={"GET","POST"})
      */
     public function newDefault(Implementation $implementation, Request $request): Response
     {
-       // $cible = new CibleAvatar();
+        // $cible = new CibleAvatar();
         //$implementation = new Implementation();
         $form = $this->createForm(ImplementationType::class, $implementation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-           // $cible->setImplAvatar($implementation);
-           // $entityManager->persist($cible);
+            // $cible->setImplAvatar($implementation);
+            // $entityManager->persist($cible);
             $entityManager->flush();
             $url = $this->generateUrl('implementation_new_avatar', ['id' => $implementation->getId()]);
 
@@ -214,9 +216,9 @@ class ImplementationController extends AbstractController
     }
 
     /**
-     * @Route("/view/{id}", name="implementation_view_planning", methods={"GET"})
+     * @Route("/view/{id}", name="implementation_view_planning", methods={"GET","POST"})
      */
-    public function viewPlanning(ImplPlanning $implementation, EntityManagerInterface $manager, PlanningRepository $planningRepository): Response
+    public function viewPlanning(ImplPlanning $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository): Response
     {
         $max_date = $manager->createQuery("SELECT MAX(p.dateEnd) from App\Entity\Planning p where p.implPlanning =:impl")
                         ->setParameter('impl', $implementation)->getSingleScalarResult();
@@ -224,8 +226,23 @@ class ImplementationController extends AbstractController
             ->setParameter('impl', $implementation)->getSingleScalarResult();
         $dateStart = \DateTime::createFromFormat('y-m-d', $min_date);
         $dateend = \DateTime::createFromFormat('y-m-d', $max_date);
-
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
+            $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
+            $comment->setStatus(false);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $url = $this->generateUrl('implementation_objectif', ['id' => $implementation->getId()]);
+            return $this->redirect($url);
+        }
         return $this->render('implementation/viewPlanning.html.twig', [
+            'form' => $form->createView(),
             'planning' => $implementation,
             'max' => $max_date,
             'min' => $min_date,
@@ -236,14 +253,30 @@ class ImplementationController extends AbstractController
             'diff' => date_create($min_date)->diff(date_create($max_date))->d,
         ]);
     }
-    /**
-     * @Route("/viewAvatar/{id}", name="implementation_view_avatar", methods={"GET"})
-     */
-    public function viewAvatar(ImplAvatar $implementation, EntityManagerInterface $manager, PlanningRepository $planningRepository): Response
-    {
 
+    /**
+     * @Route("/viewAvatar/{id}", name="implementation_view_avatar", methods={"GET","POST"})
+     */
+    public function viewAvatar(ImplAvatar $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
+            $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
+            $comment->setStatus(false);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $url = $this->generateUrl('implementation_view_avatar', ['id' => $implementation->getId()]);
+            return $this->redirect($url);
+        }
         return $this->render('implementation/viewAvatar.html.twig', [
             'cible' => $implementation,
+            'form' => $form->createView(),
         ]);
     }
 

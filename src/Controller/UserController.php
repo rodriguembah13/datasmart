@@ -16,9 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 /**
  * @Route("/user")
+ * @Security("is_granted('view_user')")
  */
 class UserController extends AbstractController
 {
@@ -199,6 +199,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/enable", name="user_enable", methods={"GET"})
+     * @Security("is_granted('delete_user')")
      */
     public function enableuser(Request $request, User $user): Response
     {

@@ -46,8 +46,9 @@
             </div>
         {% endblock %}
     {% endembed %}
+    <a style="margin-bottom: 10px" class="btn btn-danger btn-md" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-send"></i>add Comment</a>
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_before %} <a  class="btn btn-default btn-sm" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-send"></i>add Comment</a>{% endblock %}
+        {% block box_before %} {% endblock %}
         {% block box_body %}
 {% for comment in implementation.implementation.stepStrategy.comments %}
     <div class="direct-chat-msg">

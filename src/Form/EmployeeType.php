@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use App\Entity\Employee;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,14 @@ class EmployeeType extends AbstractType
             ->add('name')
             ->add('value')
             //->add('customersCoach')
-            ->add('visible')
-            ->add('isCoach')
+            ->add('visible', CheckboxType::class, [
+                'required' => false,
+                'label' => false,
+            ])
+            ->add('isCoach', CheckboxType::class, [
+                'required' => false,
+                'label' => false,
+            ])
             /*->add('registeredAt')
             ->add('compte')*/
         ;
