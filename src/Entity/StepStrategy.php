@@ -90,41 +90,6 @@ class StepStrategy
         return $this;
     }
 
-    public function getResponse(): ?Response
-    {
-        return $this->response;
-    }
-
-    public function setResponse(?Response $response): self
-    {
-        $this->response = $response;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newStepStrategy = null === $response ? null : $this;
-        if ($response->getStepStrategy() !== $newStepStrategy) {
-            $response->setStepStrategy($newStepStrategy);
-        }
-
-        return $this;
-    }
-
-    public function getPlanning(): ?PlanningStrategy
-    {
-        return $this->planning;
-    }
-
-    public function setPlanning(PlanningStrategy $planning): self
-    {
-        $this->planning = $planning;
-        // set (or unset) the owning side of the relation if necessary
-        $newStepStrategy = null === $planning ? null : $this;
-        if ($planning->getStepStrategy() !== $newStepStrategy) {
-            $planning->setStepStrategy($newStepStrategy);
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->getStep()->getName();

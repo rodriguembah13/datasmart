@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CibleAvatar;
 use App\Entity\Comment;
+use App\Entity\Employee;
 use App\Entity\ImplAvatar;
 use App\Entity\Implementation;
 use App\Entity\ImplPlanning;
@@ -21,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/implementation")
@@ -133,7 +135,7 @@ class ImplementationController extends AbstractController
 
             return $this->redirect($url);
         }
-        $plannings = $planningRepository->findAll();
+        $plannings = $planningRepository->findByStrategy($implementation->getImplementation()->getStepStrategy()->getStrategy());
 
         return $this->render('implementation/implementation_planning.html.twig', [
             'planning' => $implementation,
@@ -220,37 +222,31 @@ class ImplementationController extends AbstractController
      */
     public function viewPlanning(ImplPlanning $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository): Response
     {
-        $max_date = $manager->createQuery("SELECT MAX(p.dateEnd) from App\Entity\Planning p where p.implPlanning =:impl")
-                        ->setParameter('impl', $implementation)->getSingleScalarResult();
-        $min_date = $manager->createQuery("SELECT MIN(p.dateBegin) from App\Entity\Planning p where p.implPlanning =:impl")
-            ->setParameter('impl', $implementation)->getSingleScalarResult();
-        $dateStart = \DateTime::createFromFormat('y-m-d', $min_date);
-        $dateend = \DateTime::createFromFormat('y-m-d', $max_date);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser()->getEmployee();
+            if (!is_object($user) || !$user instanceof Employee) {
+                throw new AccessDeniedException('This user does not have access to this section.');
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $comment->setCreatedAt(new \DateTime('now'));
-            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setEmployee($user);
             $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
             $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
-            $url = $this->generateUrl('implementation_objectif', ['id' => $implementation->getId()]);
+            $url = $this->generateUrl('implementation_view_planning', ['id' => $implementation->getId()]);
             return $this->redirect($url);
         }
+        $plannings = $planningRepository->findByStrategy($implementation->getImplementation()->getStepStrategy()->getStrategy());
+
         return $this->render('implementation/viewPlanning.html.twig', [
             'form' => $form->createView(),
             'planning' => $implementation,
-            'max' => $max_date,
-            'min' => $min_date,
-            'max_' => date_create($max_date),
-            'min_' => date_create($min_date),
-            'week' => $this->getNumberWeekOfDays(date_create($min_date), date_create($max_date)),
-            'monday' => $this->getNumberMondayOfDays(date_create($min_date), date_create($max_date)),
-            'diff' => date_create($min_date)->diff(date_create($max_date))->d,
+            'plannings' => $plannings,
         ]);
     }
 

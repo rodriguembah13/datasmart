@@ -14,7 +14,7 @@ gest:
       USER: ['view_user','create_user','delete_user','role_permissions']
       EMPLOYEE: ['view_employee','create_employee','delete_employee','role_permissions']
         # some single default definitions for roles
-      SINGLE_USER: ['view_team_member']
+      SINGLE_USER: ['view_step','edit_step','view_project']
       # link above sets to one complete set for each user role
       ROLE_USER: ['@SINGLE_USER']
       ROLE_TEAMLEAD: ['ROLE_TEAMLEAD']

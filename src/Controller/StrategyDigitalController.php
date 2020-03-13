@@ -269,14 +269,54 @@ class StrategyDigitalController extends AbstractController
             $dataModel2->setEnd(new \DateTime('now'));
 
             $val1 = ['name' => 'planned', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format($step->getDateEnd(), 'Y-m-d')];
-            $val2 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'),"color"=>"#f0f0f0"];
+            $val2 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'), 'color' => '#f0f0f0'];
             $series[] = [
                 $val1, $val2,
             ];
             $data[] = [
                 'name' => $step->getStepStrategy()->getStep()->getName(),
                 'series' => [
-                    $val1,$val2
+                    $val1, $val2,
+                ],
+                'id' => $step->getId(),
+            ];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/{id}/ganttview", name="strategy_digital_ganttview", methods={"GET"},options={"expose"=true})
+     */
+    public function postDataGanttView(StrategyDigital $strategyDigital, Request $request, PlanningRepository $planningRepository): JsonResponse
+    {
+        $data = [];
+        $steps = $planningRepository->findByStrategy($strategyDigital);
+        foreach ($steps as $step) {
+            $dataModel = new GanttData();
+            $series = [];
+
+            $val1 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format($step->getDateEnd(), 'Y-m-d'),
+                'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => 'ganttGreen', ];
+            $val2 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format(new \DateTime('now'), 'Y-m-d'),
+                'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => 'ganttRed', ];
+
+            $val3 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'), 'color' => '#f0f0f0'];
+
+            $data[] = [
+                'name' => $step->getStepStrategy()->getStep()->getName(),
+                    'desc' => 'Planned',
+                    'values' => [
+                        $val1,
+                    ],
+                    'id' => $step->getId(),
+                'cssClass'=>'redLabel'
+            ];
+            $data[] = [
+                'name' => "",
+                'desc' => 'Actual',
+                'values' => [
+                    $val2,
                 ],
                 'id' => $step->getId(),
             ];

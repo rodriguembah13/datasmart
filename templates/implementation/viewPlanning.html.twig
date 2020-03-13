@@ -5,27 +5,64 @@
 {% block page_content %}
 <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': planning.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
 <br>
-{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-    {% block box_before %}{% endblock %}
-    {% block box_body %}
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
-                <th>actions</th>
-            </tr>
-            </thead>
-            <tbody>
-{{ min }}:{{ max }} __{{ week }}<br>
-            {{ monday }}__{{ diff }}
-            <br> {{ min_|date('y-m-d') }}
-<br> {{ max_|date('y-m-d') }}
-            </tbody>
-        </table>
-    {% endblock %}
-{% endembed %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Step Strategy </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for planning in plannings %}
+                    <tr>
+                        <td>{{ planning.id }}</td>
+                        <td>{{ planning.dateBegin ? planning.dateBegin|date('Y-m-d') : '' }}</td>
+                        <td>{{ planning.dateEnd ? planning.dateEnd|date('Y-m-d') : '' }}</td>
+                        <td>
+                            {{ planning.stepStrategy }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
+    <a  class="btn btn-danger btn-md" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-carrot"></i>add Comment</a>
+
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_body %}
+            {% for comment in planning.implementation.stepStrategy.comments %}
+                <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-name float-left">{{ comment.employee }}</span>
+                        <span class="direct-chat-timestamp float-right">{{comment.createdAt|date('y-m-d h:m')}}</span>
+                    </div>
+                    {% if comment.employee.compte.imageFilename is defined and comment.employee.compte.imageFilename  is not null %}
+                        <img id="img_emp" class="col-md-5 img img-responsive img-thumbnail"style="height: 75px;"
+                             src="{{ asset('uploads/' ~ comment.employee.compte.imageFilename) }}" title="{{ comment.employee.compte.username }}"
+                             alt="My image">
+                    {% else %}  <img id="img_emp" class="direct-chat-img"
+                                     src="{{ asset('bundles/adminlte/images/default_avatar.png') }}" title="{{ comment.employee.compte.username }}"
+                                     alt="My image">
+                    {% endif %}
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                        {{comment.libelle}}
+                    </div>
+                    <!-- /.direct-chat-text -->
+                </div>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
     <div id="modal-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
