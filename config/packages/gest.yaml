@@ -12,6 +12,7 @@ gest:
       CUSTOMERS_ALL_TEAM: ['view_team_customer','edit_team_customer','comments_team_customer','details_team_customer']
       CUSTOMERS_TEAMLEAD: ['view_teamlead_customer','edit_teamlead_customer','comments_teamlead_customer','details_teamlead_customer']
       USER: ['view_user','create_user','delete_user','role_permissions']
+      EMPLOYEE: ['view_employee','create_employee','delete_employee','role_permissions']
         # some single default definitions for roles
       SINGLE_USER: ['view_team_member']
       # link above sets to one complete set for each user role
@@ -20,7 +21,7 @@ gest:
       ROLE_CUSTOMER: ['ROLE_CUSTOMER','@USER','@PROJECTS','@PROJECT_STEP','@ROLE_USER','@CUSTOMERS_OWN']
       ROLE_COACH: ['ROLE_COACH']
       ROLE_ADMIN: ['ROLE_ADMIN','@USER']
-      ROLE_SUPER_ADMIN: ['ROLE_SUPER_ADMIN','@PROJECTS','@PROJECT_STEP','@CUSTOMERS','@CUSTOMERS_ALL_TEAM','@CUSTOMERS_TEAMLEAD']
+      ROLE_SUPER_ADMIN: ['ROLE_SUPER_ADMIN','@EMPLOYEE','@PROJECTS','@PROJECT_STEP','@CUSTOMERS','@CUSTOMERS_ALL_TEAM','@CUSTOMERS_TEAMLEAD']
         # mapping "sets" or permissions to user roles ("role name" = [array of "set names"])
     maps:
       ROLE_USER: ['ROLE_USER']

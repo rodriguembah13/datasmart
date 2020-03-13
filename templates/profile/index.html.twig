@@ -32,7 +32,8 @@
 
                 {% block box_after %}{% endblock %}
             {% endembed %}
-        </div><div class="col-md-9">
+        </div>
+        <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
                     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
@@ -42,60 +43,75 @@
                                 {% for tab in tabs %}
                                     <li class="nav-item"><a class="nav-link active" href="{{tab[1]}}" data-toggle="tab">{{tab[0]  }}</a></li>
                                 {% endfor %}
-                             {#   <li class="nav-item"><a class="nav-link active" href="#personnelle" data-toggle="tab">information personnelle</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#professionelle" data-toggle="tab">Mon Compte</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#scolaire" data-toggle="tab">Change Password</a></li>#}
                             </ul>
                             <div class="tab-content">
                                 <div class="active tab-pane" id="personnelle">
-                                    <!-- Post -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore the hate as they create awesome
-                                        tools to help create filler text for everyone from bacon lovers
-                                        to Charlie Sheen fans.
-                                    </p>
-                                </div>
-                                <div class="tab-pane" id="professionelle">
-                                    <!-- The timeline -->
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                        Launch demo modal
-                                    </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ...
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                </div>
+                                    {% if personne=="customerUser" %}
+                                    {{ include('customer_user/_form.html.twig', {'button_label': 'Update'}) }}
+                                    {% endif %}
+                                    {% if personne=="customer" %}
+                                        {{ form_start(form) }}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{  form_row(form.name) }}
+                                                {{form_row(form.company) }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{  form_row(form.telephone) }}
+                                                {{  form_row(form.address) }}
                                             </div>
                                         </div>
+                                        {{ form_widget(form) }}
+                                        <div class="pull-right">
+                                            <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                                            <button type="submit" class="btn btn-primary "><i class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
+                                        </div>
+                                        {{ form_end(form) }}
+                                    {% endif %}
+                                    {% if personne=="employee" %}
+                                        {{ form_start(form) }}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{  form_row(form.name) }}
+                                              {#  {{form_row(form.company) }}#}
+                                            </div>
+                                            <div class="col-md-6">
+                                              {#  {{  form_row(form.telephone) }}
+                                                {{  form_row(form.address) }}#}
+                                            </div>
+                                        </div>
+                                        {{ form_widget(form) }}
+                                        <div class="pull-right">
+                                            <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                                            <button type="submit" class="btn btn-primary "><i class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
+                                        </div>
+                                        {{ form_end(form) }}
+                                    {% endif %}
+                                    <br>
+                                </div>
+
+                                {#gestion compte#}
+                                <div class="tab-pane" id="compte">
+                                    <div class="row">
+                                    {{ form_start(formUser) }}
+                                    <div class="col-md-6">
+                                        {{ form_row(formUser.username) }}
+                                        {{ form_row(formUser.email) }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ form_row(formUser.plainPassword) }}
+                                    </div>
+                                    {{ form_widget(formUser) }}
+
+                                    <div class="pull-right">
+                                        <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                                        <button type="submit" class="btn btn-primary "><i class="fa fa-check-square"></i> {{ button_label|default('Save') }}</button>
+                                    </div>
+                                    {{ form_end(form) }}
                                     </div>
                                 </div>
-                                <div class="active tab-pane" id="scolaire">
-                                    <!-- Post -->
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore the hate as they create awesome
-                                        tools to help create filler text for everyone from bacon lovers
-                                        to Charlie Sheen fans.
-                                    </p>
-                                </div>
-                                <div class="active tab-pane" id="experience">
+                                {% if personne != 'employee' %}
+                                <div class="tab-pane" id="strategie">
                                     <table class="table">
                                         <thead>
                                         <tr>
@@ -125,6 +141,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {% endif %}
                             </div>
                         {% endblock %}
 
@@ -132,4 +149,6 @@
                     {% endembed %}
                 </div>
             </div>
+        </div>
+    </div>
 {% endblock %}

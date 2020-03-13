@@ -11,9 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/employee")
+ * @Security("is_granted('view_employee')")
  */
 class EmployeeController extends AbstractController
 {
@@ -29,6 +30,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/new", name="employee_new", methods={"GET","POST"})
+     * @Security("is_granted('create_employee)")
      */
     public function new(Request $request): Response
     {
@@ -53,6 +55,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/{id}", name="employee_show", methods={"GET","POST"})
+     *
      */
     public function show(Request $request, Employee $employee): Response
     {$form = $this->createForm(EmployeeType::class, $employee);
@@ -87,6 +90,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="employee_edit", methods={"GET","POST"})
+     * @Security("is_granted('edit_employee)")
      */
     public function edit(Request $request, Employee $employee): Response
     {
@@ -107,6 +111,7 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/{id}", name="employee_delete", methods={"DELETE"})
+     * @Security("is_granted('delete_employee)")
      */
     public function delete(Request $request, Employee $employee): Response
     {
@@ -114,6 +119,24 @@ class EmployeeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($employee);
             $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('employee_index');
+    }
+    /**
+     * @Route("/{id}/enable", name="employee_enable", methods={"GET"})
+     * @Security("is_granted('edit_employee)")
+     */
+    public function enableuser(Request $request, Employee $employee): Response
+    {
+        if ($employee->isVisible()) {
+            $employee->setVisible(false);
+            $employee->getCompte()->setEnabled(false);
+            $this->getDoctrine()->getManager()->flush();
+        } else {
+            $employee->setVisible(true);
+            $employee->getCompte()->setEnabled(true);
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->redirectToRoute('employee_index');

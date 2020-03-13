@@ -34,7 +34,8 @@
 
             {% block box_after %}{% endblock %}
         {% endembed %}
-    </div><div class="col-md-9">
+    </div>
+    <div class="col-md-9">
         <div class="row">
             <div class="col-md-12">
                 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
@@ -44,10 +45,7 @@
                             {% for tab in tabs %}
                                 <li class="nav-item"><a class="nav-link active" href="{{tab[1]}}" data-toggle="tab">{{tab[0]  }}</a></li>
                             {% endfor %}
-                            {#   <li class="nav-item"><a class="nav-link active" href="#personnelle" data-toggle="tab">information personnelle</a></li>
-                               <li class="nav-item"><a class="nav-link" href="#professionelle" data-toggle="tab">Mon Compte</a></li>
-                               <li class="nav-item"><a class="nav-link" href="#scolaire" data-toggle="tab">Change Password</a></li>#}
-                        </ul>
+                       </ul>
                         <div class="tab-content">
                             <div class="active tab-pane" id="personnelle">
                                 {{ include('customer_user/_form.html.twig', {'button_label': 'Update'}) }}
@@ -109,4 +107,6 @@
                 {% endembed %}
             </div>
         </div>
+    </div>
+</div>
         {% endblock %}

@@ -10,10 +10,10 @@
 {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
     {% block box_before %}{% endblock %}
     {% block box_body %}
-
+        <div id="ganttChart"></div>
     {% endblock %}
 {% endembed %}
-    <div id="ganttChart"></div>
+
     <span class="hidden" id="id_step">{{ strategy_digital.id }}</span>
 {% endblock %}
 
@@ -33,7 +33,7 @@
                  ganttData=data ;
                  $("#ganttChart").ganttView({
                     data: ganttData,
-                    slideWidth: 800,
+                    slideWidth: 900,
                     behavior: {
                         onClick: function (data) {
                             var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
@@ -74,7 +74,8 @@
                 }
             });
 */
-            // $("#ganttChart").ganttView("setSlideWidth", 600);
+           /*  $("#ganttChart").ganttView("showWeekends", true);
+            $("#ganttChart").ganttView("slideWidth", 600);*/
         });
     </script>
 {% endblock %}

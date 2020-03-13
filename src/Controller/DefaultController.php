@@ -129,7 +129,7 @@ class DefaultController extends AbstractController
                 'user' => 'customer',
             ]);
         } else {
-            $userCustomer = $customerUserRepository->findBy(['createdBy' => $this->getUser()->getCustomerUser()->getCreatedBy()]);
+            //$userCustomer = $customerUserRepository->findBy(['createdBy' => $this->getUser()->getCustomerUser()->getCreatedBy()]);
 
             return $this->render('default/index.html.twig', [
                 'nbusers' => count($this->getUser()->getCustomerUser()->getCreatedBy()->getCustomerUsers()),

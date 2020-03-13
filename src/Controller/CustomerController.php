@@ -66,7 +66,8 @@ class CustomerController extends AbstractController
      * @Route("/{id}", name="customer_show", methods={"GET"})
      */
     public function show(Request $request, Customer $customer): Response
-    {$form = $this->createForm(CustomerType::class, $customer);
+    {
+        $form = $this->createForm(CustomerType::class, $customer);
         $formPassword = $this->createForm(ProfileFormType::class, $customer->getCompte());
         $formUser = $this->createForm(UserType::class, $customer->getCompte());
         $form->handleRequest($request);
@@ -85,6 +86,7 @@ class CustomerController extends AbstractController
 
             return $this->redirect($url);
         }
+
         return $this->render('customer/show.html.twig', [
             'customer' => $customer,
              'strategy_digitals' => $customer->getStrategyDigitals(),
@@ -92,7 +94,7 @@ class CustomerController extends AbstractController
             'formPassworld' => $formPassword->createView(),
             'formUser' => $formUser->createView(),
             'user' => $customer->getCompte(),
-            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'],['Mes Strategies Digital', '#strategie']],
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'], ['Mes Strategies Digital', '#strategie']],
         ]);
     }
 

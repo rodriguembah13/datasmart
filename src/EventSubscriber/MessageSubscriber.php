@@ -49,7 +49,7 @@ class MessageSubscriber implements EventSubscriberInterface
         } elseif ($this->security->isGranted(['ROLE_CUSTOMER'])) {
             $comments = $this->commentRepository->findBy(['sendTo' => $this->security->getUser()->getCustomer(),'status'=>false]);
         } elseif ($this->security->isGranted(['ROLE_USER'])) {
-            $comments = $this->commentRepository->findBy(['sendTo' => $this->security->getUser()->getCustomeUser()->getCustomer(),'status'=>false]);
+            $comments = $this->commentRepository->findBy(['sendTo' => $this->security->getUser()->getCustomerUser()->getCreatedBy(),'status'=>false]);
         }
         $userModel = new UserModel();
         $userModel2 = new UserModel();

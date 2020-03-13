@@ -79,7 +79,7 @@ class RolePermissionController extends AbstractController
             new PermissionSection('Customer (Team member)', '_team_customer'),
             new PermissionSection('Customer (Admin)', '_customer'),
             new PermissionSection('Project (Teamlead)', '_teamlead_project'),
-            new PermissionSection('Project (Team member)', '_team_project'),
+            new PermissionSection('Employee (Admin)', '_employee'),
             new PermissionSection('Project (Admin)', '_project'),
             new PermissionSection('Step Project', '_step'),
             new PermissionSection('Timesheet (own)', '_own_timesheet'),
