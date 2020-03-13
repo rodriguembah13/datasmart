@@ -59,11 +59,14 @@ class NavbarUserSubscriber implements EventSubscriberInterface
         if (null !== $myUser->getAvatar()) {
             $user->setAvatar('uploads/'.$myUser->getAvatar());
         } else {
-            $user->setAvatar('/bundles/adminlte/images/default_avatar.png');
+            $user->setAvatar('bundles/adminlte/images/default_avatar.png');
         }
         //$event->setShowProfileLink(false);
         //$event->addLink(new NavBarUserLink('Followers', 'home'));
 
         $event->setUser($user);
+    }
+    public function getProjectDir():string {
+        return \dirname(__DIR__);
     }
 }
