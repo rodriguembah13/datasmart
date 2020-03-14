@@ -20,6 +20,8 @@ class DocumentaireType extends AbstractType
                 'multiple' => false,
                 'attr' => ['class' => 'selectpicker', 'data-size' => 5, 'data-live-search' => true],
             ])->add('libelle')
+            ->add('lienVideo')
+            ->add('lienFile')
 
         ;
     }
