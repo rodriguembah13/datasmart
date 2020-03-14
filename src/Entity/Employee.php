@@ -37,7 +37,20 @@ class Employee
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="employee")
      */
     private $comments;
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $company;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $telephone;
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Customer", mappedBy="coachs")
      */
@@ -65,6 +78,54 @@ class Employee
         $this->isCoach = $isCoach;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
+    {
+        $this->company = $company;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address): void
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param mixed $telephone
+     */
+    public function setTelephone($telephone): void
+    {
+        $this->telephone = $telephone;
     }
 
     /**

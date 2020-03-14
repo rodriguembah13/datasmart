@@ -20,7 +20,14 @@ class Documentaire
      * @ORM\Column(type="string", length=255)
      */
     private $libelle;
-
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lienVideo;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lienFile;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Step", inversedBy="documentaires")
      */
@@ -54,6 +61,38 @@ class Documentaire
         $this->step = $step;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLienVideo()
+    {
+        return $this->lienVideo;
+    }
+
+    /**
+     * @param mixed $lienVideo
+     */
+    public function setLienVideo($lienVideo): void
+    {
+        $this->lienVideo = $lienVideo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLienFile()
+    {
+        return $this->lienFile;
+    }
+
+    /**
+     * @param mixed $lienFile
+     */
+    public function setLienFile($lienFile): void
+    {
+        $this->lienFile = $lienFile;
     }
 
 }
