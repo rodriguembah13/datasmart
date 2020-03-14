@@ -24,7 +24,7 @@ class ImplObjectif
     private $offre;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", length=255, nullable=true)
      */
     private $delai;
 
@@ -60,12 +60,12 @@ class ImplObjectif
         return $this;
     }
 
-    public function getDelai(): ?string
+    public function getDelai(): ?\DateTimeInterface
     {
         return $this->delai;
     }
 
-    public function setDelai(?string $delai): self
+    public function setDelai(?\DateTimeInterface $delai): self
     {
         $this->delai = $delai;
 

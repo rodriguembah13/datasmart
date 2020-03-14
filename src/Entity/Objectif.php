@@ -19,7 +19,7 @@ class Objectif
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $quantite;
 
@@ -44,12 +44,12 @@ class Objectif
         return $this->id;
     }
 
-    public function getQuantite(): ?int
+    public function getQuantite(): ?string
     {
         return $this->quantite;
     }
 
-    public function setQuantite(?int $quantite): self
+    public function setQuantite(?string $quantite): self
     {
         $this->quantite = $quantite;
 
