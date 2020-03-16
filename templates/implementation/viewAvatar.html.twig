@@ -3,12 +3,30 @@
 {% block page_title %}Details  {% endblock %}
 {% block page_subtitle %}{{ cible.implementation }}{% endblock %}
 {% block page_content %}
-    <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': cible.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
-    <br>
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% block box_before %}{% endblock %}
+    <div class="row">
+        <div class="col-md-8">
+            <a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': cible.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-4">
+                <div class="pull-right btn-group">
+                    <a style="margin-bottom: 10px" class="btn btn-danger"  href="#" data-toggle="modal" data-target="#modal-dialog" title="New Comment"><i class="fa fa-comment-alt"></i></a>
+                    <a style="margin-bottom: 10px" class="btn btn-success " href="{{ path('strategy_digital_show', {'id': cible.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Valide"><i class="fa fa-check-double"></i></a>
+                </div>
+
+            </div>
+        {% endif %}
+    </div> <br>
+    {% for implementation in cible.cibleAvatars %}
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'danger',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        }%}
+        {% block box_title %}{{ implementation.question }}{% endblock %}
         {% block box_body %}
-            <table class="table">
+            {{ implementation.answer }}
+         {#   <table class="table">
                 <thead>
                 <tr>
                     <th>Id</th>
@@ -18,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for implementation in cible.cibleAvatars %}
+
                     <tr>
                         <td>{{ implementation.id }}</td>
                         <td>{{ implementation.question }}</td>
@@ -30,14 +48,17 @@
                     <tr>
                         <td colspan="3">no records found</td>
                     </tr>
-                {% endfor %}
+
                 </tbody>
-            </table>
+            </table>#}
         {% endblock %}
-    {% endembed %}
+    {% endembed %}{% endfor %}
+{#
     <a  class="btn btn-danger btn-md" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-carrot"></i>add Comment</a>
+#}
 
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}Post Comments{% endblock %}
      {% block box_body %}
             {% for comment in cible.implementation.stepStrategy.comments %}
                 <div class="direct-chat-msg">

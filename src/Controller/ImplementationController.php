@@ -327,10 +327,22 @@ class ImplementationController extends AbstractController
         $postStep->setQuestion($question);
         $postStep->setAnswer($answer);
         $postStep->setImplAvatar($implAvatar);
+       // $postStep->set
 
         $entityManager->persist($postStep);
         $entityManager->flush();
         return new JsonResponse('ok', 200);
     }
+    /**
+     * @Route("/delete_avatar/{id}", name="implementation_avatar_delete", methods={"DELETE"},options={"expose"=true})
+     */
+    public function deleteResponseStep(Request $request, CibleAvatar $cibleAvatar): JsonResponse
+    {
+        $id_strat = $cibleAvatar->getImplAvatar()->getId();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($cibleAvatar);
+        $entityManager->flush();
 
+        return new JsonResponse($id_strat, 200);
+    }
 }

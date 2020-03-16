@@ -13,14 +13,17 @@ class CibleAvatarType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {$options = [
-        'This is the first option' => 'choice1',
-        'This is choice 2' => 'choice2',
-        'This is choice 3' => 'choice3',
-        'Honey' => 'choice4',
-        'Banana' => 'choice5',
-        'Apples' => 'choice6',
-        'Oranges' => 'choice7',
-        'Mustard' => 'choice8',
+        'Combien gagne-t-il ou potentiellement quelle plage de revenu a-t-il ?' => 'Combien gagne-t-il ou potentiellement quelle plage de revenu a-t-il ?',
+        'Quels sont ses problèmes les plus préoccupants ainsi que les solutions potentielles existantes?' => 'Quels sont ses problèmes les plus préoccupants ainsi que les solutions potentielles existantes?',
+        'Quel âge à t – il ?' => 'Quel âge à t – il ?',
+        'Quel est son statut familial ?' => 'Quel est son statut familial ?',
+        'Est-il un homme, une femme, autres ?' => 'Est-il un homme, une femme, autres ?',
+        'Où le trouver, géographiquement (Quartier, ville, pays) ?' => 'Où le trouver, géographiquement (Quartier, ville, pays) ?',
+        'Quelles sont ses valeurs ?' => 'Quelles sont ses valeurs ?',
+        'Quels sont ses buts ?' => 'Quels sont ses buts ?',
+        'Quelles sont ses priorités ?' => 'Quelles sont ses priorités ?',
+        'Quelles sont les frustrations qu’il souhaite eviter ?' => 'Quelles sont les frustrations qu’il souhaite eviter',
+        'Quels sont les obstacles qui l’empechent d’atteindre ses objectifs ?' => 'Quels sont les obstacles qui l’empechent d’atteindre ses objectifs ?',
         'Autres' => 'autres',
     ];
         $builder

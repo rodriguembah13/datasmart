@@ -132,7 +132,7 @@
             //alert($('#cible_avatar_question option:selected').val());
             valeuravatar = "";
             if ($('#cible_avatar_question option:selected').val() === 'autres') {
-                alert('this')
+
                 $('.bootstrap-select').append( $("<input/>", {
                     type: 'text',
                     id: 'newavatar',
@@ -223,11 +223,20 @@
                 }
             })
         })
-
+        $('#modal-delete-avatar-button').click(function () {
+            $.ajax({
+                url: Routing.generate('implementation_avatar_delete', {id: $("#cible_id").val()}),
+                type: 'DELETE', success: function (data) {
+                    window.location.href = Routing.generate('implementation_new_avatar', {id: $('#id_step').text()});
+                }
+            })
+        })
     });
     function getEmployeId(id) {
         $("#employe_id").val(id);
         //alert("ok");
     }
-
+function getCibleId(id) {
+    $("#cible_id").val(id);
+}
 </script>
