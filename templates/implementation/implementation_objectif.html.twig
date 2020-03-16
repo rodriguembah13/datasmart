@@ -75,7 +75,7 @@
                             <td>{{ responseStep.libelle }}</td>
                             <td>{{ responseStep.quantite }}</td>
                             <td>{{ responseStep.value }}</td>
-                            <td>{{ implObjectif.delai }}</td>
+                            <td>{{ implObjectif.delai|date('Y-m-d') }}</td>
                             <td>
                                 <a class="btn btn-danger" href="#" onclick="getEmployeId({{ responseStep.id }})" data-toggle="modal" data-target="#modal-delete"
                                     ><i class="fa fa-trash-alt"></i></a>

@@ -15,10 +15,12 @@ use App\Form\CommentType;
 use App\Form\ImplementationType;
 use App\Form\PlanningType;
 use App\Repository\CibleAvatarRepository;
+use App\Repository\ImplAvatarRepository;
 use App\Repository\ImplementationRepository;
 use App\Repository\PlanningRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -172,7 +174,7 @@ class ImplementationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/avatar/new", name="implementation_new_avatar", methods={"GET","POST"})
+     * @Route("/{id}/avatar/new", name="implementation_new_avatar", methods={"GET","POST"},options={"expose"=true})
      */
     public function newAvatar(ImplAvatar $implementation, Request $request, CibleAvatarRepository $cibleAvatarRepository): Response
     {
@@ -311,4 +313,24 @@ class ImplementationController extends AbstractController
 
         return $weekendDays;
     }
+    /**
+     * @Route("/post/avatar", name="implementation_avatar_post", methods={"GET"})
+     */
+    public function postresponse(Request $request, ImplAvatarRepository $implAvatarRepository): JsonResponse
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $question = $request->query->get('question');
+        $answer = $request->query->get('answer');
+        $implAvatar = $implAvatarRepository->find($request->query->getInt('id_step'));
+
+        $postStep = new CibleAvatar();
+        $postStep->setQuestion($question);
+        $postStep->setAnswer($answer);
+        $postStep->setImplAvatar($implAvatar);
+
+        $entityManager->persist($postStep);
+        $entityManager->flush();
+        return new JsonResponse('ok', 200);
+    }
+
 }

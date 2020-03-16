@@ -128,6 +128,49 @@
                 class: 'btn btn-primary'
             })
         );
+        $('#cible_avatar_question').change(function () {
+            //alert($('#cible_avatar_question option:selected').val());
+            valeuravatar = "";
+            if ($('#cible_avatar_question option:selected').val() === 'autres') {
+                alert('this')
+                $('.bootstrap-select').append( $("<input/>", {
+                    type: 'text',
+                    id: 'newavatar',
+                    name: 'newavatar',
+                    class: 'form-control',
+                    placeholder: "Other Question",
+                }));
+                valeuravatar = $('#newavatar').val();
+            } else {
+                $('#newavatar').hide();
+                valeuravatar = $('#selectStep option:selected').val();
+            }
+        });
+        $('#sumbitAvatar').click(function () {
+
+            var valeuravatar;
+            if ($('#cible_avatar_question option:selected').val() === 'autres') {
+                valeuravatar = $('#newavatar').val();
+
+            } else {
+                valeuravatar = $('#cible_avatar_question option:selected').val();
+            }
+            $.ajax({
+                url: "{{ path('implementation_avatar_post') }}",
+                type: 'GET',
+                dataType: "JSON",
+                data: {
+                    id_step: $('#id_step').text(),
+                    question: valeuravatar,
+                    answer: $('#cible_avatar_answer').val(),
+                }, success: function (data) {
+                    //Routing.generate('response_index');
+                    window.location.href = Routing.generate('implementation_new_avatar', {id: $('#id_step').text()});
+                }, error: function (err) {
+                    alert("error")
+                }
+            });
+        });
         $('#newobjectif').hide();
         $('#selectStep').change(function () {
             valeurobjectif = "";

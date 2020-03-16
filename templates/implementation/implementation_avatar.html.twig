@@ -14,15 +14,16 @@
         {% block box_body %}
             {{ form_start(form) }}
             {{ form_widget(form) }}
-            <div class="pull-right">
-                <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
-                <button type="submit" class="btn btn-primary "><i
-                            class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
-            </div>
+
             {{ form_end(form) }}
+            <div class="pull-right">
+            <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+            <button type="button" class="btn btn-primary " id="sumbitAvatar"><i
+                        class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+        </div>
         {% endblock %}
 
-    {% endembed %}
+    {% endembed %}<span id="id_step" class="hidden">{{ avatar.id }}</span>
     {% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
         'boxtype' : 'success',
         'solid' : 0,
@@ -56,4 +57,13 @@
             </table>
         {% endblock %}
     {% endembed %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function getd(id) {
+            alert(id)
+        }
+    </script>
+    {% include 'implementation/javascript.html.twig' %}
 {% endblock %}
