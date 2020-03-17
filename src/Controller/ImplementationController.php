@@ -345,4 +345,25 @@ class ImplementationController extends AbstractController
 
         return new JsonResponse($id_strat, 200);
     }
+    /**
+     * @Route("/validateAvatar/{id}/coach", name="implementation_avatar_validate_coach", methods={"GET"},options={"expose"=true})
+     */
+    public function validateAvatarcoach(ImplAvatar $implAvatar)
+    {
+        $implementation=$implAvatar->getImplementation();
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($implementation->getValideCoach()) {
+            $implementation->setValideCoach(false);
+            $implementation->setUserCoach($this->getUser());
+        } else {
+            $implementation->setValideCoach(true);
+            $implementation->setUserCoach($this->getUser());
+            $implementation->setDateValidateCoach(new \DateTime('now'));
+        }
+        $entityManager->persist($implementation);
+        $entityManager->flush();
+        $url = $this->generateUrl('implementation_view_avatar', ['id' => $implAvatar->getId()]);
+
+        return $this->redirect($url);
+    }
 }

@@ -45,7 +45,7 @@ class Implementation
      * @ORM\OneToOne(targetEntity="App\Entity\ImplAvatar", mappedBy="implementation", cascade={"persist", "remove"})
      */
     private $implAvatar;
-
+use ColunmValidate;
     public function getId(): ?int
     {
         return $this->id;

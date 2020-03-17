@@ -27,7 +27,7 @@ class ImplAvatar
      * @ORM\OneToMany(targetEntity="App\Entity\CibleAvatar", mappedBy="implAvatar")
      */
     private $cibleAvatars;
-
+//use ColunmValidate;
     public function __construct()
     {
         $this->cibleAvatars = new ArrayCollection();
@@ -80,4 +80,6 @@ class ImplAvatar
 
         return $this;
     }
+
+
 }

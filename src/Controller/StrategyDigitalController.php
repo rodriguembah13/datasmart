@@ -31,9 +31,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * @Security("is_granted('view_project')")
  */
 class StrategyDigitalController extends AbstractController
-{/**
- * @var StepRepository
- */
+{
+    /**
+     * @var StepRepository
+     */
     private $stepRepository;
     /**
      * @var AuthorizationCheckerInterface
@@ -165,6 +166,8 @@ class StrategyDigitalController extends AbstractController
         $impl = new Implementation();
         $impl->setStepStrategy($stepStrategy);
         $impl->setReference($stepStrategy->getStep()->getValue());
+        $impl->setValideCoach(false);
+        $impl->setValideCustomer(false);
         $entityManager->persist($impl);
         if ('Planification_détaillée_de_la_mise_en_œuvre_de_la_stratégie_de_marketing_digitale' === $impl->getReference()) {
             $planning = new ImplPlanning();
@@ -174,6 +177,7 @@ class StrategyDigitalController extends AbstractController
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $impl->getReference()) {
             $defObjec = new ImplObjectif();
             $defObjec->setImplementation($impl);
+
             $entityManager->persist($defObjec);
         } elseif ('Identification_de_la_cible_principale_ou_du_client_idéal' === $impl->getReference()) {
             $avatar = new ImplAvatar();
@@ -295,25 +299,33 @@ class StrategyDigitalController extends AbstractController
         foreach ($steps as $step) {
             $dataModel = new GanttData();
             $series = [];
-
+            $datevalidate = null;
+            $colorValidate='';
+            if ($step->getStepStrategy()->getImplementation()->getValideCoach()) {
+                $datevalidate = $step->getStepStrategy()->getImplementation()->getDateValidateCoach();
+                $colorValidate='ganttBlue';
+            } else {
+                $datevalidate = new \DateTime('now');
+                $colorValidate='ganttRed';
+            }
             $val1 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format($step->getDateEnd(), 'Y-m-d'),
                 'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => 'ganttGreen', ];
-            $val2 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format(new \DateTime('now'), 'Y-m-d'),
-                'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => 'ganttRed', ];
+            $val2 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format($datevalidate, 'Y-m-d'),
+                'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => $colorValidate, ];
 
-            $val3 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'), 'color' => '#f0f0f0'];
+            //$val3 = ['name' => 'Actual', 'start' => date_format($step->getDateBegin(), 'Y-m-d'), 'end' => date_format(new \DateTime('now'), 'Y-m-d'), 'color' => '#f0f0f0'];
 
             $data[] = [
                 'name' => $step->getStepStrategy()->getStep()->getName(),
-                    'desc' => 'Planned',
-                    'values' => [
-                        $val1,
-                    ],
-                    'id' => $step->getId(),
-                'cssClass'=>'redLabel'
+                'desc' => 'Planned',
+                'values' => [
+                    $val1,
+                ],
+                'id' => $step->getId(),
+                'cssClass' => 'redLabel',
             ];
             $data[] = [
-                'name' => "",
+                'name' => '',
                 'desc' => 'Actual',
                 'values' => [
                     $val2,

@@ -15,6 +15,11 @@
         {% block box_title %}{{ doc.libelle }}{% endblock %}
         {% block box_body %}
 {{ doc.libelle }}
+            {% if doc.lienVideo != null %}
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{ doc.lienVideo }}" ></iframe>
+                </div>
+            {% endif %}
         {% endblock %}
     {% endembed %}
     {% endfor %}

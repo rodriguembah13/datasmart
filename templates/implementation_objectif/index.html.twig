@@ -10,9 +10,13 @@
         {% if is_granted('ROLE_ADMIN') %}
         <div class="col-md-4">
             <div class="pull-right btn-group">
-            <a style="margin-bottom: 10px" class="btn btn-danger"  href="#" data-toggle="modal" data-target="#modal-dialog" title="New Comment"><i class="fa fa-comment-alt"></i></a>
-        <a style="margin-bottom: 10px" class="btn btn-success " href="{{ path('strategy_digital_show', {'id': implementation.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Valide"><i class="fa fa-check-double"></i></a>
-        </div>
+            <a style="margin-bottom: 10px" class="btn btn-warning"  href="#" data-toggle="modal" data-target="#modal-dialog" title="New Comment"><i class="fa fa-comment-alt"></i></a>
+        {% if implementation.implementation.valideCoach %}
+                <a style="margin-bottom: 10px" class="btn btn-success " href="{{ path('implementation_objectif_validate_coach', {'id': implementation.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="UnValide"><i class="fa fa-check-double"></i></a>
+       {% else %}
+                <a style="margin-bottom: 10px" class="btn btn-danger " href="{{ path('implementation_objectif_validate_coach', {'id': implementation.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Valide"><i class="fa fa-check-double"></i></a>
+        {% endif %}
+            </div>
 
         </div>
         {% endif %}
@@ -21,7 +25,7 @@
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
         {% block box_body %}
-           <div class="col-md-6">
+
                <dl class="dl-horizontal jh-entity-details">
                    <dt><span data-translate="gestEApp.bulletin.moyenne">Offre</span></dt>
                    <dd>
@@ -29,11 +33,11 @@
                    </dd>
                    <dt><span data-translate="gestEApp.bulletin.moyenne">delai</span></dt>
                    <dd>
-                       <span>{{ implementation.delai }}</span>
+                       <span>{{ implementation.delai|date('Y-m-d') }}</span>
                    </dd>
                </dl>
-           </div>
-            <div class="col-md-6">
+
+
                 <table class="table">
                     <thead>
                     <tr>
@@ -56,7 +60,7 @@
 
                     </tbody>
                 </table>
-            </div>
+
         {% endblock %}
     {% endembed %}
   {#  <a style="margin-bottom: 10px" class="btn btn-danger btn-md" href="#" data-toggle="modal" data-target="#modal-dialog"><i class="fa fa-send"></i>add Comment</a>

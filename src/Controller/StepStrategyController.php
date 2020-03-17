@@ -13,6 +13,7 @@ use App\Repository\StepStrategyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,7 +69,7 @@ class StepStrategyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/menber", name="step_strategy_member", methods={"GET","POST"})
+     * @Route("/{id}/menber", name="step_strategy_member", methods={"GET","POST"},options={"expose"=true})
      * @Security("is_granted('create_step')")
      */
     public function assignMembers(Request $request, StepStrategy $stepStrategy): Response
@@ -167,5 +168,17 @@ class StepStrategyController extends AbstractController
         }
 
         return $this->redirectToRoute('step_strategy_index');
+    }
+    /**
+     * @Route("/delete/{id}/member", name="member_delete", methods={"DELETE"},options={"expose"=true})
+     */
+    public function deleteResponseStep(Request $request, MembersStep $membersStep): JsonResponse
+    {
+        $id_strat = $membersStep->getStepStrategy();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($membersStep);
+        $entityManager->flush();
+
+        return new JsonResponse($id_strat, 200);
     }
 }

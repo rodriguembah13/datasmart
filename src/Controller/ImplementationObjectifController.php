@@ -22,21 +22,24 @@ class ImplementationObjectifController extends AbstractController
     /**
      * @Route("/{id}/view", name="implementation_objectif")
      */
-    public function index(ImplObjectif $implementation, Request $request)
+    public function index(ImplObjectif $implementation, Request $request, \Swift_Mailer $swift_Mailer)
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $customer = $implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy();
             $comment->setCreatedAt(new \DateTime('now'));
             $comment->setEmployee($this->getUser()->getEmployee());
             $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
-            $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
+            $comment->setSendTo($customer);
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
+            $this->sendMail($customer->getName(), $customer->getCompte()->getEmail(), $this->getUser()->getEmail(), $swift_Mailer);
             $url = $this->generateUrl('implementation_objectif', ['id' => $implementation->getId()]);
+
             return $this->redirect($url);
         }
 
@@ -112,5 +115,55 @@ class ImplementationObjectifController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse($id_strat, 200);
+    }
+
+    /**
+     * @Route("/validate/{id}/coach", name="implementation_objectif_validate_coach", methods={"GET"},options={"expose"=true})
+     */
+    public function validatecoach(ImplObjectif $implObjectif)
+    {
+        $implementation = $implObjectif->getImplementation();
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($implementation->getValideCoach()) {
+            $implementation->setValideCoach(false);
+            $implementation->setUserCoach($this->getUser());
+        } else {
+            $implementation->setValideCoach(true);
+            $implementation->setUserCoach($this->getUser());
+            $implementation->setDateValidateCoach(new \DateTime('now'));
+        }
+        $entityManager->persist($implementation);
+        $entityManager->flush();
+        $url = $this->generateUrl('implementation_objectif', ['id' => $implObjectif->getId()]);
+
+        return $this->redirect($url);
+    }
+
+    public function sendMail($name, $sendMail, $receiveMail, \Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom($sendMail)
+            ->setTo($receiveMail)
+            ->setBody(
+                $this->renderView(
+                // templates/emails/registration.html.twig
+                    'emails/message.html.twig',
+                    ['name' => $name]
+                ),
+                'text/html'
+            )
+
+            // you can remove the following code if you don't define a text version for your emails
+           /* ->addPart(
+                $this->renderView(
+                    'emails/message.txt.twig',
+                    ['name' => $name]
+                ),
+                'text/plain'
+            )*/
+        ;
+        $mailer->send($message);
+$this->addFlash('notice','Email sent');
+        //return $this->render(...);
     }
 }

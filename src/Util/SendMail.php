@@ -11,7 +11,7 @@ namespace App\Util;
 
 class SendMail
 {
-    public function index($name, \Swift_Mailer $mailer)
+   /* public function index($name, \Swift_Mailer $mailer)
     {
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('send@example.com')
@@ -38,5 +38,5 @@ class SendMail
         $mailer->send($message);
 
         return $this->render(...);
-    }
+    }*/
 }

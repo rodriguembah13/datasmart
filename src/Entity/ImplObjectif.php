@@ -37,6 +37,7 @@ class ImplObjectif
      * @ORM\OneToMany(targetEntity="App\Entity\Objectif", mappedBy="implObjectif")
      */
     private $objectifs;
+  //  use ColunmValidate;
 
     public function __construct()
     {
