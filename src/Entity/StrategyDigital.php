@@ -43,6 +43,22 @@ class StrategyDigital
      */
     private $lead;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $typeOffre;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $subTypeOffre = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $subTypeProduit;
+
+
     public function __construct()
     {
         $this->stepStrategies = new ArrayCollection();
@@ -135,6 +151,42 @@ class StrategyDigital
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getTypeOffre(): ?string
+    {
+        return $this->typeOffre;
+    }
+
+    public function setTypeOffre(?string $typeOffre): self
+    {
+        $this->typeOffre = $typeOffre;
+
+        return $this;
+    }
+
+    public function getSubTypeOffre(): ?array
+    {
+        return $this->subTypeOffre;
+    }
+
+    public function setSubTypeOffre(?array $subTypeOffre): self
+    {
+        $this->subTypeOffre = $subTypeOffre;
+
+        return $this;
+    }
+
+    public function getSubTypeProduit(): ?string
+    {
+        return $this->subTypeProduit;
+    }
+
+    public function setSubTypeProduit(?string $subTypeProduit): self
+    {
+        $this->subTypeProduit = $subTypeProduit;
+
+        return $this;
     }
 
 }

@@ -1,0 +1,25 @@
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $('#sub_produit').hide();
+        $('#sub_service').hide();
+       // $('#strategy_digital_subTypeProduit').hide();
+        //$('#strategy_digital_subTypeOffre').hide();
+        $('#strategy_digital_typeOffre').change(function () {
+            if ($('#strategy_digital_typeOffre option:selected').val() === 'produit') {
+                $('#sub_produit').show();
+                $('#sub_service').hide();
+               // $('#strategy_digital_subTypeProduit').show();
+               // $('#strategy_digital_subTypeOffre').val("");
+            } else {
+                $('#sub_produit').hide();
+                $('#sub_service').show();
+                //$('#strategy_digital_subTypeProduit').val("");
+                //$('#strategy_digital_subTypeOffre').show();
+            }
+        });
+    });
+
+</script>

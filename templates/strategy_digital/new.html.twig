@@ -2,18 +2,42 @@
 {% block page_title %} Strategy {% endblock %}
 {% block page_subtitle %} new {% endblock %}
 {% block page_content %}
-{% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-                {% block box_before %}{% endblock %}
-                {% block box_body %}
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_before %}{% endblock %}
+        {% block box_body %}
 
-    {{ include('strategy_digital/_form.html.twig') }}
-                {% endblock %}
-    {% block box_footer %}
+            {{ form_start(form) }}
+            <div class="">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="">
+                {{ form_row(form.typeOffre) }}
+            </div>
+            <div class="" id="sub_service">
+                {{ form_row(form.subTypeOffre) }}
+            </div>
+            <div class="" id="sub_produit">
+                {{ form_row(form.subTypeProduit) }}
+            </div>
 
-    {% endblock %}
+            <div class="pull-right">
+                <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+                <button type="submit" class="btn btn-primary "><i
+                            class="fa fa-arrow-right"></i> {{ button_label|default('Next') }}</button>
+            </div>
+            {{ form_end(form) }}
+        {% endblock %}
+        {% block box_footer %}
 
-    {% block box_after %}{% endblock %}
-{% endembed %}
-    <a class="btn btn-warning" href="{{ path('strategy_digital_index') }}" data-toggle="tooltip" data-placement="top" title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+        {% endblock %}
 
+        {% block box_after %}{% endblock %}
+    {% endembed %}
+    <a class="btn btn-warning" href="{{ path('strategy_digital_index') }}" data-toggle="tooltip" data-placement="top"
+       title="Back strategy home"><i class="fa fa-arrow-left"></i></a>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'strategy_digital/javascript.html.twig' %}
 {% endblock %}

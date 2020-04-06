@@ -1,0 +1,447 @@
+{% extends 'base.html.twig' %}
+{% block title %}implementation offre{% endblock %}
+{% block page_title %}Details  {% endblock %}
+{% block page_subtitle %}{{ offre.implementation }}{% endblock %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-8">
+            <a style="margin-bottom: 10px" class="btn btn-warning"
+               href="{{ path('strategy_digital_show', {'id': offre.implementation.stepStrategy.strategy.id}) }}"
+               data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-4">
+                <div class="pull-right btn-group">
+                    <a style="margin-bottom: 10px" class="btn btn-warning" href="#" data-toggle="modal"
+                       data-target="#modal-dialog" title="New Comment"><i class="fa fa-comment-alt"></i></a>
+                    {% if offre.implementation.valideCoach %}
+                        <a style="margin-bottom: 10px" class="btn btn-success "
+                           href="{{ path('implementation_avatar_validate_coach', {'id': offre.implementation.stepStrategy.strategy.id}) }}"
+                           data-toggle="tooltip" data-placement="top" title="UnValide"><i
+                                    class="fa fa-check-double"></i></a>
+                    {% else %}
+                        <a style="margin-bottom: 10px" class="btn btn-danger "
+                           href="{{ path('implementation_avatar_validate_coach', {'id': offre.implementation.stepStrategy.strategy.id}) }}"
+                           data-toggle="tooltip" data-placement="top" title="Valide"><i class="fa fa-check-double"></i></a>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endif %}
+    </div>
+
+    <br>
+    <div class="row">
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'danger',
+            'solid' : 0,
+            'collapsible_title': 'Collapse',
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Le thème principal de l’offre{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.themePrincipal }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'danger',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Brève description ou incitation à la découverte des détails de l’offre{% endblock %}
+            {% block box_body %}
+                <p style="text-align: justify">  {{ offre.structureService.breveDescription }}</p>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'success',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Video de presentation{% endblock %}
+            {% block box_body %}
+               <p style="text-align: justify">{{ offre.structureService.lienVideoPresentation }}</p>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'success',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Bouton d'appel a l'actionde soumission a l'offre{% endblock %}
+            {% block box_body %}
+             <button class="btn btn-primary"><i class="fa fa-shopping-basket"></i> {{ offre.structureService.texteBoutonAppel }}</button>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Objectifs de l'offre{% endblock %}
+            {% block box_body %}
+                <p style="text-align: justify"> {{ offre.structureService.objectifs }}</p>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Contenus proprement dit de l'offre ou ses constituants{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.contenu }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Description des avantages de l'offre ou de ses principaux atouts{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.avantageDescription }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Constituants de la methodologie ou de la procedure de livraison de service{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.procedureLivraison }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Valeur réelle de chaque constituant de offre{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.valeurOffre }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Valeur réelle totale de l'offre{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.valeurtotal }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Valeur speciale et actuelle{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.valeurPromotionelle }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Valeur promotionelle grand public{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.valeurPromotionelle }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Moyens de payements{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.moyenPayement }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Duree de l'offre ou de la mise en oeuvre de la prestation{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.dureeOffre }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Upsell et downsell{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.upsellDowsell }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Comparation avec la concurrence{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.comparaison }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Image{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.lienImage }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Texte bref et incitatif{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.textBref }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Les marques de confiance{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.marqueConfiance }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Avis et témoignages des clients satisfaits{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.avis }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Reference connues{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.reference }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Presentation du profil ou de l'histoire du prestataire de service,du consultant,du coach ou formateur{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.profilPrestataire }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Notification des ventes{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.notificationVente }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Quelques chiffres qui rassurent{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.chiffrerassurant }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Bonus d'action rapide{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.bonusDation }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Une histoire émouvante{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.histoireEmouvante }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Jeux de Questions ou de Reponses{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.jeuxQuestion }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div class="col-md-6">
+        {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+            'boxtype' : 'warning',
+            'solid' : 0,
+            'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+        } %}
+            {% block box_title %}Condition d'éligibilité ou d'inéligibilité{% endblock %}
+            {% block box_body %}
+                {{ offre.structureService.conditionElegibilite }}
+            {% endblock %}
+        {% endembed %}
+    </div> </div>
+
+    {#    {% for implementation in offre.cibleAvatars %}
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+                'boxtype' : 'danger',
+                'solid' : 0,
+                'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+            }%}
+                {% block box_title %}{{ implementation.question }}{% endblock %}
+                {% block box_body %}
+                    {{ implementation.answer }}
+                {% endblock %}
+            {% endembed %}{% endfor %}#}
+
+
+    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+        {% block box_title %}Post Comments{% endblock %}
+        {% block box_body %}
+            {% for comment in offre.implementation.stepStrategy.comments %}
+                <div class="direct-chat-msg">
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-name float-left">{{ comment.employee }}</span>
+                        <span class="direct-chat-timestamp float-right">{{ comment.createdAt|date('y-m-d h:m') }}</span>
+                    </div>
+                    {% if comment.employee.compte.imageFilename is defined and comment.employee.compte.imageFilename  is not null %}
+                        <img id="img_emp" class="col-md-5 img img-responsive img-thumbnail" style="height: 75px;"
+                             src="{{ asset('uploads/' ~ comment.employee.compte.imageFilename) }}"
+                             title="{{ comment.employee.compte.username }}"
+                             alt="My image">
+                    {% else %}  <img id="img_emp" class="direct-chat-img"
+                                     src="{{ asset('bundles/adminlte/images/default_avatar.png') }}"
+                                     title="{{ comment.employee.compte.username }}"
+                                     alt="My image">
+                    {% endif %}
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                        {{ comment.libelle }}
+                    </div>
+                    <!-- /.direct-chat-text -->
+                </div>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+    <div id="modal-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-dialog"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">New Comment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+
+                    {{ form_widget(form) }}
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">
+                        <span class="btn-label">cancel</span>
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" id="modal-delete-button">
+                        <i class="fa fa-share-alt"></i>
+                        <span class="btn-label">Send</span>
+                    </button>
+
+                </div>{{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

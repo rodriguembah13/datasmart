@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}implementation {% endblock %}
+{% block page_title %} implementation {% endblock %}
+{% block page_subtitle %} {{ offre.implementation }} {% endblock %}
+{% block page_content %}
+<a style="margin-bottom: 10px" class="btn btn-warning" href="{{ path('strategy_digital_show', {'id': offre.implementation.stepStrategy.strategy.id}) }}" data-toggle="tooltip" data-placement="top" title="Back customer"><i class="fa fa-arrow-left"></i></a>
+<br>
+{% embed '@AdminLTE/Widgets/box-widget.html.twig'   with {
+    'boxtype' : 'success',
+    'solid' : 0,
+    'collapsible' : 'widget-box.collapse'|trans ~ '... ',
+}%}
+    {% block box_before %}{% endblock %}
+    {% block box_body %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+ {#       <a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a>
+        <a href="#" id="comments" data-type="textarea" data-pk="1">awesome comment!</a>#}
+        <div class="pull-right">
+            <button type="reset" class="btn btn-warning "><i class="fa fa-times"></i> {{ 'Cancel'|trans }}</button>
+            <button type="submit" class="btn btn-primary "><i
+                        class="fa fa-save"></i> {{ button_label|default('Save') }}</button>
+        </div>
+        {{ form_end(form) }}
+    {% endblock %}
+
+{% endembed %}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function(){
+            $('#comments').editable({
+                url: '/post',
+                title: 'Enter comments',
+                rows: 10
+            });
+            $('#username').editable({
+                url: '/post',
+                title: 'Enter comments',
+                rows: 10
+            });
+        });
+    </script>
+    {% include 'implementation/javascript.html.twig' %}
+{% endblock %}

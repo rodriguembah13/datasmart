@@ -45,6 +45,12 @@ class Implementation
      * @ORM\OneToOne(targetEntity="App\Entity\ImplAvatar", mappedBy="implementation", cascade={"persist", "remove"})
      */
     private $implAvatar;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ImplOffre", inversedBy="implementation", cascade={"persist", "remove"})
+     */
+    private $implOffre;
+
 use ColunmValidate;
     public function getId(): ?int
     {
@@ -151,5 +157,18 @@ use ColunmValidate;
     {
        return $this->getStepStrategy()->getStep()->getName();
     }
+
+    public function getImplOffre(): ?ImplOffre
+    {
+        return $this->implOffre;
+    }
+
+    public function setImplOffre(?ImplOffre $implOffre): self
+    {
+        $this->implOffre = $implOffre;
+
+        return $this;
+    }
+
 
 }

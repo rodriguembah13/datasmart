@@ -6,10 +6,12 @@ use App\Entity\ImplAvatar;
 use App\Entity\ImplDefault;
 use App\Entity\Implementation;
 use App\Entity\ImplObjectif;
+use App\Entity\ImplOffre;
 use App\Entity\ImplPlanning;
 use App\Entity\Response as Reponse;
 use App\Entity\StepStrategy;
 use App\Entity\StrategyDigital;
+use App\Entity\StructureOffreService;
 use App\Form\StrategyDigitalEditType;
 use App\Form\StrategyDigitalType;
 use App\Repository\MembersStepRepository;
@@ -118,6 +120,11 @@ class StrategyDigitalController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if ('produit' === $strategyDigital->getTypeOffre()) {
+                $strategyDigital->setSubTypeOffre(null);
+            } elseif ('service' === $strategyDigital->getTypeOffre()) {
+                $strategyDigital->setSubTypeProduit(null);
+            }
             $strategyDigital->setStatut(false);
             if (null == $this->getUser()->getCustomer()) {
                 $this->addFlash('error', 'Desole,Il faut etre un customer');
@@ -183,12 +190,31 @@ class StrategyDigitalController extends AbstractController
             $avatar = new ImplAvatar();
             $avatar->setImplementation($impl);
             $entityManager->persist($avatar);
+        } elseif ('Conception_de_offre_irrésistible_pour_le_client_idéal_précédemment_identifié' === $impl->getReference()) {
+            if ('service' == $impl->getStepStrategy()->getStrategy()->getTypeOffre()) {
+                $structure = new StructureOffreService();
+                $entityManager->persist($structure);
+                $offre = new ImplOffre();
+                $offre->setImplementation($impl);
+                $offre->setStructureService($structure);
+                $entityManager->persist($offre);
+            } else {
+                $offre = new ImplOffre();
+                $offre->setImplementation($impl);
+                $entityManager->persist($offre);
+            }
         } else {
             $defaul = new ImplDefault();
             $defaul->setImplementation($impl);
             $entityManager->persist($defaul);
         }
     }
+
+    /*    private function createImplOffre(ImplOffre $offre)
+        {
+            $structure = new StructureOffreService();
+            $offre->setStructureService();
+        }*/
 
     /**
      * @Route("/{id}", name="strategy_digital_show", methods={"GET"})
@@ -300,13 +326,13 @@ class StrategyDigitalController extends AbstractController
             $dataModel = new GanttData();
             $series = [];
             $datevalidate = null;
-            $colorValidate='';
+            $colorValidate = '';
             if ($step->getStepStrategy()->getImplementation()->getValideCoach()) {
                 $datevalidate = $step->getStepStrategy()->getImplementation()->getDateValidateCoach();
-                $colorValidate='ganttBlue';
+                $colorValidate = 'ganttBlue';
             } else {
                 $datevalidate = new \DateTime('now');
-                $colorValidate='ganttRed';
+                $colorValidate = 'ganttRed';
             }
             $val1 = ['from' => date_format($step->getDateBegin(), 'Y-m-d'), 'to' => date_format($step->getDateEnd(), 'Y-m-d'),
                 'desc' => 'Id:'.$step->getId().'<br/>'.'Name:'.$step->getStepStrategy()->getStep()->getName(), 'customClass' => 'ganttGreen', ];

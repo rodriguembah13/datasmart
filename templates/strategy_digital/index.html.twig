@@ -27,6 +27,7 @@
                 <th>Name</th>
                 <th>Customer</th>
                 <th>Lead Project</th>
+                <th>Type Offre</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -37,6 +38,12 @@
                 <td>{{ strategy_digital.name }}</td>
                 <td>{{ strategy_digital.createBy }}</td>
                 <td>{{ strategy_digital.lead }}</td>
+                <td>{{ strategy_digital.typeOffre }}</td>
+                {#      <td>{{ strategy_digital.subTypeProduit }}</td>
+          {#        <td>{% for subOffre in strategy_digital.subTypeOffre %}
+                             <li>{{ subOffre }}</li>
+                         {% endfor %}
+                     </td>#}
                 <td>
                     <div class="btn-group">
                         <a class="btn btn-info btn-sm" href="{{ path('strategy_digital_show', {'id': strategy_digital.id}) }}" data-toggle="tooltip" data-placement="top" title="show"><i class="fa fa-eye"></i></a>

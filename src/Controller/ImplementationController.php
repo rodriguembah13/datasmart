@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Entity\Employee;
 use App\Entity\ImplAvatar;
 use App\Entity\Implementation;
+use App\Entity\ImplOffre;
 use App\Entity\ImplPlanning;
 use App\Entity\Planning;
 use App\Entity\StepStrategy;
@@ -14,10 +15,12 @@ use App\Form\CibleAvatarType;
 use App\Form\CommentType;
 use App\Form\ImplementationType;
 use App\Form\PlanningType;
+use App\Form\StructureServiceType;
 use App\Repository\CibleAvatarRepository;
 use App\Repository\ImplAvatarRepository;
 use App\Repository\ImplementationRepository;
 use App\Repository\PlanningRepository;
+use App\Repository\StructureOffreServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -85,6 +88,8 @@ class ImplementationController extends AbstractController
             $url = $this->generateUrl('implementation_new_planning', ['id' => $stepStrategy->getImplementation()->getImplPlanning()->getId()]);
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+        } elseif ('Conception_de_offre_irrésistible_pour_le_client_idéal_précédemment_identifié' === $stepStrategy->getImplementation()->getReference()) {
+            $url = $this->generateUrl('implementation_new_offre', ['id' => $stepStrategy->getImplementation()->getImplOffre()->getId()]);
         } else {
             $url = $this->generateUrl('implementation_new_default', ['id' => $stepStrategy->getImplementation()->getId()]);
         }
@@ -103,6 +108,8 @@ class ImplementationController extends AbstractController
             $url = $this->generateUrl('implementation_view_planning', ['id' => $stepStrategy->getImplementation()->getImplPlanning()->getId()]);
         } elseif ('Définition_des_objectifs_de_base_à_atteindre' === $stepStrategy->getImplementation()->getReference()) {
             $url = $this->generateUrl('implementation_objectif', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
+        } elseif ('Conception_de_offre_irrésistible_pour_le_client_idéal_précédemment_identifié' === $stepStrategy->getImplementation()->getReference()) {
+            $url = $this->generateUrl('implementation_view_offre', ['id' => $stepStrategy->getImplementation()->getImplOffre()->getId()]);
         } else {
             $url = $this->generateUrl('implementation_objectif_new', ['id' => $stepStrategy->getImplementation()->getImplObjectif()->getId()]);
         }
@@ -200,6 +207,33 @@ class ImplementationController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/offre/new", name="implementation_new_offre", methods={"GET","POST"},options={"expose"=true})
+     */
+    public function newOffre(ImplOffre $implementation, Request $request, StructureOffreServiceRepository $structureOffreServiceRepository): Response
+    {
+        $offre = $implementation->getStructureService();
+        $form = $this->createForm(StructureServiceType::class, $offre);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($offre);
+            $entityManager->flush();
+            $this->addFlash('success', 'formulaire envoye avec success');
+            $url = $this->generateUrl('implementation_new_offre', ['id' => $implementation->getId()]);
+
+            return $this->redirect($url);
+        }
+
+        return $this->render('implementation/implementation_offre.html.twig', [
+            'offre' => $implementation,
+            'form' => $form->createView(),
+            //'cibles' => $cibleAvatarRepository->findBy(['implAvatar' => $implementation]),
+        ]);
+    }
+
+    /**
      * @Route("/{id}/edit", name="implementation_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Implementation $implementation): Response
@@ -241,6 +275,7 @@ class ImplementationController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
             $url = $this->generateUrl('implementation_view_planning', ['id' => $implementation->getId()]);
+
             return $this->redirect($url);
         }
         $plannings = $planningRepository->findByStrategy($implementation->getImplementation()->getStepStrategy()->getStrategy());
@@ -270,14 +305,42 @@ class ImplementationController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
             $url = $this->generateUrl('implementation_view_avatar', ['id' => $implementation->getId()]);
+
             return $this->redirect($url);
         }
+
         return $this->render('implementation/viewAvatar.html.twig', [
             'cible' => $implementation,
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/viewOffre/{id}", name="implementation_view_offre", methods={"GET","POST"})
+     */
+    public function viewOffre(ImplOffre $implementation, EntityManagerInterface $manager, Request $request): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setEmployee($this->getUser()->getEmployee());
+            $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
+            $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
+            $comment->setStatus(false);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $url = $this->generateUrl('implementation_view_offre', ['id' => $implementation->getId()]);
 
+            return $this->redirect($url);
+        }
+
+        return $this->render('implementation/viewOffre.html.twig', [
+            'offre' => $implementation,
+            'form' => $form->createView(),
+        ]);
+    }
     /**
      * @Route("/{id}", name="implementation_delete", methods={"DELETE"})
      */
@@ -313,6 +376,7 @@ class ImplementationController extends AbstractController
 
         return $weekendDays;
     }
+
     /**
      * @Route("/post/avatar", name="implementation_avatar_post", methods={"GET"})
      */
@@ -327,12 +391,14 @@ class ImplementationController extends AbstractController
         $postStep->setQuestion($question);
         $postStep->setAnswer($answer);
         $postStep->setImplAvatar($implAvatar);
-       // $postStep->set
+        // $postStep->set
 
         $entityManager->persist($postStep);
         $entityManager->flush();
+
         return new JsonResponse('ok', 200);
     }
+
     /**
      * @Route("/delete_avatar/{id}", name="implementation_avatar_delete", methods={"DELETE"},options={"expose"=true})
      */
@@ -345,12 +411,13 @@ class ImplementationController extends AbstractController
 
         return new JsonResponse($id_strat, 200);
     }
+
     /**
      * @Route("/validateAvatar/{id}/coach", name="implementation_avatar_validate_coach", methods={"GET"},options={"expose"=true})
      */
     public function validateAvatarcoach(ImplAvatar $implAvatar)
     {
-        $implementation=$implAvatar->getImplementation();
+        $implementation = $implAvatar->getImplementation();
         $entityManager = $this->getDoctrine()->getManager();
         if ($implementation->getValideCoach()) {
             $implementation->setValideCoach(false);
