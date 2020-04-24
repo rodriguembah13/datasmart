@@ -141,7 +141,7 @@ class ImplementationObjectifController extends AbstractController
 
     public function sendMail($name, $sendMail, $receiveMail, \Swift_Mailer $mailer)
     {
-        $message = (new \Swift_Message('Hello Email'))
+        $message = (new \Swift_Message('Smart Message'))
             ->setFrom($sendMail)
             ->setTo($receiveMail)
             ->setBody(
@@ -152,18 +152,8 @@ class ImplementationObjectifController extends AbstractController
                 ),
                 'text/html'
             )
-
-            // you can remove the following code if you don't define a text version for your emails
-           /* ->addPart(
-                $this->renderView(
-                    'emails/message.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )*/
         ;
         $mailer->send($message);
-$this->addFlash('notice','Email sent');
-        //return $this->render(...);
+        $this->addFlash('notice', 'Email sent');
     }
 }

@@ -20,13 +20,10 @@
                     <p class="text-muted text-center">{{ user.email}}</p>
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                            <b>Strategy Digital</b> <a class="float-right">1,322</a>
+                            <b>Strategy Digital</b> <a class="float-right">{{ nbre_strategiy }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Task</b> <a class="float-right">543</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Customer user</b> <a class="float-right">13,287</a>
+                            <b>Customer user</b> <a class="float-right">{{ nbre_customeruser }}</a>
                         </li>
                     </ul>
 
@@ -70,21 +67,7 @@
                                     </div>
                                     {{ form_end(form) }}
                                 </div>
-                                <div class="tab-pane" id="strategie">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Name</th>
-                                            <th>actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
 
-
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         {% endblock %}
 

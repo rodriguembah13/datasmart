@@ -39,7 +39,7 @@ class DocumentaireController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($documentaire);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirectToRoute('documentaire_index');
         }
 
@@ -80,7 +80,7 @@ class DocumentaireController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirectToRoute('documentaire_index');
         }
 

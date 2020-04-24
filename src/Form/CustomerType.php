@@ -28,10 +28,10 @@ class CustomerType extends AbstractType
         $builder
             ->add('date_from', DateType::class, [
                 'label' => 'Date De Debut',
-        'widget' => 'single_text',
-        'html5' => false,
-        'required' => false,
-    ])
+                'widget' => 'single_text',
+                'html5' => false,
+                'required' => false,
+            ])
             ->add('date_to', DateType::class, [
                 'label' => 'Date De Fin',
                 'widget' => 'single_text',
@@ -39,7 +39,6 @@ class CustomerType extends AbstractType
                 'required' => false,
             ])
             ->add('name')
-            //->add('value')
             ->add('visible')
             ->add('company')
             ->add('address')
@@ -50,7 +49,7 @@ class CustomerType extends AbstractType
                 'multiple' => true,
                 'attr' => ['class' => 'selectpicker', 'data-size' => 10, 'data-live-search' => true],
             ])
-           // ->add('createdBy')
+            // ->add('createdBy')
             //->add('compte', new UserType($this->roles))
         ;
     }

@@ -25,10 +25,9 @@ class PlanningRepository extends ServiceEntityRepository
         //return $this->cre
     }
 
-    // /**
-    //  * @return Planning[] Returns an array of Planning objects
-    //  */
-
+    /**
+     * @return Planning[] Returns an array of Planning objects
+     */
     public function findByStrategy(StrategyDigital $strategyDigital)
     {
         return $this->createQueryBuilder('p')
@@ -41,6 +40,23 @@ class PlanningRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return Planning[] Returns an array of Planning objects
+     */
+    public function findWhereDelaiPass()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.dateEnd <= :val')
+            ->andWhere('p.status = :status')
+            ->setParameter('val', new \DateTime('now'))
+            ->setParameter('status', false)
+            ->orderBy('p.dateEnd', 'DESC')
+            ->setMaxResults(200)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     /*

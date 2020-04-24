@@ -91,7 +91,7 @@ class StepStrategyController extends AbstractController
             $entityManager->persist($membersStep);
             $entityManager->flush();
             $url = $this->generateUrl('step_strategy_member', ['id' => $stepStrategy->getId()]);
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirect($url);
         }
 

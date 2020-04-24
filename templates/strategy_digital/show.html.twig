@@ -5,23 +5,17 @@
 {% block page_subtitle %} {{strategy_digital}} {% endblock %}
 {% block page_content %}
     <br>
-{% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
+{#{% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
     'boxtype' : 'danger',
     'solid' : 0,
     'collapsible' : 'widget-box.collapse'|trans ~ '... ',
 }
 %}
-        {% block box_before %}{% endblock %}
     {% block box_title %}Dashboard{% endblock %}
         {% block box_body %}
 
         {% endblock %}
-    {% block box_footer %}
-
-    {% endblock %}
-
-    {% block box_after %}{% endblock %}
-{% endembed %}
+{% endembed %}#}
     {% embed '@AdminLTE/Widgets/box-widget.html.twig'  with {
         'boxtype' : 'success',
         'solid' : 1,

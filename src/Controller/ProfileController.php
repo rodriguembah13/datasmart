@@ -46,13 +46,13 @@ class ProfileController extends AbstractController
             $formUser->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 
             if ($formUser->isSubmitted() && $formUser->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 
@@ -76,13 +76,13 @@ class ProfileController extends AbstractController
             $formUser->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 
             if ($formUser->isSubmitted() && $formUser->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 
@@ -107,13 +107,13 @@ class ProfileController extends AbstractController
             $formUser->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 
             if ($formUser->isSubmitted() && $formUser->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
-
+                $this->addFlash('success', 'Operation effectuée avec success');
                 return $this->redirectToRoute('profile');
             }
 

@@ -52,7 +52,7 @@ class CustomerController extends AbstractController
             $entityManager->persist($customer);
             $entityManager->flush();
             $url = $this->generateUrl('user_new_customer', ['id' => $customer->getId()]);
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirect($url);
         }
 
@@ -94,7 +94,9 @@ class CustomerController extends AbstractController
             'formPassworld' => $formPassword->createView(),
             'formUser' => $formUser->createView(),
             'user' => $customer->getCompte(),
-            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'], ['Mes Strategies Digital', '#strategie']],
+            'nbre_strategiy' => sizeof($customer->getStrategyDigitals()),
+            'nbre_customeruser'=>sizeof($customer->getCustomerUsers()),
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte']],
         ]);
     }
 

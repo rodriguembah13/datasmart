@@ -7,11 +7,12 @@ use App\Form\EmployeeType;
 use App\Form\UserType;
 use App\Repository\EmployeeRepository;
 use FOS\UserBundle\Form\Type\ProfileFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 /**
  * @Route("/employee")
  * @Security("is_granted('view_employee')")
@@ -44,6 +45,8 @@ class EmployeeController extends AbstractController
             $entityManager->persist($employee);
             $entityManager->flush();
             $url = $this->generateUrl('user_new_employee', ['id' => $employee->getId()]);
+            $this->addFlash('success', 'Operation effectuée avec success');
+
             return $this->redirect($url);
         }
 
@@ -55,10 +58,10 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/{id}", name="employee_show", methods={"GET","POST"})
-     *
      */
     public function show(Request $request, Employee $employee): Response
-    {$form = $this->createForm(EmployeeType::class, $employee);
+    {
+        $form = $this->createForm(EmployeeType::class, $employee);
         $formPassword = $this->createForm(ProfileFormType::class, $employee->getCompte());
         $formUser = $this->createForm(UserType::class, $employee->getCompte());
         $form->handleRequest($request);
@@ -67,6 +70,7 @@ class EmployeeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $url = $this->generateUrl('employee_show', ['id' => $employee->getId()]);
+            $this->addFlash('success', 'Operation effectuée avec success');
 
             return $this->redirect($url);
         }
@@ -74,9 +78,11 @@ class EmployeeController extends AbstractController
         if ($formUser->isSubmitted() && $formUser->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $url = $this->generateUrl('employee_show', ['id' => $employee->getId()]);
+            $this->addFlash('success', 'Operation effectuée avec success');
 
             return $this->redirect($url);
         }
+
         return $this->render('employee/show.html.twig', [
             'employee' => $employee,
            // 'strategy_digitals' => $customerUser->getStrategyDigitals(),
@@ -84,7 +90,7 @@ class EmployeeController extends AbstractController
             'formPassworld' => $formPassword->createView(),
             'formUser' => $formUser->createView(),
             'user' => $employee->getCompte(),
-            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'],['Mes Strategies Digital', '#strategie']],
+            'tabs' => [['Information Personnel', '#personnelle'], ['Mon Compte', '#compte'], ['Mes Strategies Digital', '#strategie']],
         ]);
     }
 
@@ -123,6 +129,7 @@ class EmployeeController extends AbstractController
 
         return $this->redirectToRoute('employee_index');
     }
+
     /**
      * @Route("/{id}/enable", name="employee_enable", methods={"GET"})
      * @Security("is_granted('edit_employee)")

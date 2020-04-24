@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\MembersStep;
 use App\Form\MembersStepType;
 use App\Repository\MembersStepRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/members/step")
  * @Security("is_granted('view_project')")
@@ -41,6 +41,7 @@ class MembersStepController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($membersStep);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
 
             return $this->redirectToRoute('members_step_index');
         }
@@ -92,6 +93,7 @@ class MembersStepController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($membersStep);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
         }
 
         return $this->redirectToRoute('members_step_index');

@@ -2,12 +2,8 @@
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script type="text/javascript">
 
-    //import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-    //Routing.setRoutingData(routes);
-    //$(function () {  const routes = require('../../public/js/fos_js_routes.json');
     $(function () {
         // alert("test");
-
         if ($('#typesetep').text() == "Identification_de_la_cible_principale_ou_du_client_idéal") {
 
             $("div#form1").append(
@@ -164,10 +160,10 @@
                     question: valeuravatar,
                     answer: $('#cible_avatar_answer').val(),
                 }, success: function (data) {
-                    //Routing.generate('response_index');
+                    swal("Success", "Operation effetuée avec success", "success");
                     window.location.href = Routing.generate('implementation_new_avatar', {id: $('#id_step').text()});
                 }, error: function (err) {
-                    alert("error")
+                    swal("Error", "Une erreur lors de l'enregistrement", "error");
                 }
             });
         });
@@ -202,10 +198,11 @@
                     frequence: $('#valeur').val(),
                     objectif: valeurobjectif,
                 }, success: function (data) {
-                    //Routing.generate('response_index');
+
                     window.location.href = Routing.generate('implementation_objectif_new', {id: $('#id_step').text()});
+                    swal("Success", "Operation effetuée avec success", "success");
                 }, error: function (err) {
-                    alert("error")
+                    swal("Error", "Une erreur lors de l'enregistrement", "error");
                 }
             });
         });
@@ -219,6 +216,7 @@
             $.ajax({
                 url: Routing.generate('implementation_objectif_delete', {id: $("#employe_id").val()}),
                 type: 'DELETE', success: function (data) {
+                    swal("Success", "Operation effetuée avec success", "success");
                     window.location.href = Routing.generate('implementation_objectif_new', {id: $('#id_step').text()});
                 }
             })
@@ -227,6 +225,7 @@
             $.ajax({
                 url: Routing.generate('implementation_avatar_delete', {id: $("#cible_id").val()}),
                 type: 'DELETE', success: function (data) {
+                    swal("Success", "Operation effetuée avec success", "success");
                     window.location.href = Routing.generate('implementation_new_avatar', {id: $('#id_step').text()});
                 }
             })

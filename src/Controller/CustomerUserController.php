@@ -53,7 +53,7 @@ class CustomerUserController extends AbstractController
             $entityManager->persist($customerUser);
             $entityManager->flush();
             $url = $this->generateUrl('user_new_customer_user', ['id' => $customerUser->getId()]);
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirect($url);
         }
 
@@ -77,14 +77,14 @@ class CustomerUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $url = $this->generateUrl('customer_user_show', ['id' => $customerUser->getId()]);
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirect($url);
         }
 
         if ($formUser->isSubmitted() && $formUser->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $url = $this->generateUrl('customer_user_show', ['id' => $customerUser->getId()]);
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirect($url);
         }
         return $this->render('customer_user/show.html.twig', [
@@ -109,7 +109,7 @@ class CustomerUserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirectToRoute('customer_user_index');
         }
 

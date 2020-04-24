@@ -137,6 +137,7 @@ class StrategyDigitalController extends AbstractController
             $entityManager->persist($strategyDigital);
             $this->createStep($strategyDigital);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
             $url = $this->generateUrl('step_strategy_index2', ['id' => $strategyDigital->getId()]);
 
             return $this->redirect($url);
@@ -238,10 +239,7 @@ class StrategyDigitalController extends AbstractController
                 'strategy_digital' => $strategyDigital,
             ]);
         }
-        /* return $this->render('strategy_digital/show.html.twig', [
-             'strategy_digital' => $strategyDigital,
-             'step_strategies' => $strategyDigital->getStepStrategies(),
-         ]);*/
+
     }
 
     /**
@@ -255,7 +253,7 @@ class StrategyDigitalController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Operation effectuée avec success');
             return $this->redirectToRoute('strategy_digital_index');
         }
 

@@ -7,7 +7,7 @@
 admin_lte:
     options:
         default_avatar: bundles/adminlte/images/default_avatar.png
-        skin: 'skin-blue'
+        skin: 'skin-purple'
         fixed_layout: true
         boxed_layout: false
         collapsed_sidebar: false

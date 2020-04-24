@@ -19,14 +19,15 @@
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% block box_before %}{% endblock %}
         {% block box_body %}
-    <table class="table contentimg table-striped">
+
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Date_from</th>
                 <th>Date_to</th>
                 <th {% if customers.isSorted('a.Name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(customers, 'Name', 'a.name') }}</th>
-                <th>Value</th>
+
                 <th>Visible</th>
                 <th>RegisteredAt</th>
                 <th>actions</th>
@@ -39,7 +40,6 @@
                 <td>{{ customer.dateFrom ? customer.dateFrom|date('Y-m-d') : '' }}</td>
                 <td>{{ customer.dateTo ? customer.dateTo|date('Y-m-d') : '' }}</td>
                 <td>{{ customer.name }}</td>
-                <td>{{ customer.value }}</td>
                 <td>
                     {% if customer.visible %}
                         <a class="btn btn-success btn-xs" href="{{ path('customer_enable', {'id': customer.id}) }}"><i class="fa fa-check-circle"></i></a>
@@ -72,10 +72,6 @@
                 {{ knp_pagination_render(customers) }}
             </div>
 {% endblock %}
-    {% block box_footer %}
 
-    {% endblock %}
-
-    {% block box_after %}{% endblock %}
 {% endembed %}
 {% endblock %}

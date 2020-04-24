@@ -20,9 +20,13 @@ use App\Repository\CibleAvatarRepository;
 use App\Repository\ImplAvatarRepository;
 use App\Repository\ImplementationRepository;
 use App\Repository\PlanningRepository;
+use App\Repository\StepStrategyRepository;
+use App\Repository\StrategyDigitalRepository;
 use App\Repository\StructureOffreServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +38,20 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ImplementationController extends AbstractController
 {
+    private $stepStrategyRepository;
+    private $strategyRepository;
+
+    /**
+     * ImplementationController constructor.
+     *
+     * @param $stepStrategyRepository
+     */
+    public function __construct(StrategyDigitalRepository $strategyDigitalRepository, StepStrategyRepository $stepStrategyRepository)
+    {
+        $this->stepStrategyRepository = $stepStrategyRepository;
+        $this->strategyRepository = $strategyDigitalRepository;
+    }
+
     /**
      * @Route("/", name="implementation_index", methods={"GET"})
      */
@@ -123,7 +141,24 @@ class ImplementationController extends AbstractController
     public function newPlanning(ImplPlanning $implementation, Request $request, PlanningRepository $planningRepository): Response
     {
         $planning = new Planning();
-        $form = $this->createForm(PlanningType::class, $planning);
+        $form = $this->createFormBuilder($planning)->add('dateBegin', DateType::class, [
+            'widget' => 'single_text',
+            'html5' => false,
+            'required' => false,
+        ])
+            ->add('dateEnd', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'required' => false,
+            ])
+            //->add('status')
+            ->add('stepStrategy', EntityType::class, [
+                'class' => StepStrategy::class,
+                'placeholder' => 'choisir une etape',
+                'attr' => ['class' => 'selectpicker', 'data-size' => 10, 'data-live-search' => true],
+                'choices' => $implementation->getImplementation()->getStepStrategy()->getStrategy()->getStepStrategies(),
+            ])->getForm();
+        //  $form = $this->createForm(PlanningType::class, $planning);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -217,7 +252,6 @@ class ImplementationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->persist($offre);
             $entityManager->flush();
             $this->addFlash('success', 'formulaire envoye avec success');
@@ -274,6 +308,7 @@ class ImplementationController extends AbstractController
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
             $url = $this->generateUrl('implementation_view_planning', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);
@@ -304,6 +339,7 @@ class ImplementationController extends AbstractController
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
             $url = $this->generateUrl('implementation_view_avatar', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);
@@ -314,6 +350,7 @@ class ImplementationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/viewOffre/{id}", name="implementation_view_offre", methods={"GET","POST"})
      */
@@ -331,6 +368,7 @@ class ImplementationController extends AbstractController
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
+            $this->addFlash('success', 'Operation effectuée avec success');
             $url = $this->generateUrl('implementation_view_offre', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);
@@ -341,6 +379,7 @@ class ImplementationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/{id}", name="implementation_delete", methods={"DELETE"})
      */
@@ -429,6 +468,7 @@ class ImplementationController extends AbstractController
         }
         $entityManager->persist($implementation);
         $entityManager->flush();
+        $this->addFlash('success', 'Operation effectuée avec success');
         $url = $this->generateUrl('implementation_view_avatar', ['id' => $implAvatar->getId()]);
 
         return $this->redirect($url);
