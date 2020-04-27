@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
+use App\Repository\CustomerRepository;
 use App\Repository\PlanningRepository;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,17 +16,19 @@ class TestMailCommand extends Command
     protected static $defaultName = 'app:testMail';
     private $planningRepository;
     private $swift_Mailer;
+    private $customerRepository;
 
     /**
      * SendMailCommand constructor.
      *
      * @param $planningRepository
      */
-    public function __construct(PlanningRepository $planningRepository, \Swift_Mailer $swift_Mailer)
+    public function __construct(CustomerRepository $customerRepository, PlanningRepository $planningRepository, \Swift_Mailer $swift_Mailer)
     {
         parent::__construct(null);
         $this->planningRepository = $planningRepository;
         $this->swift_Mailer = $swift_Mailer;
+        $this->customerRepository = $customerRepository;
     }
 
     protected function configure()

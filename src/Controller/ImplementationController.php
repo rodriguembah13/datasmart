@@ -290,7 +290,7 @@ class ImplementationController extends AbstractController
     /**
      * @Route("/view/{id}", name="implementation_view_planning", methods={"GET","POST"})
      */
-    public function viewPlanning(ImplPlanning $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository): Response
+    public function viewPlanning(ImplPlanning $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository, \Swift_Mailer $mailer): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -302,12 +302,29 @@ class ImplementationController extends AbstractController
             }
             $entityManager = $this->getDoctrine()->getManager();
             $comment->setCreatedAt(new \DateTime('now'));
+            $customer = $implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy();
             $comment->setEmployee($user);
             $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
             $comment->setSendTo($implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy());
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
+            $message = (new \Swift_Message('Smart Message'))
+                ->setFrom($this->getUser()->getEmail())
+                ->setTo($customer->getCompte()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/messageOne.html.twig',
+                        ['name' => $customer->getName(),
+                            'message' => $comment->getLibelle(),
+                            'step' => $implementation->getImplementation()->getStepStrategy()->getStep()->getName(),
+                            'strategy' => $implementation->getImplementation()->getStepStrategy()->getStrategy()->getName(),
+                        ]
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
             $this->addFlash('success', 'Operation effectuée avec success');
             $url = $this->generateUrl('implementation_view_planning', ['id' => $implementation->getId()]);
 
@@ -325,13 +342,14 @@ class ImplementationController extends AbstractController
     /**
      * @Route("/viewAvatar/{id}", name="implementation_view_avatar", methods={"GET","POST"})
      */
-    public function viewAvatar(ImplAvatar $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository): Response
+    public function viewAvatar(ImplAvatar $implementation, EntityManagerInterface $manager, Request $request, PlanningRepository $planningRepository, \Swift_Mailer $mailer): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $customer = $implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy();
             $comment->setCreatedAt(new \DateTime('now'));
             $comment->setEmployee($this->getUser()->getEmployee());
             $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
@@ -340,6 +358,22 @@ class ImplementationController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
             $this->addFlash('success', 'Operation effectuée avec success');
+            $message = (new \Swift_Message('Smart Message'))
+                ->setFrom($this->getUser()->getEmail())
+                ->setTo($customer->getCompte()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/messageOne.html.twig',
+                        ['name' => $customer->getName(),
+                            'message' => $comment->getLibelle(),
+                            'step' => $implementation->getImplementation()->getStepStrategy()->getStep()->getName(),
+                            'strategy' => $implementation->getImplementation()->getStepStrategy()->getStrategy()->getName(),
+                        ]
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
             $url = $this->generateUrl('implementation_view_avatar', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);
@@ -354,13 +388,14 @@ class ImplementationController extends AbstractController
     /**
      * @Route("/viewOffre/{id}", name="implementation_view_offre", methods={"GET","POST"})
      */
-    public function viewOffre(ImplOffre $implementation, EntityManagerInterface $manager, Request $request): Response
+    public function viewOffre(ImplOffre $implementation, EntityManagerInterface $manager, Request $request, \Swift_Mailer $mailer): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $customer = $implementation->getImplementation()->getStepStrategy()->getStrategy()->getCreateBy();
             $comment->setCreatedAt(new \DateTime('now'));
             $comment->setEmployee($this->getUser()->getEmployee());
             $comment->setStepStrategy($implementation->getImplementation()->getStepStrategy());
@@ -369,6 +404,22 @@ class ImplementationController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
             $this->addFlash('success', 'Operation effectuée avec success');
+            $message = (new \Swift_Message('Smart Message'))
+                ->setFrom($this->getUser()->getEmail())
+                ->setTo($customer->getCompte()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/messageOne.html.twig',
+                        ['name' => $customer->getName(),
+                            'message' => $comment->getLibelle(),
+                            'step' => $implementation->getImplementation()->getStepStrategy()->getStep()->getName(),
+                            'strategy' => $implementation->getImplementation()->getStepStrategy()->getStrategy()->getName(),
+                        ]
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
             $url = $this->generateUrl('implementation_view_offre', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);

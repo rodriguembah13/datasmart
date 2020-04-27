@@ -1,2 +1,26 @@
 <h3>Vous avez recu un message!</h3>
 Hi {{ name }}! vous avez recu un message.
+<table style="border-collapse: collapse; width: 100%; background-color: #0a568c;color: aliceblue" border="1">
+    <tbody>
+    <tr>
+        <td style="width: 100%;text-align: center"><br>Liste des Etapes Non Implementeés<br></td>
+
+    </tr>
+    </tbody>
+</table>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+    <tr>
+        <td style="width: 5%;">Id</td>
+        <td style="width: 75%;">Step</td>
+        <td style="width: 20%;">Strategy</td>
+    </tr>
+    {% for step in steps %}
+    <tr>
+        <td style="width: 5%;">{{ step.id }}</td>
+        <td style="width: 75%;">{{ step.step.name }}</td>
+        <td style="width: 20%;">{{ step.strategy }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

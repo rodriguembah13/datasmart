@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use App\Entity\Planning;
 use App\Entity\StrategyDigital;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -52,6 +53,29 @@ class PlanningRepository extends ServiceEntityRepository
             ->andWhere('p.status = :status')
             ->setParameter('val', new \DateTime('now'))
             ->setParameter('status', false)
+            ->orderBy('p.dateEnd', 'DESC')
+            ->setMaxResults(200)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return Planning[] Returns an array of Planning objects
+     */
+    public function findWhereDelaiPassAndCustomers(Customer $customer)
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.stepStrategy', 'stepStrategy')
+            ->leftJoin('stepStrategy.strategy', 'strategy')
+           /* ->leftJoin('strategy.createBy', 'implPlanning')
+            ->addSelect('implPlanning')*/
+            ->andWhere('strategy.createBy = :customer')
+            ->andWhere('p.dateEnd <= :val')
+            ->andWhere('p.status = :status')
+            ->setParameter('val', new \DateTime('now'))
+            ->setParameter('status', false)
+            ->setParameter('customer', $customer)
             ->orderBy('p.dateEnd', 'DESC')
             ->setMaxResults(200)
             ->getQuery()

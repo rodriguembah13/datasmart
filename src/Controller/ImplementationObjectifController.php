@@ -22,7 +22,7 @@ class ImplementationObjectifController extends AbstractController
     /**
      * @Route("/{id}/view", name="implementation_objectif")
      */
-    public function index(ImplObjectif $implementation, Request $request, \Swift_Mailer $swift_Mailer)
+    public function index(ImplObjectif $implementation, Request $request, \Swift_Mailer $mailer)
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -37,7 +37,23 @@ class ImplementationObjectifController extends AbstractController
             $comment->setStatus(false);
             $entityManager->persist($comment);
             $entityManager->flush();
-            $this->sendMail($customer->getName(), $customer->getCompte()->getEmail(), $this->getUser()->getEmail(), $swift_Mailer);
+            // $this->sendMail($customer->getName(), $customer->getCompte()->getEmail(), $this->getUser()->getEmail(), $swift_Mailer);
+            $message = (new \Swift_Message('Smart Message'))
+                ->setFrom($this->getUser()->getEmail())
+                ->setTo($customer->getCompte()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/messageOne.html.twig',
+                        ['name' => $customer->getName(),
+                            'message' => $comment->getLibelle(),
+                            'step' => $implementation->getImplementation()->getStepStrategy()->getStep()->getName(),
+                            'strategy' => $implementation->getImplementation()->getStepStrategy()->getStrategy()->getName(),
+                            ]
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
             $url = $this->generateUrl('implementation_objectif', ['id' => $implementation->getId()]);
 
             return $this->redirect($url);
@@ -146,8 +162,7 @@ class ImplementationObjectifController extends AbstractController
             ->setTo($receiveMail)
             ->setBody(
                 $this->renderView(
-                // templates/emails/registration.html.twig
-                    'emails/message.html.twig',
+                    'emails/messageOne.html.twig',
                     ['name' => $name]
                 ),
                 'text/html'
